@@ -1,0 +1,78 @@
+// This file contains essentially the same information as the orginal fileformat.proto and osmformat.proto however it is a rewrite to get rid of the LGPL requirements associcated with it.
+
+option optimize_for = LITE_RUNTIME;
+
+package OSM_PBF_FORMAT;
+
+message CompressedBlockHeader {
+	required string block_type = 1;
+	required int32 block_size = 3;
+}
+
+message CompressedBlock {
+	required int32 uncompressed_data_size = 2;
+	optional bytes uncompressed_data = 1;
+	optional bytes zlib_compressed_data = 3;
+}
+
+message FileHeader {
+	repeated string parser_must_support = 4;
+	repeated string parse_may_exploit = 5;
+}
+
+message Block {
+	required StringList string_list = 1;
+	repeated Group group_list = 2;
+	optional int32 latlon_granularity = 17 [default=100]; 
+	optional int64 offset_of_latitude = 19 [default=0];
+	optional int64 offset_of_longitude = 20 [default=0]; 
+}
+
+message StringList {
+	repeated bytes string_list = 1;
+}
+
+message Group {
+	repeated SparseNode sparse_node_list = 1;
+	optional DenseNode dense_node = 2;
+	repeated Way way_list = 3;
+	repeated Relation relation_list = 4;
+}
+
+message SparseNode {
+	required sint64 osm_node_id = 1;
+	repeated uint32 key = 2 [packed = true];
+	repeated uint32 value = 3 [packed = true];
+	required sint64 latitude = 8;
+	required sint64 longitude = 9;
+}
+
+message DenseNode{
+	repeated sint64 delta_coded_osm_node_id = 1 [packed = true];
+	repeated sint64 delta_coded_latitude = 8 [packed = true];
+	repeated sint64 delta_coded_longitude = 9 [packed = true];
+	repeated int32 key_value_pairs = 10 [packed = true];
+}
+
+
+message Way {
+	required int64 osm_way_id = 1;
+	repeated uint32 key = 2 [packed = true];
+	repeated uint32 value = 3 [packed = true];
+	repeated sint64 node_list = 8 [packed = true];
+}
+
+message Relation {
+	enum MemberType {
+		node = 0;
+		way = 1;
+		relation = 2;
+	} 
+	required int64 osm_relation_id = 1;
+	repeated uint32 key = 2 [packed = true];
+	repeated uint32 value = 3 [packed = true];
+	repeated int32 member_role_id = 8 [packed = true];
+	repeated sint64 delta_coded_member_id_list = 9 [packed = true];
+	repeated MemberType member_type_list = 10 [packed = true];
+}
+

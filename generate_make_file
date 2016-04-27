@@ -1,0 +1,310 @@
+#!/usr/bin/env python3
+
+# Configuration variables
+
+compiler_name = "g++"
+archiver_name = "ar"
+
+#compiler_options = ["-Wall", "-ggdb", "-mpopcnt", "-mavx", "-std=c++11"]
+compiler_options = ["-Wall", "-O3", "-DNDEBUG", "-mpopcnt", "-mavx", "-std=c++11"]
+linker_options = []
+
+build_static_library = True
+build_dynamic_library = True
+rebuild_if_makefile_changes = False
+rebuild_if_generate_makefile_changes = True
+
+# Actual program starts here
+
+import os
+import re
+import sys
+
+if not os.path.exists("src"):
+	print("No src/ subdirectory found => no source code found => nothing to do")
+	sys.exit(1)
+
+def does_cpp_file_contains_main(file_name):
+	with open(file_name,'r') as f:
+		for line in f:
+			if re.search(r"int\s+main(.*)", line):
+				return True
+		return False
+
+src_files = [os.path.join("src",x) for x in os.listdir("src") if os.path.isfile(os.path.join("src", x))]
+cpp_files = [x for x in src_files if os.path.splitext(x)[1] == ".cpp"]
+h_files = [x for x in src_files if os.path.splitext(x)[1] == ".h"]
+bin_files = [os.path.join("bin", os.path.splitext(os.path.basename(x))[0]) for x in src_files if does_cpp_file_contains_main(x)]
+
+if os.path.exists("include"):
+	lib_list = [x for x in os.listdir("include") if os.path.isdir(os.path.join("include", x))]
+else:
+	lib_list = []
+
+lib_files = []
+if build_static_library:
+	lib_files += [os.path.join("lib", "lib"+x+".a") for x in lib_list]
+if build_dynamic_library:
+	lib_files += [os.path.join("lib", "lib"+x+".so") for x in lib_list]
+external_h_files = [os.path.join("include", l, x) for l in lib_list for x in os.listdir(os.path.join("include", l))]
+
+def uncached_extract_direct_includes_from_source_file(file_name):
+	local_includes = []
+	global_includes = []
+	with open(file_name,'r') as f:
+		for line in f:
+			m = re.search(r"^\s*#\s*include\s*\"(.*)\"\s*$", line)
+			if m:
+				local_header = os.path.join("src", m.group(1))
+				if not local_header in h_files:
+					print("\""+file_name+"\" includes inexistent header \""+local_header+"\" => abort")
+					sys.exit(1)
+				else:
+					local_includes.append(local_header)
+			m = re.search(r"^\s*#\s*include\s*<(.*)>\s*$", line)
+			if m:
+				global_header = os.path.join("include", m.group(1))
+				if global_header in external_h_files:
+					global_includes.append(os.path.join("include", m.group(1)))
+	return local_includes, global_includes
+
+include_cache = {}
+
+def extract_includes(file_name):
+	global include_cache
+	if not file_name in include_cache:
+		include_cache[file_name] = None
+		
+		local_includes = []
+		global_includes = []
+
+		direct_local_includes, direct_global_includes = uncached_extract_direct_includes_from_source_file(file_name)
+
+		global_includes += direct_global_includes
+		local_includes += direct_local_includes
+
+		for i in direct_local_includes:
+			if not i in h_files:
+				print("Header \""+i+"\" missing but included from \""+file_name+"\" => aborting")
+				sys.exit(1)
+			if i != file_name:
+				i_local_includes, i_global_includes = extract_includes(i)
+				local_includes += i_local_includes
+				global_includes += i_global_includes
+				
+		for i in direct_global_includes:
+			if i != file_name:
+				i_local_includes, i_global_includes = extract_includes(i)
+				global_includes += i_global_includes
+
+		local_includes = list(set(local_includes))
+		global_includes = list(set(global_includes))
+
+		include_cache[file_name] = (local_includes, global_includes)
+				
+	if include_cache[file_name] is None:
+		print("Cyclic include detected while parsing \""+file_name+"\" => aborting")
+		sys.exit(1)
+
+	return include_cache[file_name]
+
+def extract_local_includes(file_name):
+	return extract_includes(file_name)[0]
+
+def extract_global_includes(file_name):
+	return extract_includes(file_name)[1]
+
+
+direct_cpp_dependency = {}
+
+def generate_direct_cpp_dependencies():
+	global direct_cpp_dependency
+	for cpp_file in cpp_files:
+		depends = []
+
+		local_includes, global_includes = extract_includes(cpp_file)
+
+		for h in local_includes:
+			if h in h_files:
+				x = os.path.splitext(h)[0]+".cpp"
+				if x in cpp_files and x != cpp_file:
+					depends.append(x)
+
+		for h in global_includes:
+			if h in external_h_files:
+				x = os.path.normpath(h).split(os.path.sep)
+				if len(x) == 3:
+					x = x[2]
+					x = os.path.join("src", os.path.splitext(x)[0]+".cpp")
+					if x in cpp_files and x != cpp_file:
+						depends.append(x)
+
+		direct_cpp_dependency[cpp_file] = depends
+
+	for bin_file in bin_files:
+		direct_cpp_dependency[bin_file] = [os.path.join("src", os.path.basename(bin_file)+".cpp")]
+
+	for lib_file in lib_list:
+		depends = []
+		for header in external_h_files:
+			if(header.startswith(os.path.join("include", lib_file))):
+				for include in extract_global_includes(header) + [header]:
+					x = os.path.normpath(include).split(os.path.sep)
+					if len(x) == 3:
+						x = x[2]
+						x = os.path.join("src", os.path.splitext(x)[0]+".cpp")
+						if x in cpp_files:
+							depends.append(x)
+
+		depends = list(set(depends))
+
+		if build_static_library:
+			direct_cpp_dependency[os.path.join("lib", "lib"+lib_file+".a")] = depends
+		if build_dynamic_library:
+			direct_cpp_dependency[os.path.join("lib", "lib"+lib_file+".so")] = depends
+
+
+generate_direct_cpp_dependencies()
+
+cpp_dependency_cache = {}
+
+def extract_cpp_dependency(file_name):
+	global cpp_dependency_cache
+
+	if not file_name in cpp_dependency_cache:
+		cpp_dependency_cache[file_name] = None
+
+		depends = direct_cpp_dependency[file_name]
+		for x in direct_cpp_dependency[file_name]:
+			depends += extract_cpp_dependency(x)
+		depends = list(set(depends))
+		
+		cpp_dependency_cache[file_name] = depends
+		
+
+	if cpp_dependency_cache[file_name] is None:
+		print("Cyclic cpp dependency detected while resolving dependencies of \""+file_name+"\" => aborting")
+		sys.exit(1)
+
+	return cpp_dependency_cache[file_name]
+
+def uncached_extract_direct_compiler_and_linker_options(file_name):
+	compiler_options = []
+	linker_options = []
+
+	with open(file_name,'r') as f:
+		for line in f:
+
+			m = re.search(r"^\s*//\s*compile\s+with\s+(.*)\s*$", line)
+			if m:
+				compiler_options.append(m.group(1))
+
+			m = re.search(r"^\s*//\s*link\s+with\s+(.*)$", line)
+			if m:
+				linker_options.append(m.group(1))
+
+			m = re.search(r"^\s*#\s*include\s*<(.*)>\s*$", line)
+			if m:
+				if m.group(1) in ["thread", "mutex", "condition_variable", "atomic", "future"]:
+					linker_options.append("-pthread")
+				if m.group(1) in ["omp.h"]:
+					compiler_options.append("-fopenmp")
+					linker_options.append("-fopenmp")
+				if m.group(1) in ["math.h", "cmath"]:
+					linker_options.append("-lm")
+
+			if re.search(r"^\s*#\s*pragma\s+omp", line):
+				compiler_options.append("-fopenmp")
+				linker_options.append("-fopenmp")
+	compiler_options = list(set(compiler_options))
+	linker_options = list(set(linker_options))
+
+	return compiler_options, linker_options
+
+direct_compiler_linker_options_cache = {}
+
+def extract_direct_compiler_and_linker_options(file_name):
+	global direct_compiler_linker_options_cache
+	if not file_name in direct_compiler_linker_options_cache:
+		direct_compiler_linker_options_cache[file_name] = uncached_extract_direct_compiler_and_linker_options(file_name)
+	return direct_compiler_linker_options_cache[file_name]
+
+def extract_direct_compiler_options(file_name):
+	return extract_direct_compiler_and_linker_options(file_name)[0]
+
+def extract_direct_linker_options(file_name):
+	return extract_direct_compiler_and_linker_options(file_name)[1]
+
+with open("Makefile", "w") as f:
+	print("# This makefile was automatically generated. Run ./generate_make_file to regenerate the file.", file=f)
+	print("CC="+compiler_name, file=f)
+	print("AR="+archiver_name, file=f)
+	
+	if build_dynamic_library:
+		compiler_options += ["-fPIC"]
+
+	compiler_options += ["-Iinclude"]
+
+	print("CFLAGS="+" ".join(compiler_options), file=f)
+	print("LDFLAGS="+" ".join(linker_options), file=f)
+	print("", file=f)
+
+	print("all: " + " ".join(bin_files + lib_files), file=f)
+	print("", file=f)
+
+	for cpp_file in cpp_files:
+		object_file = os.path.join("build", os.path.basename(os.path.splitext(cpp_file)[0]) + ".o")
+
+		includes = extract_includes(cpp_file)
+		depends_on = [cpp_file] + includes[0] + includes[1]
+		depends_on = list(set(depends_on))
+
+		extra_compiler_options = []
+		for x in depends_on:
+			extra_compiler_options += extract_direct_compiler_options(x)
+		extra_compiler_options = list(set(extra_compiler_options))
+
+		if rebuild_if_makefile_changes:
+			depends_on.append("Makefile")
+		if rebuild_if_generate_makefile_changes:
+			depends_on.append("generate_make_file")
+
+		print(object_file + ": " + " ".join(depends_on), file=f)
+		print("\tmkdir -p build", file=f)
+		print("\t$(CC) $(CFLAGS) " + " ".join(extra_compiler_options) + " -c " + cpp_file + " -o "+object_file, file=f)
+		print("", file=f)
+
+	for bin_file in bin_files + lib_files:
+		depends_on_cpp_files = extract_cpp_dependency(bin_file)
+		if len(depends_on_cpp_files) == 0:
+			print("Not generating a target for \""+bin_file+"\" because it does not depend on any *.cpp file.")
+		else:
+
+			extra_linker_options = []
+			for cpp_file in depends_on_cpp_files:
+				extra_linker_options += extract_direct_linker_options(cpp_file)
+				includes = extract_includes(cpp_file)
+				for x in includes[0]:
+					extra_linker_options += extract_direct_linker_options(x)
+				for x in includes[1]:
+					extra_linker_options += extract_direct_linker_options(x)
+				
+			extra_linker_options = list(set(extra_linker_options))
+
+			depends_on_object_files = [os.path.join("build", os.path.basename(os.path.splitext(x)[0]) + ".o") for x in depends_on_cpp_files]
+			print(bin_file + ": " + " ".join(depends_on_object_files), file=f)
+			if os.path.splitext(bin_file)[1]==".so":
+				print("\tmkdir -p lib", file=f)
+				print("\t$(CC) -shared $(LDFLAGS) "+" ".join(depends_on_object_files+extra_linker_options)+" -o "+bin_file, file=f)
+			elif os.path.splitext(bin_file)[1]==".a":
+				print("\tmkdir -p lib", file=f)
+				print("\t$(AR) rcs "+bin_file + " " + " ".join(depends_on_object_files), file=f)
+				if len(extra_linker_options) != 0:
+					print("When linking against \""+bin_file+"\" you need to add \""+" ".join(extra_linker_options)+"\" to the linker as the last commandline options.")
+			else:	
+				print("\tmkdir -p bin", file=f)
+				print("\t$(CC) $(LDFLAGS) "+" ".join(depends_on_object_files+extra_linker_options)+" "+" -o "+bin_file, file=f)
+			print("", file=f)
+
+print("Successfully generated Makefile.")
+
