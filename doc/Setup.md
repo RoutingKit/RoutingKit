@@ -1,12 +1,12 @@
 # RoutingKit Setup
 
-# Dependencies
+## Dependencies
 
 RoutingKit was written for and tested on Linux with GCC 4.8. The current version uses features that go beyond standard C++. We expect that any GCC compatible compiler (such as Clang) should work on any Unix compatible OS (such as Mac). Windows will most likely not work. Maybe MinGW works.
 
 RoutingKit has two dependencies on external libraries: zlib and Google-Protocol-Buffers are needed.
 
-# Compilation
+## Compilation
 
 Run the following Bash-Code to compile the library from source. Currently there are no binary distributions.
 
