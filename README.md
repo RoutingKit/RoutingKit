@@ -15,7 +15,7 @@ For example the following code snippet is enough to build and query a basic inde
 #include <routingkit/inverse_vector.h>
 #include <routingkit/timer.h>
 #include <iostream>
-using namespace OpenNavi;
+using namespace RoutingKit;
 using namespace std;
 
 int main(){
