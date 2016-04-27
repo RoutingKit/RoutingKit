@@ -52,6 +52,8 @@ int main(){
 }
 ```
 
+You can get OSM PBF exports from various sources. A popular one is [Geofabrik](https://download.geofabrik.de/).
+
 ## Documentation
 
 * [Setup and Installation](doc/Setup.md)
