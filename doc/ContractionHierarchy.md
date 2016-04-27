@@ -153,20 +153,20 @@ You could for example use these features to stream the CH directly per TCP.
 
 The basic query interface is 
 
-``C++
+```cpp
 ContractionHierarchyQuery query(ch);
 query.reset().add_source(source_node).add_target(target_node).run();
-``
+```
 
 The chaining is pure syntactical sugar. You could write this code also as following:
 
-``C++
+```cpp
 ContractionHierarchyQuery query(ch);
 query.reset();
 query.add_source(source_node);
 query.add_target(target_node);
 query.run();
-``
+```
 
 Constructing a query object is heavy-weight. 
 It can therefore be recycled to perform several queries.
@@ -277,5 +277,5 @@ std::vector<unsigned> d = query
 	.get_distances_to_targets();
 ```
 
-d[i] then contains the minimum of `dist(a, target_list[i])+dist_to_a` and `dist(b, target_list[i])+dist_to_b` and `dist(c, target_list[i])` where dist(x,y) is the the shortest path distance from node x to node y.
+`d[i]` then contains the minimum of `dist(a, target_list[i])+dist_to_a` and `dist(b, target_list[i])+dist_to_b` and `dist(c, target_list[i])` where `dist(x,y)` is the the shortest path distance from node `x` to node `y`.
 
