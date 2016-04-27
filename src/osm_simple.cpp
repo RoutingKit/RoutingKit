@@ -11,7 +11,6 @@ namespace RoutingKit{
 SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message,
-	OSMRoutingIDMapping*mapping_out,
 	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
 ){
 	auto mapping = load_osm_id_mapping_from_pbf(
@@ -37,10 +36,7 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 		true
 	);
 
-	if(mapping_out)
-		*mapping_out = std::move(mapping);
-	else
-		mapping = OSMRoutingIDMapping(); // release memory
+	mapping = OSMRoutingIDMapping(); // release memory
 
 	SimpleOSMCarRoutingGraph ret;
 	ret.first_out = std::move(routing_graph.first_out);
