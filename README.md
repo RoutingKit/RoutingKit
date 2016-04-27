@@ -59,6 +59,7 @@ int main(){
 * [Contraction Hierarchy](doc/ContractionHierarchy.md)
 * [Customizable Contraction Hierarchy](doc/CustomizableContractionHierarchy.md)
 * [OpenStreetMap Importer](doc/OpenStreetMap.md)
+* [Converting Coordinates to Node ID](doc/CoordinatesToNodeID.md)
 
 ## Publications
 
