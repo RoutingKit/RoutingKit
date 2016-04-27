@@ -56,8 +56,8 @@ int main(){
 
 * [Setup and Installation](doc/Setup.md)
 * [Support Functionality](doc/SupportFunctions.md)
-* [Contraction Hierarchies](doc/ContractionHierarchy.md)
-* [Customizable Contraction Hierarchies](doc/CustomizableContractionHierarchy.md)
+* [Contraction Hierarchy](doc/ContractionHierarchy.md)
+* [Customizable Contraction Hierarchy](doc/CustomizableContractionHierarchy.md)
 * [OpenStreetMap Importer](doc/OpenStreetMap.md)
 
 

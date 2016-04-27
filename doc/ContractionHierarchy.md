@@ -87,7 +87,7 @@ std::vector<unsigned>order = ...
 ContractionHierarchy ch = ContractionHierarchy::build_given_order(order, tail, head, weight);
 
 std::vector<unsigned>rabk = ...
-ContractionHierarchy ch = ContractionHierarchy::build_given_ranl(rank, tail, head, weight);
+ContractionHierarchy ch = ContractionHierarchy::build_given_rank(rank, tail, head, weight);
 ```
 
 As computing a CH can be slow, we provide functions to save it to disk. 
