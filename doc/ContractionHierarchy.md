@@ -1,7 +1,5 @@
 # ContractionHierarchy
 
-## Introduction
-
 ContractionHierarchy (CH) is an index-based speedup technique for shortest path computations. They work in two phases:
 
 1. Preprocessing (or index generation)

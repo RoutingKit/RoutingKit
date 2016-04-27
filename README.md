@@ -54,6 +54,7 @@ int main(){
 
 ## Documentation
 
+* [Setup and Installation](doc/Setup.md)
 * [Support Functionality](doc/SupportFunctions.md)
 * [Contraction Hierarchies](doc/ContractionHierarchy.md)
 * [Customizable Contraction Hierarchies](doc/CustomizableContractionHierarchy.md)
