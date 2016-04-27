@@ -5,7 +5,7 @@ It was developed at [KIT](https://www.kit.edu) in the [group of Prof. Dorothea W
 The most prominent component is an index-based data structure called (Customizable) Contraction Hierarchy, that allows to answer shortest path queries within milliseconds or even less on data sets of continental size while keeping the arc weights flexible.
 Such running times cannot be achieved without indices.
 
-One of the main design goals of RoutingKit was to make recent research results easily accessible to people developing route planning applications.
+One of the main design goals of RoutingKit is to make recent research results easily accessible to people developing route planning applications.
 A key element is an interface that is a good compromise between usability and running time performance.
 For example the following code snippet is enough to build and query a basic index given an [OSM](https://www.openstreetmap.org) PBF data export.
 
