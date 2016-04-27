@@ -279,3 +279,20 @@ std::vector<unsigned> d = query
 
 `d[i]` then contains the minimum of `dist(a, target_list[i])+dist_to_a` and `dist(b, target_list[i])+dist_to_b` and `dist(c, target_list[i])` where `dist(x,y)` is the the shortest path distance from node `x` to node `y`.
 
+## Publications
+
+Contraction Hierarchies are described in:
+* Exact Routing in Large Road Networks Using Contraction Hierarchies.
+  Robert Geisberger, Peter Sanders, Dominik Schultes, and Christian Vetter.
+  Transportation Science, 2012.
+
+The exact node ordering procedure is described in:
+* Customizable Contraction Hierarchies.
+  Julian Dibbelt, Ben Strasser, and Dorothea Wagner.
+  ACM Journal of Experimental Algorithmics, 2016.
+
+The Many-To-Many queries use ideas from:
+* Faster Batched Shortest Paths in Road Networks.
+  Daniel Delling and Andrew V. Goldberg and Renato F. Werneck.
+  Proceedings of the ATMOS'11, 2011.
+
