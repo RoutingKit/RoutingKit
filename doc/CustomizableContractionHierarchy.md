@@ -10,6 +10,8 @@ The preprocessing is slow but does not rely on the arc weights. The Customizatio
 
 All classes and functions are defined in `<routingkit/customizable_contraction_hierarchy.h>`.
 
+## Preprocessing
+
 The central object is the index itself and is called `CustomizableContractionHierarchy`. It is used as following:
 
 ```cpp
@@ -43,6 +45,9 @@ CustomizableContractionHierarchy cch(node_order, tail, head);
 
 The ordering function has a final optimal parameter that is a logging callback. Note, that using a CH order in a CCH generally does not work well, whereas CCH orders can be used in a CH.
 
+## Customization
+
+
 The weights are introduced using a helper object called `CustomizableContractionHierarchyMetric`. You use it as following:
 
 ```cpp
@@ -64,7 +69,7 @@ The interface of `CustomizableContractionHierarchyQuery` is essentially the same
 
 The method `CustomizableContractionHierarchyMetric::customize` can be too slow for some applications. Two alternative customization methods are therefore provided.
 
-## CustomizableContractionHierarchyParallelization 
+### CustomizableContractionHierarchyParallelization 
 
 The customization can be parallelized as following:
 
@@ -78,7 +83,7 @@ The parallelization is done using OpenMP primitives, i.e., the internal OpenMP t
 
 Note that the `parallel_customization` constructor computes some auxiliary data. It is therefore probably a good idea to only construct the object once when constructing the `cch` object. If you omit `thread_count` then as many threads are used as processors are available. You can use a single `parallel_customization` object to customize multiple metrics at the same time from different threads. No locking is required. The `parallel_customization` objects holds a reference to `cch`, i.e., if `cch` is destroyed, you need to destroy `parallel_customization` or execute `parallel_customization.reset(new_cch)`.
 
-## CustomizableContractionHierarchyPartialCustomization
+### CustomizableContractionHierarchyPartialCustomization
 
 Often only a few weights change. The typical application is incorporating a new traffic jam. This can be done as following:
 
@@ -104,7 +109,7 @@ partial_customization
 
 The `partial_customization` object is comparatively lightweight but constructing it requires linear running time whereas all other operations run in sub linear time if the CCH does not change too much. It is therefore be a good idea to construct the object only once when constructing the CCH. The `partial_customization` objects holds a reference to `cch`, i.e., if `cch` is destroyed, you need to destroy `partial_customization` or execute `partial_customization.reset(new_cch)`.
 
-## Perfect Customization
+### Perfect Customization
 
 In some applications you know that a customization will be followed by a large number of queries. If this number is extremely large then using a regular CH will win as the query running times dominate the time required to build the CH. However, if the number is only large then a compromise exists: Build the CH using a perfect CCH witness search. This works as following:
 
@@ -121,3 +126,14 @@ This computes a CH with the same node order as the CCH and is significantly fast
 * Customizable Contraction Hierarchies.
   Julian Dibbelt, Ben Strasser, and Dorothea Wagner.
   ACM Journal of Experimental Algorithmics, 2016.
+
+For the node orders:
+
+* On Balanced Separators in Road Networks.
+  Aaron Schild and Christian Sommer.
+  Proceedings of the SEA'15, 2015.
+
+* Graph Bisection with Pareto-Optimization.
+  Michael Hamann and Ben Strasser
+  Proceedings of the ALENEX'16, 2016.
+
