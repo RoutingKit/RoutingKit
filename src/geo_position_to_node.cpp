@@ -1,4 +1,4 @@
-#include <routingkit/vantage_point_tree.h>
+#include <routingkit/geo_position_to_node.h>
 #include <routingkit/geo_dist.h>
 #include <routingkit/constants.h>
 #include <vector>
@@ -12,12 +12,12 @@
 namespace RoutingKit{
 
 namespace{
-	float compute_distance(VantagePointTree::PointPosition x, VantagePointTree::PointPosition y){
+	float compute_distance(GeoPositionToNode::PointPosition x, GeoPositionToNode::PointPosition y){
 		return geo_dist(x.latitude, x.longitude, y.latitude, y.longitude);
 	}
 
 	struct PointData{
-		VantagePointTree::PointPosition position;
+		GeoPositionToNode::PointPosition position;
 		unsigned id;
 		float distance_to_pivot;
 	};
@@ -47,7 +47,7 @@ namespace{
 	}
 }
 
-VantagePointTree::VantagePointTree(const std::vector<float>&latitude, const std::vector<float>&longitude):
+GeoPositionToNode::GeoPositionToNode(const std::vector<float>&latitude, const std::vector<float>&longitude):
 	point_position(latitude.size()), point_id(latitude.size()){
 	unsigned point_count = latitude.size();
 
@@ -69,10 +69,10 @@ namespace{
 	// I envy the day that C++ will finally support recursive lambda functions...
 
 	void nearest_neighbor_recursion(
-		const std::vector<VantagePointTree::PointPosition>&point_position, const std::vector<unsigned>&point_id, 
+		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id, 
 		unsigned begin, unsigned end, 
-		VantagePointTree::PointPosition query_position,
-		VantagePointTree::NearestNeighborhoodQueryResult&current_result
+		GeoPositionToNode::PointPosition query_position,
+		GeoPositionToNode::NearestNeighborhoodQueryResult&current_result
 	){
 		if(end - begin <= max_points_per_leaf){
 			for(unsigned i=begin; i<end; ++i){
@@ -112,7 +112,7 @@ namespace{
 	}
 }
 
-VantagePointTree::NearestNeighborhoodQueryResult VantagePointTree::find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const{
+GeoPositionToNode::NearestNeighborhoodQueryResult GeoPositionToNode::find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const{
 	NearestNeighborhoodQueryResult result = {invalid_id, query_radius};
 	nearest_neighbor_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, result);
 	return result;

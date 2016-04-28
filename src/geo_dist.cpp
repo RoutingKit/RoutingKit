@@ -4,6 +4,8 @@
 
 namespace RoutingKit{
 
+// Code based on formula from http://www.movable-type.co.uk/scripts/latlong.html
+
 double geo_dist(double a_lat, double a_lon, double b_lat, double b_lon){
 
 	const double pi = 3.14159265359;

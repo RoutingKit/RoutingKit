@@ -1,5 +1,5 @@
-#ifndef ROUTING_KIT_VANTAGE_POINT_TREE_H
-#define ROUTING_KIT_VANTAGE_POINT_TREE_H
+#ifndef ROUTING_KIT_GEO_POSITION_TO_NODE_H
+#define ROUTING_KIT_GEO_POSITION_TO_NODE_H
 
 #include <routingkit/constants.h>
 #include <vector>
@@ -7,11 +7,11 @@
 
 namespace RoutingKit{
 
-class VantagePointTree{
+class GeoPositionToNode{
 public:
-	VantagePointTree(){};
+	GeoPositionToNode(){};
 
-	VantagePointTree(const std::vector<float>&latitude, const std::vector<float>&longitude);
+	GeoPositionToNode(const std::vector<float>&latitude, const std::vector<float>&longitude);
 
 	unsigned point_count() const {
 		return point_position.size();
