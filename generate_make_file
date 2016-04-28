@@ -20,6 +20,9 @@ import os
 import re
 import sys
 
+def uniquify(l):
+	return sorted(list(set(l)))
+
 if not os.path.exists("src"):
 	print("No src/ subdirectory found => no source code found => nothing to do")
 	sys.exit(1)
@@ -97,8 +100,8 @@ def extract_includes(file_name):
 				i_local_includes, i_global_includes = extract_includes(i)
 				global_includes += i_global_includes
 
-		local_includes = list(set(local_includes))
-		global_includes = list(set(global_includes))
+		local_includes = uniquify(local_includes)
+		global_includes = uniquify(global_includes)
 
 		include_cache[file_name] = (local_includes, global_includes)
 				
@@ -156,7 +159,7 @@ def generate_direct_cpp_dependencies():
 						if x in cpp_files:
 							depends.append(x)
 
-		depends = list(set(depends))
+		depends = uniquify(depends)
 
 		if build_static_library:
 			direct_cpp_dependency[os.path.join("lib", "lib"+lib_file+".a")] = depends
@@ -177,7 +180,7 @@ def extract_cpp_dependency(file_name):
 		depends = direct_cpp_dependency[file_name]
 		for x in direct_cpp_dependency[file_name]:
 			depends += extract_cpp_dependency(x)
-		depends = list(set(depends))
+		depends = uniquify(depends)
 		
 		cpp_dependency_cache[file_name] = depends
 		
@@ -216,8 +219,8 @@ def uncached_extract_direct_compiler_and_linker_options(file_name):
 			if re.search(r"^\s*#\s*pragma\s+omp", line):
 				compiler_options.append("-fopenmp")
 				linker_options.append("-fopenmp")
-	compiler_options = list(set(compiler_options))
-	linker_options = list(set(linker_options))
+	compiler_options = uniquify(compiler_options)
+	linker_options = uniquify(linker_options)
 
 	return compiler_options, linker_options
 
@@ -257,12 +260,12 @@ with open("Makefile", "w") as f:
 
 		includes = extract_includes(cpp_file)
 		depends_on = [cpp_file] + includes[0] + includes[1]
-		depends_on = list(set(depends_on))
+		depends_on = uniquify(depends_on)
 
 		extra_compiler_options = []
 		for x in depends_on:
 			extra_compiler_options += extract_direct_compiler_options(x)
-		extra_compiler_options = list(set(extra_compiler_options))
+		extra_compiler_options = uniquify(extra_compiler_options)
 
 		if rebuild_if_makefile_changes:
 			depends_on.append("Makefile")
@@ -289,7 +292,7 @@ with open("Makefile", "w") as f:
 				for x in includes[1]:
 					extra_linker_options += extract_direct_linker_options(x)
 				
-			extra_linker_options = list(set(extra_linker_options))
+			extra_linker_options = uniquify(extra_linker_options)
 
 			depends_on_object_files = [os.path.join("build", os.path.basename(os.path.splitext(x)[0]) + ".o") for x in depends_on_cpp_files]
 			print(bin_file + ": " + " ".join(depends_on_object_files), file=f)
