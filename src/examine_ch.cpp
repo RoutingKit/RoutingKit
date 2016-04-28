@@ -14,8 +14,8 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <cstdlib>
-#include <cassert>
+#include <stdlib.h>
+#include <assert.h>
 #include <random>
 #include <set>
 

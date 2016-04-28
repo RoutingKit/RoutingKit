@@ -4,7 +4,7 @@
 #include <routingkit/sort.h>
 #include <routingkit/min_max.h>
 
-#include <cassert>
+#include <assert.h>
 #include <algorithm>
 #include <vector>
 

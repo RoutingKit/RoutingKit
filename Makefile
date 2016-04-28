@@ -78,7 +78,7 @@ build/examine_ch.o: include/routingkit/bit_vector.h include/routingkit/constants
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/examine_ch.cpp -o build/examine_ch.o
 
-build/bit_select.o: src/bit_select.cpp src/bit_select.h generate_make_file
+build/bit_select.o: src/bit_select.cpp src/bit_select.h src/emulate_gcc_builtin.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/bit_select.cpp -o build/bit_select.o
 
@@ -106,7 +106,7 @@ build/test_nested_dissection.o: include/routingkit/bit_vector.h include/routingk
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/test_nested_dissection.cpp -o build/test_nested_dissection.o
 
-build/id_mapper.o: include/routingkit/constants.h include/routingkit/id_mapper.h src/bit_select.h src/id_mapper.cpp generate_make_file
+build/id_mapper.o: include/routingkit/constants.h include/routingkit/id_mapper.h src/bit_select.h src/emulate_gcc_builtin.h src/id_mapper.cpp generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/id_mapper.cpp -o build/id_mapper.o
 
@@ -178,7 +178,7 @@ build/test_tag_map.o: include/routingkit/constants.h include/routingkit/inverse_
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/test_tag_map.cpp -o build/test_tag_map.o
 
-build/bit_vector.o: include/routingkit/bit_vector.h src/bit_vector.cpp generate_make_file
+build/bit_vector.o: include/routingkit/bit_vector.h src/bit_vector.cpp src/emulate_gcc_builtin.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/bit_vector.cpp -o build/bit_vector.o
 
@@ -190,7 +190,7 @@ build/osm_profile.o: include/routingkit/bit_vector.h include/routingkit/constant
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/osm_profile.cpp -o build/osm_profile.o
 
-build/customizable_contraction_hierarchy.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/customizable_contraction_hierarchy.h include/routingkit/filter.h include/routingkit/graph_util.h include/routingkit/id_mapper.h include/routingkit/id_queue.h include/routingkit/id_set_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h src/customizable_contraction_hierarchy.cpp generate_make_file
+build/customizable_contraction_hierarchy.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/customizable_contraction_hierarchy.h include/routingkit/filter.h include/routingkit/graph_util.h include/routingkit/id_mapper.h include/routingkit/id_queue.h include/routingkit/id_set_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h src/customizable_contraction_hierarchy.cpp src/emulate_gcc_builtin.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS) -fopenmp -c src/customizable_contraction_hierarchy.cpp -o build/customizable_contraction_hierarchy.o
 
@@ -240,31 +240,31 @@ build/test_permutation.o: include/routingkit/constants.h include/routingkit/perm
 
 bin/test_contraction_hierarchy_path_query: build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o  -o bin/test_contraction_hierarchy_path_query
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o -pthread  -o bin/test_contraction_hierarchy_path_query
 
 bin/test_customizable_contraction_hierarchy_customization: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_customization.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_customization.o build/timer.o build/vector_io.o -fopenmp  -o bin/test_customizable_contraction_hierarchy_customization
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_customization.o build/timer.o build/vector_io.o -fopenmp -pthread  -o bin/test_customizable_contraction_hierarchy_customization
 
 bin/test_customizable_contraction_hierarchy: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy.o build/timer.o build/vector_io.o -fopenmp  -o bin/test_customizable_contraction_hierarchy
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy.o build/timer.o build/vector_io.o -fopenmp -pthread  -o bin/test_customizable_contraction_hierarchy
 
 bin/encode_vector: build/bit_vector.o build/encode_vector.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/encode_vector.o build/vector_io.o  -o bin/encode_vector
+	$(CC) $(LDFLAGS) build/bit_vector.o build/encode_vector.o build/vector_io.o -pthread  -o bin/encode_vector
 
 bin/compute_geographic_distance_weights: build/bit_vector.o build/compute_geographic_distance_weights.o build/geo_dist.o build/timer.o build/vector_io.o build/verify.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/compute_geographic_distance_weights.o build/geo_dist.o build/timer.o build/vector_io.o build/verify.o -lm  -o bin/compute_geographic_distance_weights
+	$(CC) $(LDFLAGS) build/bit_vector.o build/compute_geographic_distance_weights.o build/geo_dist.o build/timer.o build/vector_io.o build/verify.o -lm -pthread  -o bin/compute_geographic_distance_weights
 
 bin/convert_road_dimacs_graph: build/bit_vector.o build/convert_road_dimacs_graph.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/convert_road_dimacs_graph.o build/vector_io.o  -o bin/convert_road_dimacs_graph
+	$(CC) $(LDFLAGS) build/bit_vector.o build/convert_road_dimacs_graph.o build/vector_io.o -pthread  -o bin/convert_road_dimacs_graph
 
 bin/test_customizable_contraction_hierarchy_pinned_query: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o -fopenmp  -o bin/test_customizable_contraction_hierarchy_pinned_query
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o -fopenmp -pthread  -o bin/test_customizable_contraction_hierarchy_pinned_query
 
 bin/test_inverse_vector: build/test_inverse_vector.o
 	mkdir -p bin
@@ -272,31 +272,31 @@ bin/test_inverse_vector: build/test_inverse_vector.o
 
 bin/compute_nested_dissection_order: build/bit_select.o build/bit_vector.o build/compute_nested_dissection_order.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/compute_nested_dissection_order.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/timer.o build/vector_io.o  -o bin/compute_nested_dissection_order
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/compute_nested_dissection_order.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/timer.o build/vector_io.o -pthread  -o bin/compute_nested_dissection_order
 
 bin/compare_vector: build/bit_vector.o build/compare_vector.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/compare_vector.o build/vector_io.o  -o bin/compare_vector
+	$(CC) $(LDFLAGS) build/bit_vector.o build/compare_vector.o build/vector_io.o -pthread  -o bin/compare_vector
 
 bin/export_road_dimacs_graph: build/bit_vector.o build/export_road_dimacs_graph.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/export_road_dimacs_graph.o build/vector_io.o  -o bin/export_road_dimacs_graph
+	$(CC) $(LDFLAGS) build/bit_vector.o build/export_road_dimacs_graph.o build/vector_io.o -pthread  -o bin/export_road_dimacs_graph
 
 bin/graph_to_svg: build/bit_vector.o build/contraction_hierarchy.o build/graph_to_svg.o build/graph_util.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_to_svg.o build/graph_util.o build/timer.o build/vector_io.o  -o bin/graph_to_svg
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_to_svg.o build/graph_util.o build/timer.o build/vector_io.o -pthread  -o bin/graph_to_svg
 
 bin/examine_ch: build/bit_vector.o build/contraction_hierarchy.o build/examine_ch.o build/graph_util.o build/timer.o build/vector_io.o build/verify.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/examine_ch.o build/graph_util.o build/timer.o build/vector_io.o build/verify.o  -o bin/examine_ch
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/examine_ch.o build/graph_util.o build/timer.o build/vector_io.o build/verify.o -pthread  -o bin/examine_ch
 
 bin/decode_vector: build/bit_vector.o build/decode_vector.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/decode_vector.o build/vector_io.o  -o bin/decode_vector
+	$(CC) $(LDFLAGS) build/bit_vector.o build/decode_vector.o build/vector_io.o -pthread  -o bin/decode_vector
 
 bin/generate_random_node_list: build/bit_vector.o build/generate_random_node_list.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_random_node_list.o build/vector_io.o  -o bin/generate_random_node_list
+	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_random_node_list.o build/vector_io.o -pthread  -o bin/generate_random_node_list
 
 bin/test_buffered_asynchronous_reader: build/buffered_asynchronous_reader.o build/test_buffered_asynchronous_reader.o
 	mkdir -p bin
@@ -304,11 +304,11 @@ bin/test_buffered_asynchronous_reader: build/buffered_asynchronous_reader.o buil
 
 bin/test_customizable_contraction_hierarchy_path_query: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o -fopenmp  -o bin/test_customizable_contraction_hierarchy_path_query
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o -fopenmp -pthread  -o bin/test_customizable_contraction_hierarchy_path_query
 
 bin/test_nested_dissection: build/bit_select.o build/bit_vector.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/test_nested_dissection.o build/timer.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/test_nested_dissection.o build/timer.o  -o bin/test_nested_dissection
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/test_nested_dissection.o build/timer.o -pthread  -o bin/test_nested_dissection
 
 bin/test_sort: build/test_sort.o build/timer.o
 	mkdir -p bin
@@ -324,31 +324,31 @@ bin/osm_extract: build/bit_select.o build/bit_vector.o build/buffered_asynchrono
 
 bin/convert_road_dimacs_coordinates: build/bit_vector.o build/convert_road_dimacs_coordinates.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/convert_road_dimacs_coordinates.o build/vector_io.o  -o bin/convert_road_dimacs_coordinates
+	$(CC) $(LDFLAGS) build/bit_vector.o build/convert_road_dimacs_coordinates.o build/vector_io.o -pthread  -o bin/convert_road_dimacs_coordinates
 
 bin/randomly_permute_nodes: build/bit_vector.o build/randomly_permute_nodes.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/randomly_permute_nodes.o build/vector_io.o  -o bin/randomly_permute_nodes
+	$(CC) $(LDFLAGS) build/bit_vector.o build/randomly_permute_nodes.o build/vector_io.o -pthread  -o bin/randomly_permute_nodes
 
 bin/generate_dijkstra_rank_test_queries: build/bit_vector.o build/generate_dijkstra_rank_test_queries.o build/vector_io.o build/verify.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_dijkstra_rank_test_queries.o build/vector_io.o build/verify.o  -o bin/generate_dijkstra_rank_test_queries
+	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_dijkstra_rank_test_queries.o build/vector_io.o build/verify.o -pthread  -o bin/generate_dijkstra_rank_test_queries
 
 bin/run_contraction_hierarchy_query: build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/run_contraction_hierarchy_query.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/run_contraction_hierarchy_query.o build/timer.o build/vector_io.o  -o bin/run_contraction_hierarchy_query
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/run_contraction_hierarchy_query.o build/timer.o build/vector_io.o -pthread  -o bin/run_contraction_hierarchy_query
 
 bin/generate_constant_vector: build/bit_vector.o build/generate_constant_vector.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_constant_vector.o build/vector_io.o  -o bin/generate_constant_vector
+	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_constant_vector.o build/vector_io.o -pthread  -o bin/generate_constant_vector
 
 bin/graph_to_dot: build/bit_vector.o build/contraction_hierarchy.o build/graph_to_dot.o build/graph_util.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_to_dot.o build/graph_util.o build/timer.o build/vector_io.o  -o bin/graph_to_dot
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_to_dot.o build/graph_util.o build/timer.o build/vector_io.o -pthread  -o bin/graph_to_dot
 
 bin/run_dijkstra: build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o  -o bin/run_dijkstra
+	$(CC) $(LDFLAGS) build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o -pthread  -o bin/run_dijkstra
 
 bin/test_tag_map: build/test_tag_map.o
 	mkdir -p bin
@@ -360,35 +360,35 @@ bin/test_id_set_queue: build/test_id_set_queue.o
 
 bin/test_contraction_hierarchy_pinned_query: build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o  -o bin/test_contraction_hierarchy_pinned_query
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o -pthread  -o bin/test_contraction_hierarchy_pinned_query
 
 bin/test_bit_vector: build/bit_vector.o build/test_bit_vector.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/test_bit_vector.o  -o bin/test_bit_vector
+	$(CC) $(LDFLAGS) build/bit_vector.o build/test_bit_vector.o -pthread  -o bin/test_bit_vector
 
 bin/show_path: build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/show_path.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/show_path.o build/timer.o build/vector_io.o  -o bin/show_path
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/show_path.o build/timer.o build/vector_io.o -pthread  -o bin/show_path
 
 bin/compute_contraction_hierarchy: build/bit_vector.o build/compute_contraction_hierarchy.o build/contraction_hierarchy.o build/graph_util.o build/timer.o build/vector_io.o build/verify.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/compute_contraction_hierarchy.o build/contraction_hierarchy.o build/graph_util.o build/timer.o build/vector_io.o build/verify.o  -o bin/compute_contraction_hierarchy
+	$(CC) $(LDFLAGS) build/bit_vector.o build/compute_contraction_hierarchy.o build/contraction_hierarchy.o build/graph_util.o build/timer.o build/vector_io.o build/verify.o -pthread  -o bin/compute_contraction_hierarchy
 
 bin/generate_random_source_times: build/bit_vector.o build/generate_random_source_times.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_random_source_times.o build/vector_io.o  -o bin/generate_random_source_times
+	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_random_source_times.o build/vector_io.o -pthread  -o bin/generate_random_source_times
 
 bin/test_id_mapper: build/bit_select.o build/bit_vector.o build/id_mapper.o build/test_id_mapper.o build/timer.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/id_mapper.o build/test_id_mapper.o build/timer.o  -o bin/test_id_mapper
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/id_mapper.o build/test_id_mapper.o build/timer.o -pthread  -o bin/test_id_mapper
 
 bin/test_customizable_contraction_hierarchy_perfect_customization: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o -fopenmp  -o bin/test_customizable_contraction_hierarchy_perfect_customization
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o -fopenmp -pthread  -o bin/test_customizable_contraction_hierarchy_perfect_customization
 
 bin/generate_test_queries: build/bit_vector.o build/generate_test_queries.o build/vector_io.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_test_queries.o build/vector_io.o  -o bin/generate_test_queries
+	$(CC) $(LDFLAGS) build/bit_vector.o build/generate_test_queries.o build/vector_io.o -pthread  -o bin/generate_test_queries
 
 bin/test_permutation: build/test_permutation.o
 	mkdir -p bin

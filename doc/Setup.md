@@ -2,9 +2,13 @@
 
 ## Dependencies
 
-RoutingKit was written for and tested on Linux with GCC 4.8. The current version uses features that go beyond standard C++. We expect that any GCC compatible compiler (such as Clang) should work on any Unix compatible OS (such as Mac). Windows will most likely not work. Maybe MinGW works.
+RoutingKit was written for and tested on Linux with GCC 4.8. The code base uses some GCC extensions that should also be available in most other compilers such as Clang, IBM, or Intel. A notable exception to this list is VC. We further use POSIX functions. However, we also provide slower fallback functions. These are enabled by defining `ROUTING_KIT_NO_GCC_EXTENSIONS` and `ROUTING_KIT_NO_POSIX`.
 
-RoutingKit has two dependencies on external libraries: zlib and Google-Protocol-Buffers are needed.
+RoutingKit has two dependencies on two external libraries: zlib and Google-Protocol-Buffers are needed. Under Debian and derived distributions (such as Ubuntu) you can install them using:
+
+```bash
+sudo apt-get install libprotobuf-dev zlib1g-dev
+```
 
 ## Compilation
 

@@ -8,7 +8,7 @@
 #include <routingkit/bit_vector.h>
 #include <routingkit/timer.h>
 
-#include <cassert>
+#include <assert.h>
 
 namespace RoutingKit{
 

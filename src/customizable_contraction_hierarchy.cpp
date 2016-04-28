@@ -9,8 +9,10 @@
 #include <routingkit/id_mapper.h>
 #include <routingkit/timer.h>
 
+#include "emulate_gcc_builtin.h"
+
 #include <vector>
-#include <cassert>
+#include <assert.h>
 #include <algorithm>
 #include <stdexcept>
 #include <omp.h>

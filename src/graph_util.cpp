@@ -3,7 +3,7 @@
 #include <routingkit/sort.h>
 #include <routingkit/permutation.h>
 
-#include <cassert>
+#include <assert.h>
 #include <algorithm>
 
 namespace RoutingKit{

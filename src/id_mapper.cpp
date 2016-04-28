@@ -1,5 +1,6 @@
 #include <routingkit/id_mapper.h>
 
+#include "emulate_gcc_builtin.h"
 #include "bit_select.h"
 
 namespace RoutingKit{

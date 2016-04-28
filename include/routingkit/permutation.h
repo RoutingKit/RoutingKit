@@ -4,7 +4,7 @@
 #include <routingkit/constants.h>
 
 #include <vector>
-#include <cassert>
+#include <assert.h>
 #include <algorithm>
 
 namespace RoutingKit{

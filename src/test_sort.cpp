@@ -5,7 +5,7 @@
 #include "expect.h"
 
 #include <vector>
-#include <cstdlib>
+#include <stdlib.h>
 #include <iostream>
 #include <random>
 

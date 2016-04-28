@@ -1,39 +1,82 @@
 #include <routingkit/bit_vector.h>
 
+#include "emulate_gcc_builtin.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <algorithm>
 
 namespace RoutingKit{
 
-/*
-void*aligned_alloc(uint8_t alignment, uint64_t size){
-	uint64_t potentially_unaligned_buffer = (uint64_t)malloc(size+alignment);
+// Not all compilers support aligned_alloc such as GCC 4.6. If you have such a compiler then uncomment these
 
-	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment - 1)/alignment) * alignment;
-	uint8_t*buffer = (uint8_t*)aligned_buffer;
-	*(buffer-1) = aligned_buffer - potentially_unaligned_buffer;
+//void*aligned_alloc(uint8_t alignment, uint64_t size){
+//	uint64_t potentially_unaligned_buffer = (uint64_t)malloc(size+alignment);
+//	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment - 1)/alignment) * alignment;
+//	uint8_t*buffer = (uint8_t*)aligned_buffer;
+//	*(buffer-1) = aligned_buffer - potentially_unaligned_buffer;
+//	return buffer;
+//}
 
-	return buffer;
-}
+//void aligned_free(void* ptr){
+//	if(ptr){
+//		uint8_t*buffer = (uint8_t*)ptr;
+//		uint8_t shift = *(buffer-1);
+//		buffer -= shift;
+//		free(buffer);
+//	} 
+//}
 
-void aligned_free(void* ptr){
-	if(ptr){
-		uint8_t*buffer = (uint8_t*)ptr;
-		uint8_t shift = *(buffer-1);
-		buffer -= shift;
-		free(buffer);
-	} 
-}
-*/
 
 namespace {
+	#ifndef ROUTING_KIT_NO_GCC_EXTENSIONS
 	typedef uint64_t v8_uint64_t __attribute__((vector_size(64)));
+	#else
+	struct v8_uint64_t{
+		uint64_t v[8];
+		void operator^=(v8_uint64_t o){
+			for(unsigned i=0; i<8; ++i)
+				v[i] ^= o.v[i];
+		}
 
-	typedef union{
-		uint64_t i[8];
-		v8_uint64_t v;
-	}union_v8_uint64_t;
+		void operator&=(v8_uint64_t o){
+			for(unsigned i=0; i<8; ++i)
+				v[i] &= o.v[i];
+		}
+
+		void operator|=(v8_uint64_t o){
+			for(unsigned i=0; i<8; ++i)
+				v[i] |= o.v[i];
+		}
+
+		v8_uint64_t operator~()const{
+			v8_uint64_t r;
+			for(unsigned i=0; i<8; ++i)
+				r.v[i] = ~v[i];
+			return r;
+		}
+
+		uint64_t&operator[](uint64_t i){return v[i];};
+		const uint64_t&operator[](uint64_t i)const{return v[i];};
+
+	};
+
+	v8_uint64_t operator^(v8_uint64_t l, v8_uint64_t r){
+		l ^= r;
+		return l;
+	}
+
+	v8_uint64_t operator&(v8_uint64_t l, v8_uint64_t r){
+		l &= r;
+		return l;
+	}
+
+	v8_uint64_t operator|(v8_uint64_t l, v8_uint64_t r){
+		l |= r;
+		return l;
+	}
+	#endif
+
 
 	uint64_t get_v8_uint64_count(uint64_t bit_count){
 		return (bit_count+511)/512;
@@ -47,56 +90,53 @@ namespace {
 		return get_v8_uint64_count(bit_count)*64;
 	}
 
-
 	v8_uint64_t get_padding_mask(uint64_t size){
-		union_v8_uint64_t u;
+		v8_uint64_t u;
 
-		u.v ^= u.v; // u.v = 0
+		u ^= u; // u.v = 0
 
 		uint64_t x = size % 512;
 		uint8_t i = 0;
 		while(x >= 64){
-			u.i[i++] = ~0ull;
+			u[i++] = ~0ull;
 			x -= 64;
 		}
 		if(x != 0)
-			u.i[i] = (1ull<<x)-1;
+			u[i] = (1ull<<x)-1;
 
-		return u.v;
+		return u;
 	}
 
 	bool is_any_bit_set(const v8_uint64_t*x){
-		union_v8_uint64_t u;
-		u.v = *x;
+		v8_uint64_t u = *x;
 
-		u.i[0] |= u.i[1];
-		u.i[2] |= u.i[3];
-		u.i[4] |= u.i[5];
-		u.i[6] |= u.i[7];
+		u[0] |= u[1];
+		u[2] |= u[3];
+		u[4] |= u[5];
+		u[6] |= u[7];
 
-		u.i[0] |= u.i[4];
-		u.i[2] |= u.i[6];
+		u[0] |= u[4];
+		u[2] |= u[6];
 		
-		u.i[0] |= u.i[2];
+		u[0] |= u[2];
 		
-		return u.i[0] != 0;
+		return u[0] != 0;
 	}
 
 	bool are_all_bits_set(const v8_uint64_t*x){
-		union_v8_uint64_t u;
-		u.v = *x;
+		v8_uint64_t u = *x;
 
-		u.i[0] &= u.i[1];
-		u.i[2] &= u.i[3];
-		u.i[4] &= u.i[5];
-		u.i[6] &= u.i[7];
+		u[0] &= u[1];
+		u[2] &= u[3];
+		u[4] &= u[5];
+		u[6] &= u[7];
 
-		u.i[0] &= u.i[4];
-		u.i[2] &= u.i[6];
+		u[0] &= u[4];
+		u[2] &= u[6];
 		
-		u.i[0] &= u.i[2];
+		u[0] &= u[2];
 		
-		return u.i[0] == ~0ull;
+		return u[0] == ~0ull;
 	}
 
 	bool are_all_padding_bits_zero(const BitVector&v){
@@ -135,8 +175,11 @@ BitVector::BitVector(uint64_t size, bool init_value)
 
 		v8_uint64_t init_vec;
 		init_vec ^= init_vec;
+		assert(init_vec[0] == 0ull);
 		if(init_value)
 			init_vec = ~init_vec;
+		assert(!init_value || init_vec[0] == ~0ull);
+		assert(init_value || init_vec[0] == 0ull);
 			
 		for(
 			v8_uint64_t*i = (v8_uint64_t*)data_; 
@@ -366,7 +409,8 @@ bool BitVector::are_all_set()const{
 	if(__builtin_expect(size_ == 0, false))
 		return true;
 
-	v8_uint64_t x = {};
+	v8_uint64_t x;
+	x ^= x;
 	x = ~x;
 
 	uint64_t n = get_v8_uint64_count(size_);
@@ -384,8 +428,9 @@ bool BitVector::is_any_set()const{
 	if(__builtin_expect(size_ == 0, false))
 		return false;
 
-	v8_uint64_t x = {};
-
+	v8_uint64_t x;
+	x ^= x;
+	
 	for(v8_uint64_t*i = (v8_uint64_t*)data_; i<((v8_uint64_t*)data_)+get_v8_uint64_count(size_); ++i)
 		x |= *i;
 

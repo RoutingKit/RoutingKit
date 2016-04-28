@@ -4,7 +4,7 @@
 #include <routingkit/constants.h>
 #include <routingkit/min_max.h>
 #include <vector>
-#include <cassert>
+#include <assert.h>
 
 namespace RoutingKit{
 

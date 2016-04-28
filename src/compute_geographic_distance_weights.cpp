@@ -9,7 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-#include <cmath>
+#include <math.h>
 
 using namespace RoutingKit;
 using namespace std;

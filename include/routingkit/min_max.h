@@ -2,7 +2,7 @@
 #define ROUTING_KIT_MIN_MAX_H
 
 #include <vector>
-#include <cassert>
+#include <assert.h>
 
 namespace RoutingKit{
 

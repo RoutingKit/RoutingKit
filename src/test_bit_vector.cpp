@@ -289,6 +289,7 @@ int main(int argc, char*argv[]){
 	{
 		BitVector x(7777, true);
 		
+		EXPECT(x.is_set(0));
 		EXPECT(x.is_any_set());
 		EXPECT(x.are_all_set());
 	}

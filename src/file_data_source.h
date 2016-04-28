@@ -4,13 +4,17 @@
 #include <functional>
 #include <string>
 
+#ifdef ROUTING_KIT_NO_POSIX
+#include <stdio.h>
+#endif
+
 namespace RoutingKit{
 
 class FileDataSource{
 public:
-	FileDataSource():file_descriptor(-1){ }
-	FileDataSource(const char*file_name):file_descriptor(-1){ open(file_name); }
-	FileDataSource(const std::string&file_name):file_descriptor(-1){ open(file_name); }
+	FileDataSource();
+	FileDataSource(const char*file_name);
+	FileDataSource(const std::string&file_name);
 	
 	unsigned long long size()const;
 
@@ -24,16 +28,8 @@ public:
 	FileDataSource(const FileDataSource&) = delete;
 	const FileDataSource&operator=(const FileDataSource&) = delete;
 
-	FileDataSource(FileDataSource&&o):
-		file_descriptor(o.file_descriptor){ 
-		o.file_descriptor = -1; 
-	}
-
-	const FileDataSource&operator=(FileDataSource&&o){ 
-		file_descriptor = o.file_descriptor; 
-		o.file_descriptor = -1; 
-		return *this; 
-	}
+	FileDataSource(FileDataSource&&o);
+	const FileDataSource&operator=(FileDataSource&&o);
 
 	unsigned long long minimum_read_size() const {
 		return 1;
@@ -45,7 +41,11 @@ public:
 
 	~FileDataSource(){ close(); }
 private:
+	#ifndef ROUTING_KIT_NO_POSIX
 	int file_descriptor;
+	#else
+	FILE*file_descriptor;
+	#endif
 };
 
 } // RoutingKit

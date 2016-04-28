@@ -1,5 +1,7 @@
 #include "bit_select.h"
+#include "emulate_gcc_builtin.h"
 #include <assert.h>
+
 
 namespace RoutingKit{
 
