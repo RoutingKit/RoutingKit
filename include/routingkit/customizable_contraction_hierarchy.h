@@ -15,6 +15,8 @@ namespace RoutingKit{
 struct ContractionHierarchy;
 
 struct CustomizableContractionHierarchy{
+	CustomizableContractionHierarchy(){}
+
 	CustomizableContractionHierarchy(std::vector<unsigned>order, std::vector<unsigned>tail, std::vector<unsigned>head, std::function<void(const std::string&)>log_message = [](const std::string&){}, bool filter_always_inf_arcs = false);
 
 	unsigned node_count()const{
