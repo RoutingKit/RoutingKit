@@ -875,6 +875,15 @@ CustomizableContractionHierarchyMetric::CustomizableContractionHierarchyMetric(c
 	forward(cch.cch_arc_count()), backward(cch.cch_arc_count()), cch(&cch), input_weight(input_weight){
 }
 
+CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight){
+	reset(cch, &input_weight[0]); 
+	return *this;
+}
+
+CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const std::vector<unsigned>&input_weight){
+	reset(&input_weight[0]); 
+	return *this; 
+}
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch_, const unsigned*input_weight_){
 	if(cch && cch->cch_arc_count() != forward.size()){

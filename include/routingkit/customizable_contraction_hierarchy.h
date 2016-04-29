@@ -70,10 +70,10 @@ struct CustomizableContractionHierarchyMetric{
 	CustomizableContractionHierarchyMetric(const CustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight);
 
 	CustomizableContractionHierarchyMetric& reset(const CustomizableContractionHierarchy&cch, const unsigned*input_weight);
-	CustomizableContractionHierarchyMetric& reset(const CustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight){reset(cch, &input_weight[0]); return *this; }
+	CustomizableContractionHierarchyMetric& reset(const CustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight);
 
 	CustomizableContractionHierarchyMetric& reset(const unsigned*input_weight);
-	CustomizableContractionHierarchyMetric& reset(const std::vector<unsigned>&input_weight){reset(&input_weight[0]); return *this; }
+	CustomizableContractionHierarchyMetric& reset(const std::vector<unsigned>&input_weight);
 
 	CustomizableContractionHierarchyMetric& customize();
 
