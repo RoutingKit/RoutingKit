@@ -14,27 +14,27 @@ namespace RoutingKit{
 
 void assert_fragment_is_valid(const GraphFragment&fragment){
 	#ifndef NDEBUG
-	unsigned node_count = fragment.node_count();
-	unsigned arc_count = fragment.arc_count();
+//	unsigned node_count = fragment.node_count();
+//	unsigned arc_count = fragment.arc_count();
 
-	assert(fragment.tail.size() == arc_count);
-	assert(fragment.head.size() == arc_count);
-	assert(fragment.back_arc.size() == arc_count);
-	assert(fragment.global_node_id.size() == node_count);
+//	assert(fragment.tail.size() == arc_count);
+//	assert(fragment.head.size() == arc_count);
+//	assert(fragment.back_arc.size() == arc_count);
+//	assert(fragment.global_node_id.size() == node_count);
 
-	if(arc_count != 0){
-		assert(max_element_of(fragment.tail) < node_count);
-		assert(max_element_of(fragment.head) < node_count);
-	}
+//	if(arc_count != 0){
+//		assert(max_element_of(fragment.tail) < node_count);
+//		assert(max_element_of(fragment.head) < node_count);
+//	}
 
-	assert(invert_inverse_vector(fragment.first_out) == fragment.tail);
+//	assert(invert_inverse_vector(fragment.first_out) == fragment.tail);
 
-	for(unsigned a=0; a<arc_count; ++a){
-		assert(fragment.back_arc[a] < arc_count);
-		assert(fragment.back_arc[fragment.back_arc[a]] == a);
-		assert(fragment.tail[a] == fragment.head[fragment.back_arc[a]]);
-		assert(fragment.head[a] == fragment.tail[fragment.back_arc[a]]);
-	}
+//	for(unsigned a=0; a<arc_count; ++a){
+//		assert(fragment.back_arc[a] < arc_count);
+//		assert(fragment.back_arc[fragment.back_arc[a]] == a);
+//		assert(fragment.tail[a] == fragment.head[fragment.back_arc[a]]);
+//		assert(fragment.head[a] == fragment.tail[fragment.back_arc[a]]);
+//	}
 	#endif
 }
 
@@ -694,7 +694,7 @@ std::vector<GraphFragment>decompose_graph_fragment_into_connected_components(Gra
 		
 		part.global_node_id = std::vector<unsigned>(fragment.global_node_id.begin()+component_node_begin, fragment.global_node_id.begin()+component_node_end);
 
-		part.first_out = invert_vector(part.tail, node_count);
+		part.first_out = invert_vector(part.tail, part_node_count);
 
 		assert_fragment_is_valid(part);
 
@@ -746,12 +746,6 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 	assert_fragment_is_valid(fragment);
 
 	long long timer = 0;
-	long long time_spent_in_separator = 0;
-
-	if(log_message){
-		log_message("Start computing nested dissection");
-		timer = -get_micro_time();
-	}
 
 	std::vector<unsigned>order(fragment.node_count());
 	
@@ -760,18 +754,34 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 	}else{
 
 		unsigned order_begin = 0, order_end = fragment.node_count();
+
+		if(log_message){
+			timer = -get_micro_time();
+			log_message("Start decomposing top-level graph");
+		}
 		auto part_list = decompose_graph_fragment_into_connected_components(std::move(fragment));
 		fragment = GraphFragment(); // release memory
+		if(log_message){
+			timer += get_micro_time();
+			log_message("Finished decomposing top-level graph, needed "+std::to_string(timer)+"musec and found "+std::to_string(part_list.size())+" connected components");
+		}
 
 		for(auto&part:part_list){
 			assert(part.node_count() != 0);
 			if(part.node_count() == 1){
 				order[--order_end] = part.global_node_id[0];
 			}else{
-				time_spent_in_separator -= get_micro_time();
+				if(log_message && part.node_count() > 1000){
+					log_message("Computing order for top level component with "+std::to_string(part.node_count())+" nodes");
+					timer = -get_micro_time();
+					log_message("Start computing top level separator");
+				}
 				auto is_separator_node = compute_separator(part);
-				time_spent_in_separator += get_micro_time();
-			
+				if(log_message && part.node_count() > 1000){
+					timer += get_micro_time();
+					log_message("Finished computing top level separator, its size is "+std::to_string(is_separator_node.population_count())+" nodes needed "+std::to_string(timer)+"musec");
+				}
+
 				BitVector f = make_bit_vector(
 					part.arc_count(), 
 					[&](unsigned a){
@@ -794,17 +804,22 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 				assert_fragment_is_valid(part);
 
 
+				if(log_message && part.node_count() > 1000){
+					timer = -get_micro_time();
+					log_message("Start computing remaining nested dissection order using recursion");
+				}
 				auto sub_order = compute_nested_node_dissection_order(part, compute_separator);
+				if(log_message && part.node_count() > 1000){
+					timer += get_micro_time();
+					log_message("Finished recursion, needed "+std::to_string(timer)+"musec");
+				}
+
 				std::copy(sub_order.begin(), sub_order.end(), order.begin() + order_begin);
 				order_begin += sub_order.size();
 			}
 		}
 	}
 
-	if(log_message){
-		timer += get_micro_time();
-		log_message("Finished computing nested dissection, needed "+std::to_string(timer)+"musec of which "+std::to_string(time_spent_in_separator)+"musec were spent computing separators.");
-	}
 	return order; // NVRO
 }
 
@@ -813,8 +828,18 @@ std::vector<unsigned>compute_nested_node_dissection_order_using_inertial_flow(
 	const std::vector<float>&latitude, const std::vector<float>&longitude,
 	const std::function<void(const std::string&)>&log_message
 ){
+	long long timer = 0;
+
+	if(log_message){
+		timer = -get_micro_time();
+		log_message("Start making graph fragment");
+	}
 	auto g = make_graph_fragment(node_count, tail, head);
-	
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished making graph fragment, needed "+std::to_string(timer)+"musec");
+	}
+
 	auto compute_cut = [&](const GraphFragment&fragment)->BitVector{
 		auto c = inertial_flow(fragment, latitude, longitude, log_message);
 		pick_smaller_side(c);
