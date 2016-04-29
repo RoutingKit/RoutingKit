@@ -876,17 +876,20 @@ CustomizableContractionHierarchyMetric::CustomizableContractionHierarchyMetric(c
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight){
+	assert(input_weight.size() == cch.input_arc_count() && "Input weight vector has the wrong size");
 	reset(cch, &input_weight[0]); 
 	return *this;
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const std::vector<unsigned>&input_weight){
+	assert(cch && "Need to be attached to a CCH");
+	assert(input_weight.size() == cch->input_arc_count() && "Input weight vector has the wrong size");
 	reset(&input_weight[0]); 
 	return *this; 
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch_, const unsigned*input_weight_){
-	if(cch && cch->cch_arc_count() != forward.size()){
+	if(!cch || cch->cch_arc_count() != forward.size()){
 		*this = CustomizableContractionHierarchyMetric(cch_, input_weight_);
 	}else{
 		cch = &cch_;
