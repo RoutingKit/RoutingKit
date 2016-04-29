@@ -892,6 +892,7 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::customize(){
+	assert(input_weight != nullptr && "Metric must be connected to a weight vector");
 
 	extract_initial_metric(*cch, *this);
 
@@ -1004,6 +1005,7 @@ CustomizableContractionHierarchyParallelization& CustomizableContractionHierarch
 CustomizableContractionHierarchyParallelization& CustomizableContractionHierarchyParallelization::customize(CustomizableContractionHierarchyMetric&metric, unsigned thread_count) {
 	assert(cch == metric.cch);
 	assert(thread_count != 0);
+	assert(metric.input_weight != nullptr && "Metric must be connected to a weight vector");
 
 	if(thread_count == 1){
 		metric.customize();
@@ -1062,6 +1064,7 @@ CustomizableContractionHierarchyPartialCustomization&CustomizableContractionHier
 
 CustomizableContractionHierarchyPartialCustomization&CustomizableContractionHierarchyPartialCustomization::customize(CustomizableContractionHierarchyMetric&metric){
 	assert(cch == metric.cch);
+	assert(metric.input_weight != nullptr && "Metric must be connected to a weight vector");
 
 	while(!q.empty()){
 		unsigned xy = q.pop();
