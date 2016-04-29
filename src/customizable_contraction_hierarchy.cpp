@@ -877,7 +877,7 @@ CustomizableContractionHierarchyMetric::CustomizableContractionHierarchyMetric(c
 
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch_, const unsigned*input_weight_){
-	if(cch->cch_arc_count() != forward.size()){
+	if(cch && cch->cch_arc_count() != forward.size()){
 		*this = CustomizableContractionHierarchyMetric(cch_, input_weight_);
 	}else{
 		cch = &cch_;
