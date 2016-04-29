@@ -17,9 +17,6 @@
 #include <stdexcept>
 #include <omp.h>
 
-#include <iostream>
-using namespace std;
-
 namespace RoutingKit{
 
 namespace{
@@ -346,7 +343,6 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 
 	long long timer = 0;
 
-assert(log_message);
 	if(log_message){
 		log_message("Building CCH");
 		log_message("Input graph has "+std::to_string(node_count) + " nodes and "+std::to_string(input_arc_count)+" arcs");
@@ -908,8 +904,9 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 
 	extract_initial_metric(*cch, *this);
 
-	for(unsigned a=0; a<cch->cch_arc_count(); ++a)
+	for(unsigned a=0; a<cch->cch_arc_count(); ++a){
 		forall_upper_triangles_of_arc(*cch, a, LowerTriangleRelaxer(*this));
+	}
 	
 	#ifndef NDEBUG
 	for(unsigned a=0; a<cch->cch_arc_count(); ++a)
@@ -1588,7 +1585,7 @@ namespace{
 
 				if(cch.does_cch_arc_have_extra_input_arc.is_set(cch_arc)){
 					unsigned j = cch.does_cch_arc_have_extra_input_arc_mapper.to_local(cch_arc);
-					for(unsigned k = cch.first_extra_forward_input_arc_of_cch[j]; k < cch.first_extra_forward_input_arc_of_cch[j+1]; ++j){
+					for(unsigned k = cch.first_extra_forward_input_arc_of_cch[j]; k < cch.first_extra_forward_input_arc_of_cch[j+1]; ++k){
 						unsigned original_arc = cch.extra_forward_input_arc_of_cch[k];
 						if(metric.forward[cch_arc] == metric.input_weight[original_arc])
 							return original_arc;
@@ -1611,7 +1608,7 @@ namespace{
 					return original_arc;
 				if(cch.does_cch_arc_have_extra_input_arc.is_set(cch_arc)){
 					unsigned j = cch.does_cch_arc_have_extra_input_arc_mapper.to_local(cch_arc);
-					for(unsigned k = cch.first_extra_backward_input_arc_of_cch[j]; k < cch.first_extra_backward_input_arc_of_cch[j+1]; ++j){
+					for(unsigned k = cch.first_extra_backward_input_arc_of_cch[j]; k < cch.first_extra_backward_input_arc_of_cch[j+1]; ++k){
 						unsigned original_arc = cch.extra_backward_input_arc_of_cch[k];
 						if(metric.backward[cch_arc] == metric.input_weight[original_arc])
 							return original_arc;
