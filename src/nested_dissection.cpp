@@ -562,13 +562,13 @@ CutSide inertial_flow(
 
 			if(log_message){
 				long long now = get_micro_time();
-				if(last_report - now > 1000000){
+				if(now - last_report > 1000000){
 					if(first_report){
 						first_report = false;	
 						log_message("Start running Inertial Flow with imbalance "+std::to_string(min_balance)+"% on graph with "+std::to_string(g.node_count()) +" nodes and "+std::to_string(g.arc_count())+" arcs.");
 					}
 					last_report = now;
-					log_message("Smallest cutter is has reached a cut of "+std::to_string(c.get_current_flow_intensity())+" arcs.");
+					log_message("Smallest cutter has reached a cut of "+std::to_string(c.get_current_flow_intensity())+" arcs.");
 				}
 			}
 
@@ -577,7 +577,7 @@ CutSide inertial_flow(
 			auto cut = c.get_balanced_cut();
 			if(log_message){
 				if(!first_report){
-					log_message("Inertial Flow is finished and needed "+std::to_string(start_time-get_micro_time())+"musec. The cut has "+std::to_string(cut.cut_size)+" arcs and the smaller side has "+std::to_string(cut.node_on_side_count)+" nodes.");
+					log_message("Inertial Flow is finished and needed "+std::to_string(get_micro_time()-start_time)+"musec. The cut has "+std::to_string(cut.cut_size)+" arcs and the smaller side has "+std::to_string(cut.node_on_side_count)+" nodes.");
 				}
 			}
 			return cut; // NRVO
