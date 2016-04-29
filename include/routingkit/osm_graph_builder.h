@@ -38,6 +38,14 @@ struct OSMRoutingGraph{
 	std::vector<uint32_t>geo_distance;
 	std::vector<float>latitude;
 	std::vector<float>longitude;
+
+	unsigned node_count()const{
+		return first_out.size()-1;
+	}
+
+	unsigned arc_count()const{
+		return head.size();
+	}
 };
 
 OSMRoutingGraph load_osm_routing_graph_from_pbf(
