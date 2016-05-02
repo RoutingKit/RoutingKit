@@ -102,12 +102,21 @@ public:
 		return entry.size();
 	}
 
-private:
-	std::vector<unsigned>hash_element_list;
 	struct Entry{
 		const char*key;
 		const char*value;
 	};
+
+	std::vector<Entry>::const_iterator begin()const{
+		return entry.begin();
+	}
+
+	std::vector<Entry>::const_iterator end()const{
+		return entry.end();
+	}
+
+private:
+	std::vector<unsigned>hash_element_list;
 	std::vector<Entry>entry;
 	std::vector<unsigned>entry_begin, entry_end;
 };
