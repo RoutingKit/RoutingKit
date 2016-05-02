@@ -207,33 +207,56 @@ namespace {
 						double lon = 0;
 						double lat = 0;
 
-						int key_value_pos = 0;
 
-						for(int i = 0; i < dn.delta_coded_osm_node_id_size(); ++i) {
-							id += dn.delta_coded_osm_node_id(i);
+						if(dn.key_value_pairs_size() == 0){
+							tag_map.clear();
+							for(int i = 0; i < dn.delta_coded_osm_node_id_size(); ++i) {
+								id += dn.delta_coded_osm_node_id(i);
 
-							lon +=  primblock_lon_offset + primblock_granularity * dn.delta_coded_longitude(i);
-							lat +=  primblock_lat_offset + primblock_granularity * dn.delta_coded_latitude(i);
+								lon +=  primblock_lon_offset + primblock_granularity * dn.delta_coded_longitude(i);
+								lat +=  primblock_lat_offset + primblock_granularity * dn.delta_coded_latitude(i);
 
-							
-							unsigned base_offset = key_value_pos;
-							unsigned pair_count = 0;
-
-							if(dn.key_value_pairs_size()%2 != 0)
-								throw std::runtime_error("PBF error: dense node must have an even number of key value pair elements");
-
-							while (key_value_pos < dn.key_value_pairs_size() && dn.key_value_pairs(key_value_pos) != 0){
-								++pair_count;
-								key_value_pos += 2;
+								node_callback(id, lat, lon, tag_map);
 							}
+						}else{
+							int key_value_pos = 0;
+							
+							for(int i=0; i<dn.key_value_pairs_size(); ++i)
+								if(dn.key_value_pairs(i) > primblock.string_list().string_list_size())
+									throw std::runtime_error("PBF error: key-value array contains invalid id");
 
-							tag_map.build(
-								pair_count, 
-								[&](unsigned i){ return primblock.string_list().string_list(base_offset + pair_count*2).c_str(); },
-								[&](unsigned i){ return primblock.string_list().string_list(base_offset + pair_count*2 + 1).c_str(); }
-							);
+							for(int i = 0; i < dn.delta_coded_osm_node_id_size(); ++i) {
+								id += dn.delta_coded_osm_node_id(i);
 
-							node_callback(id, lat, lon, tag_map);
+								lon +=  primblock_lon_offset + primblock_granularity * dn.delta_coded_longitude(i);
+								lat +=  primblock_lat_offset + primblock_granularity * dn.delta_coded_latitude(i);
+							
+								unsigned base_offset = key_value_pos;
+								unsigned pair_count = 0;
+
+								if(key_value_pos > dn.key_value_pairs_size())
+									throw std::runtime_error("PBF error: key-value array is not terminated by 0 for node "+std::to_string(id));
+
+								while(dn.key_value_pairs(key_value_pos) != 0){
+									key_value_pos += 2;
+									++pair_count;
+									if(key_value_pos > dn.key_value_pairs_size())
+										throw std::runtime_error("PBF error: key-value array is not terminated by 0 for node "+std::to_string(id));
+								}
+								++key_value_pos;
+
+								tag_map.build(
+									pair_count, 
+									[&](unsigned i){ 
+										return primblock.string_list().string_list(dn.key_value_pairs(base_offset + i*2)).c_str(); 
+									},
+									[&](unsigned i){ 
+										return primblock.string_list().string_list(dn.key_value_pairs(base_offset + i*2 + 1)).c_str(); 
+									}
+								);
+
+								node_callback(id, lat, lon, tag_map);
+							}
 						}
 					}
 				}
