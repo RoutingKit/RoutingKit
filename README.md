@@ -65,11 +65,16 @@ You can get OSM PBF exports from various sources. A popular one is [Geofabrik](h
 
 ## Publications
 
+Please cite the following article if you use our code in a publication:
+
 * Customizable Contraction Hierarchies.
   Julian Dibbelt, Ben Strasser, and Dorothea Wagner.
   ACM Journal of Experimental Algorithmics, 2016.
+
+The original CH algorithm was introduced in:
+
 * Exact Routing in Large Road Networks Using Contraction Hierarchies.
   Robert Geisberger, Peter Sanders, Dominik Schultes, and Christian Vetter.
   Transportation Science, 2012.
 
-Please cite the first article if you use our code in a publication.
+
