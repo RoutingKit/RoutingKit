@@ -43,7 +43,7 @@ std::vector<unsigned>node_order = compute_nested_node_dissection_order_using_ine
 CustomizableContractionHierarchy cch(node_order, tail, head);
 ```
 
-The ordering function has a final optimal parameter that is a logging callback. Note, that using a CH order in a CCH generally does not work well, whereas CCH orders can be used in a CH.
+The ordering function has a final optional parameter that is a logging callback. Note, that using a CH order in a CCH generally does not work well, whereas CCH orders can be used in a CH.
 
 ## Customization
 
