@@ -6,6 +6,7 @@
 #include <vector>
 #include <assert.h>
 #include <algorithm>
+#include <functional>
 
 namespace RoutingKit{
 
