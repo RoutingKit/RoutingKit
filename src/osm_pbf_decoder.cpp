@@ -3,6 +3,7 @@
 #include "osm_pbf_decoder.h"
 #include "buffered_asynchronous_reader.h"
 #include "file_data_source.h"
+#include "protobuf.h"
 
 #include <zlib.h>
 #include <stdexcept>
@@ -25,10 +26,10 @@ namespace{
 	const uint64_t was_blob_read_bit = 4;
 	const uint64_t was_header_read_bit = 8;
 
-	class OSM_PBF_FORMATDecompresser{
+	class OsmPBFDecompressor{
 	public:
-		OSM_PBF_FORMATDecompresser():status(0){}
-		OSM_PBF_FORMATDecompresser(std::function<unsigned long long(char*, unsigned long long)> data_source):
+		OsmPBFDecompressor():status(0){}
+		OsmPBFDecompressor(std::function<unsigned long long(char*, unsigned long long)> data_source):
 			status(0),
 			reader(data_source, 64<<20){
 		}
@@ -343,7 +344,7 @@ void unordered_read_osm_pbf(
 	assert(node_callback || way_callback || relation_callback);
 
 	FileDataSource data_source(file_name);
-	OSM_PBF_FORMATDecompresser decompressor(data_source.get_read_function_object());
+	OsmPBFDecompressor decompressor(data_source.get_read_function_object());
 	BufferedAsynchronousReader reader(decompressor.get_read_function_object(), decompressor.minimum_read_size());
 	internal_read_osm_pbf(reader, node_callback, way_callback, relation_callback, log_message);
 }
@@ -359,7 +360,7 @@ void ordered_read_osm_pbf(
 	assert(node_callback || way_callback || relation_callback);
 
 	FileDataSource data_source(file_name);
-	OSM_PBF_FORMATDecompresser decompressor(data_source.get_read_function_object());
+	OsmPBFDecompressor decompressor(data_source.get_read_function_object());
 	BufferedAsynchronousReader reader(decompressor);
 
 	if(!file_is_ordered_even_though_file_header_says_that_it_is_unordered){
@@ -376,9 +377,9 @@ void ordered_read_osm_pbf(
 			internal_read_osm_pbf(reader, node_callback, nullptr, nullptr, log_message);
 			if(relation_callback || way_callback){
 				reader = BufferedAsynchronousReader();
-				decompressor = OSM_PBF_FORMATDecompresser();
+				decompressor = OsmPBFDecompressor();
 				data_source.rewind();
-				decompressor = OSM_PBF_FORMATDecompresser(data_source.get_read_function_object());
+				decompressor = OsmPBFDecompressor(data_source.get_read_function_object());
 				reader = BufferedAsynchronousReader(decompressor);
 			}
 		}
@@ -387,9 +388,9 @@ void ordered_read_osm_pbf(
 			internal_read_osm_pbf(reader, nullptr, way_callback, nullptr, log_message);
 			if(relation_callback){
 				reader = BufferedAsynchronousReader();
-				decompressor = OSM_PBF_FORMATDecompresser();
+				decompressor = OsmPBFDecompressor();
 				data_source.rewind();
-				decompressor = OSM_PBF_FORMATDecompresser(data_source.get_read_function_object());
+				decompressor = OsmPBFDecompressor(data_source.get_read_function_object());
 				reader = BufferedAsynchronousReader(decompressor);
 			}
 		}
