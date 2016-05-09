@@ -1,4 +1,4 @@
-// This file contains essentially the same information as the orginal fileformat.proto and osmformat.proto however it is a rewrite to get rid of the LGPL requirements associcated with it.
+// This file contains essentially the same information as the orginal fileformat.proto and osmformat.proto however it is a rewrite to get rid of the LGPL requirements associated with it.
 
 option optimize_for = LITE_RUNTIME;
 
