@@ -116,7 +116,7 @@ In some applications you know that a customization will be followed by a large n
 ```cpp
 std::vector<unsigned>weight = ...;
 CustomizableContractionHierarchyMetric metric(cch, weight);
-ContractionHierarchyMetric ch = metric.build_contraction_hierarchy_using_perfect_witness_search();
+ContractionHierarchy ch = metric.build_contraction_hierarchy_using_perfect_witness_search();
 ```
 
 This computes a CH with the same node order as the CCH and is significantly faster than `ContractionHierarchy::build`. However, this approach only works for orders for which you can build a CCH in a reasonable amount of time. These are a subset of the orders for which good CHs can be constructed. Unfortunately, the best CH orders tend to not yield good CCHs. The end result is that for the best CH query running times you need `ContractionHierarchy::build`.
