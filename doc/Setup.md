@@ -4,10 +4,10 @@
 
 RoutingKit was written for and tested on Linux with GCC 4.8. The code base uses some GCC extensions that should also be available in most other compilers such as Clang, IBM, or Intel. A notable exception to this list is VC. We further use POSIX functions. However, we also provide slower fallback functions. These are enabled by defining `ROUTING_KIT_NO_GCC_EXTENSIONS` and `ROUTING_KIT_NO_POSIX`.
 
-RoutingKit has two dependencies on two external libraries: zlib and Google-Protocol-Buffers are needed. Under Debian and derived distributions (such as Ubuntu) you can install them using:
+RoutingKit has requires zlib to work. Under Debian and derived distributions (such as Ubuntu) you can install them using:
 
 ```bash
-sudo apt-get install libprotobuf-dev zlib1g-dev
+sudo apt-get install zlib1g-dev
 ```
 
 ## Compilation
@@ -40,5 +40,5 @@ Instead of using `-I` and `-L` and `LD_LIBRARY_PATH` you can of course copy the 
 To use the static library you must first remove the `libroutingkit.so` file. Once that is done you can compile the file as following:
 
 ```bash
-g++ -I~/RoutingKit/include -L~/RoutingKit/lib -std=c++11 ~/main.cpp -o ~/main -lroutingkit -lprotobuf -lz -fopenmp -pthread -lm
+g++ -I~/RoutingKit/include -L~/RoutingKit/lib -std=c++11 ~/main.cpp -o ~/main -lroutingkit -lz -fopenmp -pthread -lm
 ```
