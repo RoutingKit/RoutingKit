@@ -422,11 +422,12 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 		inplace_keep_element_of_vector_if(filter, symmetric_tail);
 		inplace_keep_element_of_vector_if(filter, symmetric_head);
 
-		compute_chordal_supergraph(
+		unsigned upper_treewidth_bound = compute_chordal_supergraph(
 			node_count, symmetric_tail, symmetric_head, 
 			[&](unsigned x, unsigned y){
 				if(up_tail.size() == invalid_id){
-					log_message("CCH Construction aborted because chordal supergraph contains 2^32 or more arcs");
+					if(log_message)
+						log_message("CCH Construction aborted because chordal supergraph contains 2^32 or more arcs");
 					throw std::runtime_error("CCH must contain at most 2^32-1 arcs");
 				}
 				up_tail.push_back(x); 
