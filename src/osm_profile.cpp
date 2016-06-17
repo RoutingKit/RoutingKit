@@ -199,7 +199,7 @@ namespace{
 
 		if(str_eq(maxspeed, "ro:trunk"))
 			return 100;
-		if(str_eq(maxspeed, "dk:rural"))
+		if(str_eq(maxspeed, "dk:rural") || str_eq(maxspeed, "ch:rural"))
 			return 80;
 		if(str_eq(maxspeed, "it:rural") || str_eq(maxspeed, "hu:rural"))
 			return 90;
