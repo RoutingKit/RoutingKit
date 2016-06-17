@@ -435,6 +435,10 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 			}
 		);
 
+		if(log_message){
+			log_message("The treewidth of the input graph is bounded by "+std::to_string(upper_treewidth_bound));
+		}
+
 		up_head.shrink_to_fit();
 		up_tail.shrink_to_fit();
 
