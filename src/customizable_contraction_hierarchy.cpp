@@ -1271,6 +1271,7 @@ namespace{
 
 
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::add_source(unsigned external_s, unsigned dist_to_s){
+	assert(external_s < cch->node_count());
 	assert(state == query_state_initialized || state == query_state_target_pinned);
 	internal_add_source(
 		external_s, dist_to_s,
@@ -1286,6 +1287,7 @@ CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::ad
 }
 	
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::add_target(unsigned external_t, unsigned dist_to_t){
+	assert(external_t < cch->node_count());
 	assert(state == query_state_initialized || state == query_state_source_pinned);
 	internal_add_source(
 		external_t, dist_to_t,
