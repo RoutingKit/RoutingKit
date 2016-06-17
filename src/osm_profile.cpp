@@ -186,7 +186,7 @@ namespace{
 
 		if(str_eq(maxspeed, "de:rural") || str_eq(maxspeed, "at:rural") || str_eq(maxspeed, "ro:rural") || str_eq(maxspeed, "rural"))
 			return 100;
-		if(str_eq(maxspeed, "ru:rural") || str_eq(maxspeed, "fr:rural"))
+		if(str_eq(maxspeed, "ru:rural") || str_eq(maxspeed, "fr:rural") || str_eq(maxspeed, "ua:rural"))
 			return 90;
 
 		if(str_eq(maxspeed, "ru:motorway"))
