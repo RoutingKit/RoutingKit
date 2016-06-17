@@ -247,6 +247,11 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 			}
 		);
 
+		if(speed == 0){
+			speed = 1;
+			log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has speed 0 km/h, setting it to 1 km/h");
+		}
+
 		if(speed != inf_weight)
 			return speed;
 
