@@ -203,6 +203,8 @@ namespace{
 			return 80;
 		if(str_eq(maxspeed, "it:rural") || str_eq(maxspeed, "hu:rural"))
 			return 90;
+		if(str_eq(maxspeed, "de:zone:30"))
+			return 30;
 		
 
 		if('0' <= *maxspeed && *maxspeed <= '9'){
