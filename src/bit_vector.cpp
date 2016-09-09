@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <algorithm>
+#include <new>
 
 namespace RoutingKit{
 
@@ -157,6 +158,8 @@ BitVector::BitVector(uint64_t size, BitVector::Uninitialized)
 {
 	if(__builtin_expect(size != 0, true)){
 		data_ = (uint64_t*)(aligned_alloc(64, get_uint8_count(size)));
+		if(data_ == nullptr)
+			throw std::bad_alloc();
 		size_ = size;
 		reset_all_padding_bits();
 	}else{
@@ -171,6 +174,8 @@ BitVector::BitVector(uint64_t size, bool init_value)
 {
 	if(__builtin_expect(size != 0, true)){
 		data_ = (uint64_t*)(aligned_alloc(64, get_uint8_count(size)));
+		if(data_ == nullptr)
+			throw std::bad_alloc();
 		size_ = size;
 
 		v8_uint64_t init_vec;
@@ -204,6 +209,8 @@ BitVector::~BitVector(){
 
 BitVector::BitVector(const BitVector&o):
 	data_(static_cast<uint64_t*>(aligned_alloc(64, get_uint8_count(o.size_)))), size_(o.size_){
+	if(data_ == nullptr)
+		throw std::bad_alloc();
 
 	assert(are_all_padding_bits_zero(o));
 
