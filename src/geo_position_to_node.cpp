@@ -110,12 +110,57 @@ namespace{
 			
 		}
 	}
+
+    void nearest_neighbors_recursion(
+        const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id,
+        unsigned begin, unsigned end,
+        GeoPositionToNode::PointPosition query_position,
+        float query_radius,
+        std::vector<unsigned> &neighbors
+    ){
+        if(end - begin <= max_points_per_leaf){
+            for(unsigned i=begin; i<end; ++i){
+                auto distance = compute_distance(query_position, point_position[i]);
+                if(distance <= query_radius) {
+                    neighbors.push_back(point_id[i]);
+                }
+            }
+        }else{
+            auto recurse = [&](unsigned new_begin, unsigned new_end){
+                nearest_neighbors_recursion(point_position, point_id, new_begin, new_end, query_position, query_radius, neighbors);
+            };
+
+            auto pivot_position = point_position[begin];
+
+            unsigned mid = begin + (end - begin)/2;
+            auto pivot_query_distance = compute_distance(pivot_position, query_position);
+            auto pivot_boundary_distance = compute_distance(pivot_position, point_position[mid]);
+
+            if(pivot_query_distance >= pivot_boundary_distance){
+                recurse(mid, end);
+                if(pivot_query_distance - query_radius <= pivot_boundary_distance)
+                    recurse(begin, mid);
+            }else{
+                recurse(begin, mid);
+                if(pivot_query_distance + query_radius >= pivot_boundary_distance)
+                    recurse(mid, end);
+            }
+
+        }
+    }
+
 }
 
 GeoPositionToNode::NearestNeighborhoodQueryResult GeoPositionToNode::find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const{
 	NearestNeighborhoodQueryResult result = {invalid_id, query_radius};
 	nearest_neighbor_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, result);
 	return result;
+}
+
+std::vector<unsigned> GeoPositionToNode::find_nearest_neighbors_within_radius(float query_latitude, float query_longitude, float query_radius)const{
+    std::vector<unsigned> neighbors;
+    nearest_neighbors_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, query_radius, neighbors);
+    return neighbors;
 }
 
 } // RoutingKit

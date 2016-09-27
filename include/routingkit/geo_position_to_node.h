@@ -24,6 +24,7 @@ public:
 	};
 
 	NearestNeighborhoodQueryResult find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const;
+    std::vector<unsigned> find_nearest_neighbors_within_radius(float query_latitude, float query_longitude, float query_radius)const;
 
 
 // private:
