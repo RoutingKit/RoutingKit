@@ -23,8 +23,9 @@ public:
 		
 	};
 
+	// query_radius is in meter
 	NearestNeighborhoodQueryResult find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const;
-
+	std::vector<GeoPositionToNode::NearestNeighborhoodQueryResult>find_all_nodes_within_radius(float query_latitude, float query_longitude, float query_radius)const;
 
 // private:
 	struct PointPosition{

@@ -110,12 +110,59 @@ namespace{
 			
 		}
 	}
+
+
+	void find_all_nodes_recursion(
+		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id, 
+		unsigned begin, unsigned end, 
+		GeoPositionToNode::PointPosition query_position,
+		float query_radius,
+		std::vector<GeoPositionToNode::NearestNeighborhoodQueryResult>&result
+	){
+		if(end - begin <= max_points_per_leaf){
+			for(unsigned i=begin; i<end; ++i){
+				auto distance = compute_distance(query_position, point_position[i]);
+				if(distance <= query_radius)
+					result.push_back({point_id[i], distance});
+			}
+		}else{
+			auto recurse = [&](unsigned new_begin, unsigned new_end){
+				find_all_nodes_recursion(point_position, point_id, new_begin, new_end, query_position, query_radius, result);
+			};
+
+			auto pivot_position = point_position[begin];
+
+			unsigned mid = begin + (end - begin)/2;
+			auto pivot_query_distance = compute_distance(pivot_position, query_position);
+			auto pivot_boundary_distance = compute_distance(pivot_position, point_position[mid]);
+			
+//			#ifndef NDEBUG
+//			for(unsigned i=begin; i<mid; ++i)
+//				assert(compute_distance(pivot_position, point_position[i]) <= pivot_boundary_distance);
+//			for(unsigned i=mid+1; i<end; ++i)
+//				assert(compute_distance(pivot_position, point_position[i]) >= pivot_boundary_distance);
+//			#endif
+
+			if(pivot_query_distance - pivot_boundary_distance <= query_radius)
+				recurse(begin, mid);
+			if(pivot_boundary_distance - pivot_query_distance <= query_radius)
+				recurse(mid, end);
+		}
+	}
 }
 
 GeoPositionToNode::NearestNeighborhoodQueryResult GeoPositionToNode::find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const{
+	assert(query_radius >= 0.0 && "radius must be positive");
 	NearestNeighborhoodQueryResult result = {invalid_id, query_radius};
 	nearest_neighbor_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, result);
 	return result;
+}
+
+std::vector<GeoPositionToNode::NearestNeighborhoodQueryResult> GeoPositionToNode::find_all_nodes_within_radius(float query_latitude, float query_longitude, float query_radius)const{
+	assert(query_radius >= 0.0 && "radius must be positive");
+	std::vector<NearestNeighborhoodQueryResult> result;
+	find_all_nodes_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, query_radius, result);
+	return result; // NVRO
 }
 
 } // RoutingKit
