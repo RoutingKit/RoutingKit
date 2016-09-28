@@ -100,11 +100,11 @@ namespace{
 
 			if(pivot_query_distance >= pivot_boundary_distance){
 				recurse(mid, end);
-				if(pivot_query_distance - current_result.distance <= pivot_boundary_distance)
+				if(pivot_query_distance - pivot_boundary_distance < current_result.distance)
 					recurse(begin, mid);
 			}else{
 				recurse(begin, mid);
-				if(pivot_query_distance + current_result.distance >= pivot_boundary_distance)
+				if(pivot_boundary_distance - pivot_query_distance < current_result.distance)
 					recurse(mid, end);
 			}
 			
