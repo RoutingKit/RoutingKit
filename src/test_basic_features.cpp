@@ -227,7 +227,11 @@ int main(int argc, char*argv[]){
 	{
 		CustomizableContractionHierarchy cch(cch_order, tail, head, log_message);
 		CustomizableContractionHierarchyMetric m(cch, travel_time);
+		long long customize_time = -get_micro_time();
 		m.customize();
+		customize_time += get_micro_time();
+		log_message("CCH sequential customization running time : "+to_string(customize_time));
+		
 		CustomizableContractionHierarchyQuery q(m);
 		{
 			long long cch_one_to_one_query_time = 0;
