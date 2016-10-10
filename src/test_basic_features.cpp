@@ -3,6 +3,7 @@
 #include <routingkit/osm_graph_builder.h>
 #include <routingkit/osm_profile.h>
 #include <routingkit/nested_dissection.h>
+#include <routingkit/timer.h>
 
 #include "expect.h"
 
@@ -154,12 +155,15 @@ int main(int argc, char*argv[]){
 	{
 		ContractionHierarchyQuery q(ch);
 		{
+			long long ch_one_to_one_query_time = 0;
 			for(unsigned i=0; i<test_count; ++i){
+				ch_one_to_one_query_time -= get_micro_time();
 				q
 					.reset()
 					.add_source(source1[i])
 					.add_target(target1[i])
 					.run();
+				ch_one_to_one_query_time += get_micro_time();
 				shortest_path_distance1[i] = q.get_distance();
 
 				if(q.get_distance() != inf_weight){
@@ -175,6 +179,7 @@ int main(int argc, char*argv[]){
 					EXPECT_CMP(q.get_used_target(), ==, invalid_id);
 				}
 			}
+			log_message("CH one-to-one distance query running time average over "+to_string(test_count)+" uniform random queries : "+to_string(ch_one_to_one_query_time/test_count)+"musec");
 			for(unsigned i=0; i<test_count; ++i){
 				q
 					.reset()
@@ -225,13 +230,16 @@ int main(int argc, char*argv[]){
 		m.customize();
 		CustomizableContractionHierarchyQuery q(m);
 		{
+			long long cch_one_to_one_query_time = 0;
 			for(unsigned i=0; i<test_count; ++i){
+				cch_one_to_one_query_time -= get_micro_time();
 				q
 					.reset()
 					.add_source(source1[i])
 					.add_target(target1[i])
 					.run();
-
+				cch_one_to_one_query_time += get_micro_time();
+				
 				EXPECT_CMP(shortest_path_distance1[i], ==, q.get_distance());
 				if(q.get_distance() != inf_weight){
 					EXPECT_CMP(q.get_used_source(), ==, source1[i]);
@@ -246,6 +254,7 @@ int main(int argc, char*argv[]){
 					EXPECT_CMP(q.get_used_target(), ==, invalid_id);
 				}
 			}
+			log_message("CCH one-to-one distance query running time average over "+to_string(test_count)+" uniform random queries : "+to_string(cch_one_to_one_query_time/test_count)+"musec");
 			for(unsigned i=0; i<test_count; ++i){
 				q
 					.reset()
@@ -292,13 +301,16 @@ int main(int argc, char*argv[]){
 
 		ContractionHierarchyQuery q(perfect_ch);
 		{
+			long long cch_perfect_one_to_one_query_time = 0;
 			for(unsigned i=0; i<test_count; ++i){
+				cch_perfect_one_to_one_query_time -= get_micro_time();
 				q
 					.reset()
 					.add_source(source1[i])
 					.add_target(target1[i])
 					.run();
 				EXPECT_CMP(shortest_path_distance1[i], ==, q.get_distance());
+				cch_perfect_one_to_one_query_time += get_micro_time();
 				
 				if(q.get_distance() != inf_weight){
 					EXPECT_CMP(q.get_used_source(), ==, source1[i]);
@@ -313,6 +325,7 @@ int main(int argc, char*argv[]){
 					EXPECT_CMP(q.get_used_target(), ==, invalid_id);
 				}
 			}
+			log_message("Perfectly customized CCH one-to-one distance query running time average over "+to_string(test_count)+" uniform random queries : "+to_string(cch_perfect_one_to_one_query_time/test_count)+"musec");
 			for(unsigned i=0; i<test_count; ++i){
 				q
 					.reset()
@@ -538,26 +551,40 @@ int main(int argc, char*argv[]){
 		m.customize();
 		CustomizableContractionHierarchyQuery cch_query(m);
 	
+		long long ch_pin_time = -get_micro_time();
 		ch_query
 			.reset()
 			.pin_targets(target1);
+		ch_pin_time += get_micro_time();
+
+		long long cch_pin_time = -get_micro_time();
 		cch_query
 			.reset()
 			.pin_targets(target1);
+		cch_pin_time += get_micro_time();
+
+		log_message("CH pin running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
+		log_message("CCH pin running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
+
+		long long ch_one_to_many_time = 0, cch_one_to_many_time = 0;
 		for(unsigned i=0; i<test_count; ++i){
+			ch_one_to_many_time -= get_micro_time();
 			ch_query
 				.reset_source()
 				.add_source(source1[i], source1_offset[i])
 				.add_source(source2[i], source2_offset[i])
 				.add_source(source3[i], source3_offset[i])
 				.run_to_pinned_targets();
+			ch_one_to_many_time += get_micro_time();
+			cch_one_to_many_time -= get_micro_time();
 			cch_query
 				.reset_source()
 				.add_source(source1[i], source1_offset[i])
 				.add_source(source2[i], source2_offset[i])
 				.add_source(source3[i], source3_offset[i])
 				.run_to_pinned_targets();
-
+			cch_one_to_many_time += get_micro_time();
+			
 			auto d = ch_query.get_distances_to_targets();
 			for(unsigned j=0; j<test_count; ++j){
 				EXPECT_CMP(
@@ -574,6 +601,10 @@ int main(int argc, char*argv[]){
 			EXPECT(d == cch_query.get_distances_to_targets());
 
 		}
+
+		log_message("CH 3-to-pinned target query running time averaged over "+to_string(test_count)+" runs : "+to_string(ch_one_to_many_time)+"musec");
+		log_message("CCH 3-to-pinned target query running time averaged over "+to_string(test_count)+" runs : "+to_string(cch_one_to_many_time)+"musec");
+		
 	}
 
 	{
