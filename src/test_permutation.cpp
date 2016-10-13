@@ -3,6 +3,7 @@
 #include "expect.h"
 
 #include <vector>
+#include <random>
 
 using namespace RoutingKit;
 using namespace std;
