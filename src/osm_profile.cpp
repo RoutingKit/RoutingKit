@@ -64,6 +64,73 @@ namespace{
 	}
 }
 
+bool is_osm_way_used_by_pedestrians(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
+	const char* junction = tags["junction"];
+	if(junction != nullptr)
+		return true;
+
+	const char* route = tags["route"];
+	if(route && str_eq(route, "ferry"))
+		return true;
+
+	const char* ferry = tags["ferry"];
+	if(ferry && str_eq(ferry, "ferry"))
+		return true;
+
+	const char* highway = tags["highway"];
+	if(highway == nullptr)
+		return false;
+
+	const char*access = tags["access"];
+	if(access){
+		if(!(str_eq(access, "yes") || str_eq(access, "permissive") || str_eq(access, "delivery")|| str_eq(access, "designated") || str_eq(access, "destination")))
+			return false;
+	}
+
+	if(
+		str_eq(highway, "secondary") ||
+		str_eq(highway, "tertiary") ||
+		str_eq(highway, "unclassified") ||
+		str_eq(highway, "residential") ||
+		str_eq(highway, "service") ||
+		str_eq(highway, "secondary_link") ||
+		str_eq(highway, "tertiary_link") ||
+		str_eq(highway, "living_street") ||
+		str_eq(highway, "residential") ||
+		str_eq(highway, "track") ||
+		str_eq(highway, "bicycle_road") ||
+		str_eq(highway, "path") ||
+		str_eq(highway, "footway") ||
+		str_eq(highway, "cycleway") ||
+		str_eq(highway, "bridleway") ||
+		str_eq(highway, "pedestrian") ||
+		str_eq(highway, "escape") ||
+		str_eq(highway, "steps") ||
+		str_eq(highway, "ferry")
+	)
+		return true;
+
+
+	if(
+		str_eq(highway, "motorway") ||
+		str_eq(highway, "motorway_link") ||
+		str_eq(highway, "motorway_junction") ||
+		str_eq(highway, "trunk") ||
+		str_eq(highway, "trunk_link") ||
+		str_eq(highway, "primary") ||
+		str_eq(highway, "primary_link") ||
+		str_eq(highway, "construction") ||
+		str_eq(highway, "bus_guideway") ||
+		str_eq(highway, "raceway") ||
+		str_eq(highway, "proposed") ||
+		str_eq(highway, "conveying")
+	)
+		return false;
+
+	return false;
+}
+
+
 bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
 	const char* junction = tags["junction"];
 	if(junction != nullptr)
