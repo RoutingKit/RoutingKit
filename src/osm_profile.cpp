@@ -69,6 +69,14 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 	if(junction != nullptr)
 		return true;
 
+	const char* route = tags["route"];
+	if(route && str_eq(route, "ferry"))
+		return true;
+
+	const char* ferry = tags["ferry"];
+	if(ferry && str_eq(ferry, "ferry"))
+		return true;
+
 	const char* highway = tags["highway"];
 	if(highway == nullptr)
 		return false;
@@ -120,10 +128,6 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 				return true;
 		return false;
 	}
-
-	const char* route = tags["route"];
-	if(route && str_eq(route, "ferry"))
-		return true;
 
 	if(
 		str_eq(highway, "construction") ||
@@ -313,6 +317,17 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 			return 1;
 		if(str_eq(highway, "ferry"))
 			return 5;
+	}
+
+	/* TODO: a ferry may have a duration tag */
+	auto route = tags["route"];
+	if(route && str_eq(route, "ferry")) {
+		return 5;
+	}
+
+	auto ferry = tags["ferry"];
+	if(ferry) {
+		return 5;
 	}
 
 	if(maxspeed && highway)
