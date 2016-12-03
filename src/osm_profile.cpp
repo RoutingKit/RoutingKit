@@ -73,6 +73,14 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 	if(highway == nullptr)
 		return false;
 
+	const char*motorcar = tags["motorcar"];
+	if(motorcar && str_eq(motorcar, "no"))
+		return false;
+
+	const char*motorroad = tags["motorroad"];
+	if(motorroad && str_eq(motorroad, "no"))
+		return false;
+
 	const char*motor_vehicle = tags["motor_vehicle"];
 	if(motor_vehicle && str_eq(motor_vehicle, "no"))
 		return false;
@@ -96,9 +104,11 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 		str_eq(highway, "trunk_link") ||
 		str_eq(highway, "primary_link") ||
 		str_eq(highway, "secondary_link") ||
+		str_eq(highway, "tertiary_link") ||
 		str_eq(highway, "motorway_junction") ||
 		str_eq(highway, "living_street") ||
 		str_eq(highway, "residential") ||
+		str_eq(highway, "track") ||
 		str_eq(highway, "ferry")
 	)
 		return true;
@@ -111,6 +121,10 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 		return false;
 	}
 
+	const char* route = tags["route"];
+	if(str_eq(route, "ferry"))
+		return true;
+
 	if(
 		str_eq(highway, "construction") ||
 		str_eq(highway, "path") ||
@@ -122,6 +136,7 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 		str_eq(highway, "raceway") ||
 		str_eq(highway, "escape") ||
 		str_eq(highway, "steps") ||
+		str_eq(highway, "proposed") ||
 		str_eq(highway, "conveying")
 	)
 		return false;
@@ -293,6 +308,8 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 		if(str_eq(highway, "living_street"))
 			return 10;
 		if(str_eq(highway, "service"))
+			return 1;
+		if(str_eq(highway, "track"))
 			return 1;
 		if(str_eq(highway, "ferry"))
 			return 5;
