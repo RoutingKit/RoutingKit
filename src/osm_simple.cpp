@@ -55,7 +55,7 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 	return ret;
 }
 
-SimpleOSMCarRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pbf(
+SimpleOSMPedestrianRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pbf(
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message,
 	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
@@ -81,7 +81,7 @@ SimpleOSMCarRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pbf(
 
 	mapping = OSMRoutingIDMapping(); // release memory
 
-	SimpleOSMCarRoutingGraph ret;
+	SimpleOSMPedestrianRoutingGraph ret;
 	ret.first_out = std::move(routing_graph.first_out);
 	ret.head = std::move(routing_graph.head);
 	ret.geo_distance = std::move(routing_graph.geo_distance);
