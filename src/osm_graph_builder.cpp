@@ -27,7 +27,7 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 	std::function<void(std::string)>log_message
 ){
 	OSMRoutingIDMapping map;
-	
+
 	log_message("Scanning OSM PBF data to determine IDs");
 	long long timer = -get_micro_time();
 
@@ -78,14 +78,14 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 	);
 	timer += get_micro_time();
 	log_message("Finished scan, needed "+std::to_string(timer)+"musec.");
-	
+
 	log_message("OSM ID range goes up to "+std::to_string(map.is_routing_node.size()) +" for routing nodes.");
 	log_message("OSM ID range goes up to "+std::to_string(map.is_modelling_node.size()) +" for modelling nodes.");
 	log_message("OSM ID range goes up to "+std::to_string(map.is_routing_way.size()) +" for routing ways.");
 	log_message("Found "+std::to_string(map.is_routing_node.population_count()) +" routing nodes.");
 	log_message("Found "+std::to_string(map.is_modelling_node.population_count()) +" modelling nodes.");
 	log_message("Found "+std::to_string(map.is_routing_way.population_count()) +" routing ways.");
-	
+
 	return map;
 }
 
@@ -114,7 +114,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	timer += get_micro_time();
 	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+
 	auto on_new_arc = [&](unsigned x, unsigned y, unsigned dist, unsigned routing_way_id){
 		tail.push_back(x);
 		routing_graph.head.push_back(y);
@@ -155,7 +155,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 						);
 
 						modelling_id_of_previous_modelling_node = modelling_id_of_current_node;
-					
+
 						unsigned routing_id_of_current_node = routing_node.to_local(node_list[i], invalid_id);
 						if(routing_id_of_current_node != invalid_id){
 
@@ -175,7 +175,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 							dist_since_last_routing_node = 0;
 							routing_id_of_last_routing_node = routing_id_of_current_node;
-						}				
+						}
 					}
 				}
 			}
@@ -203,19 +203,19 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		routing_graph.first_out = invert_vector(tail, node_count);
 	}
 	timer += get_micro_time();
-	
+
 	log_message("Finished sorting, needed "+std::to_string(timer)+"musec.");
-	
+
 	log_message("Start computing modelling to routing node mapping");
 	timer = -get_micro_time();
 
 	BitVector modelling_node_is_routing_node(modelling_node.local_id_count(), false);
 	for(unsigned r=0; r < routing_node.local_id_count(); ++r)
 		modelling_node_is_routing_node.set(modelling_node.to_local(routing_node.to_global(r)));
-	
+
 	timer += get_micro_time();
 	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+
 
 	log_message("Start reducing geographic positions to routing nodes");
 	timer = -get_micro_time();
@@ -225,7 +225,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	timer += get_micro_time();
 	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+
 	return routing_graph; // NVRO
 }
 
