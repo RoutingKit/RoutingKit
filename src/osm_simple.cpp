@@ -45,7 +45,11 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 	ret.latitude = std::move(routing_graph.latitude);
 	ret.longitude = std::move(routing_graph.longitude);
 	ret.travel_time = ret.geo_distance;
-	
+	ret.arc_path_head = std::move(routing_graph.arc_path_head);
+	ret.arc_path_tail = std::move(routing_graph.arc_path_tail);
+	ret.arc_path_latitude = std::move(routing_graph.arc_path_latitude);
+	ret.arc_path_longitude = std::move(routing_graph.arc_path_longitude);
+
 	for(unsigned a=0; a<ret.travel_time.size(); ++a){
 		ret.travel_time[a] *= 18;
 		ret.travel_time[a] /= way_speed[routing_graph.way[a]];
