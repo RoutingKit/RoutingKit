@@ -5,6 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include <exception>
+#include <string>
 
 namespace RoutingKit{
 
