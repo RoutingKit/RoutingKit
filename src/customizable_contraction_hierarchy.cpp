@@ -15,7 +15,9 @@
 #include <assert.h>
 #include <algorithm>
 #include <stdexcept>
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 namespace RoutingKit{
 
@@ -1012,7 +1014,12 @@ CustomizableContractionHierarchyParallelization::CustomizableContractionHierarch
 
 
 CustomizableContractionHierarchyParallelization& CustomizableContractionHierarchyParallelization::customize(CustomizableContractionHierarchyMetric&metric) {
+	// If OpenMP is enabled, it is used to parallelize the code. If OpenMP is disabled, the code will compile but will run sequentially.
+	#ifdef _OPENMP
 	customize(metric, omp_get_num_procs());
+	#else
+	customize(metric, 1);
+	#endif
 	return *this;
 }
 
@@ -1024,15 +1031,21 @@ CustomizableContractionHierarchyParallelization& CustomizableContractionHierarch
 	if(thread_count == 1){
 		metric.customize();
 	} else {
+		#ifdef _OPENMP
 		#pragma omp parallel num_threads(thread_count)
+		#endif
 		{
+			#ifdef _OPENMP
 			#pragma omp for
+			#endif
 			for(unsigned cch_arc=0; cch_arc<cch->cch_arc_count(); ++cch_arc){
 				extract_initial_metric_of_cch_arc(*cch, metric, cch_arc);
 			}
 
 			for(unsigned l=0; l<first_arc_of_level.size()-1; ++l){
+				#ifdef _OPENMP
 				#pragma omp for schedule(dynamic,256)
+				#endif
 				for(unsigned i=first_arc_of_level[l]; i<first_arc_of_level[l+1]; ++i){
 					forall_upper_triangles_of_arc(*cch, arcs_ordered_by_level[i], AtomicLowerTriangleRelaxer(metric));
 				}
