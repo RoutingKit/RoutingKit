@@ -1461,11 +1461,11 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::reset(){
 
 ContractionHierarchyQuery&ContractionHierarchyQuery::reset(const ContractionHierarchy&new_ch){
 	if(forward_tentative_distance.size() == new_ch.node_count()){
+		reset();
 		ch = &new_ch;
 	} else {
 		*this = ContractionHierarchyQuery(new_ch);
 	}
-	state = query_state_initialized;
 	return *this;
 }
 
