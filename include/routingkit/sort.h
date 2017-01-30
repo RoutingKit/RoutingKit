@@ -231,17 +231,17 @@ std::vector<T>sort_using_less(std::vector<T>&&v){
 	return sort_using_comparator(std::move(v), [](const T&l, const T&r){return l < r;});
 }
 
-template<class T>
-bool is_sorted_using_less(const std::vector<T>&v){
-	return is_sorted_using_comparator(v, [](const T&l, const T&r){return l < r;});
-}
-
 template<class T, class C>
 bool is_sorted_using_comparator(const std::vector<T>&v, const C&is_less){
 	for(unsigned i=1; i<v.size(); ++i)
 		if(is_less(v[i], v[i-1]))
 			return false;
 	return true;
+}
+
+template<class T>
+bool is_sorted_using_less(const std::vector<T>&v){
+	return is_sorted_using_comparator(v, [](const T&l, const T&r){return l < r;});
 }
 
 } // RoutingKit
