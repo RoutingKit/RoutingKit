@@ -249,7 +249,7 @@ OSMWayDirectionCategory get_osm_car_direction_category(uint64_t osm_way_id, cons
 			return OSMWayDirectionCategory::only_open_forwards;
 		} else if(str_eq(oneway, "no") || str_eq(oneway, "false") || str_eq(oneway, "0")) {
 			return OSMWayDirectionCategory::open_in_both;
-		} else if(str_eq(oneway, "reversible")) {
+		} else if(str_eq(oneway, "reversible") || str_eq(oneway, "alternating")) {
 			return OSMWayDirectionCategory::closed;
 		} else {
 			log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has unknown oneway tag value \""+oneway+"\" for \"oneway\". Way is closed.");
