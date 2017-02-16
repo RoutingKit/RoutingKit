@@ -223,7 +223,7 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 
 	const char* oneway = tags["oneway"];
 	if(oneway != nullptr){
-		if(str_eq(oneway, "reversible")) {
+		if(str_eq(oneway, "reversible") || str_eq(oneway, "alternating")) {
 			return false;
 		}
 	}
