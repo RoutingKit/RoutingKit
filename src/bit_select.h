@@ -5,7 +5,7 @@
 
 namespace RoutingKit{
 
-// returns the 0-based offset of the (n+1)-th bit set in data 
+// returns the 0-based offset of the (n+1)-th bit set in data
 
 uint32_t uint64_bit_select(uint64_t data, uint32_t n);
 uint32_t uint512_bit_select(const uint64_t*data, uint32_t n);

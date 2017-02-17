@@ -15,9 +15,9 @@ template<>
 std::vector<std::string>load_vector<std::string>(const std::string&file_name){
 	std::vector<char>data = load_vector<char>(file_name);
 	std::vector<std::string>ret;
-	std::vector<char>::const_iterator 
-		str_begin = data.begin(), 
-		str_end = data.begin(), 
+	std::vector<char>::const_iterator
+		str_begin = data.begin(),
+		str_end = data.begin(),
 		data_end = data.end();
 
 	while(str_end != data_end){

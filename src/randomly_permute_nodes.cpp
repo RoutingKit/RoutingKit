@@ -31,7 +31,7 @@ int main(int argc, char*argv[]){
 				weight_file.push_back(argv[i]);
 		}
 
-		cout << "Loading graph ... " << flush;  
+		cout << "Loading graph ... " << flush;
 
 		vector<unsigned>first_out = load_vector<unsigned>(first_out_file);
 		vector<unsigned>head = load_vector<unsigned>(head_file);
@@ -39,7 +39,7 @@ int main(int argc, char*argv[]){
 		for(unsigned i=0; i<weight_file.size(); ++i)
 			weight[i] = load_vector<unsigned>(weight_file[i]);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		const unsigned node_count = first_out.size()-1;
 		const unsigned arc_count = head.size();
@@ -59,7 +59,7 @@ int main(int argc, char*argv[]){
 		
 		default_random_engine rng(random_seed);
 
-		cout << "Permutating nodes ... " << flush;  
+		cout << "Permutating nodes ... " << flush;
 
 		auto node_perm = random_permutation(node_count, rng);
 		vector<unsigned>tail = invert_inverse_vector(first_out);
@@ -82,7 +82,7 @@ int main(int argc, char*argv[]){
 
 		cout << "done" << endl;
 
-		cout << "Saving graph ... " << flush;  
+		cout << "Saving graph ... " << flush;
 
 		save_vector(first_out_file, first_out);
 		save_vector(head_file, head);

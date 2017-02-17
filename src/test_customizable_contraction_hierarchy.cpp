@@ -30,25 +30,25 @@ int main(int argc, char*argv[]){
 			cch_order_file = argv[3];
 		}
 
-		cout << "Loading Graph ... " << flush;  
+		cout << "Loading Graph ... " << flush;
 
 		auto first_out = load_vector<unsigned>(first_out_file);
 		auto tail = invert_inverse_vector(first_out);
 		auto head = load_vector<unsigned>(head_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Loading order ... " << flush;  
+		cout << "Loading order ... " << flush;
 		
 		auto cch_order = load_vector<unsigned>(cch_order_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		timer = -get_micro_time();
 		CustomizableContractionHierarchy cch(cch_order, invert_inverse_vector(first_out), head, [](const std::string&msg){cout << msg << endl;}, true);
 		timer += get_micro_time();
 
-		cout << "Total time spent building CCH is " << timer << "musec" << endl;  
+		cout << "Total time spent building CCH is " << timer << "musec" << endl;
 		
 
 	}catch(exception&err){

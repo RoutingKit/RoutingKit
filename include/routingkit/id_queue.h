@@ -22,8 +22,8 @@ public:
 	MinIDQueue():heap_size(0){}
 
 	explicit MinIDQueue(unsigned id_count):
-		id_pos(id_count, invalid_id), 
-		heap(id_count), 
+		id_pos(id_count, invalid_id),
+		heap(id_count),
 		heap_size(0){}
 
 	//! Returns whether the queue is empty. Equivalent to checking whether size() returns 0.
@@ -89,7 +89,7 @@ public:
 		return heap[heap_size];
 	}
 
-	//! Inserts a element key pair. 
+	//! Inserts a element key pair.
 	//! Undefined if the element is part of the queue.
 	void push(IDKeyPair p){
 		assert(p.id < id_count());
@@ -102,7 +102,7 @@ public:
 		move_up_in_tree(pos);
 	}
 
-	//! Updates the key of an element if the new key is smaller than the old key. 
+	//! Updates the key of an element if the new key is smaller than the old key.
 	//! Does nothing if the new key is larger.
 	//! Undefined if the element is not part of the queue.
 	bool decrease_key(IDKeyPair p){
@@ -120,7 +120,7 @@ public:
 		}
 	}
 
-	//! Updates the key of an element if the new key is larger than the old key. 
+	//! Updates the key of an element if the new key is larger than the old key.
 	//! Does nothing if the new key is smaller.
 	//! Undefined if the element is not part of the queue.
 	bool increase_key(IDKeyPair p){

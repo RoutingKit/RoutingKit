@@ -32,14 +32,14 @@ int main(int argc, char*argv[]){
 			out_dimacs_file = argv[4];
 		}
 
-		cout << "Loading graph ... " << flush;  
+		cout << "Loading graph ... " << flush;
 
 		vector<unsigned>first_out = load_vector<unsigned>(in_first_out_file);
 		vector<unsigned>head = load_vector<unsigned>(in_head_file);
 		vector<unsigned>weight = load_vector<unsigned>(in_weight_file);
 		vector<unsigned>tail = invert_inverse_vector(first_out);
 		
-		cout << "done" << endl; 
+		cout << "done" << endl;
 
 		const unsigned node_count = first_out.size()-1;
 		const unsigned arc_count = head.size();
@@ -54,9 +54,9 @@ int main(int argc, char*argv[]){
 			throw runtime_error("The head vector contains an out-of-bounds node id.");
 		if(weight.size() != arc_count)
 			throw runtime_error("The weight vector must be as long as the number of arcs");
- 
 
-		cout << "Saving graph ... " << flush;  
+
+		cout << "Saving graph ... " << flush;
 
 		open_file_for_saving(
 			out_dimacs_file,

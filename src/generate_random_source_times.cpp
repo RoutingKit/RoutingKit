@@ -21,7 +21,7 @@ int main(int argc, char*argv[]){
 
 		if(argc != 5){
 			cerr << argv[0] << " time_count random_seed period_file source_time_file" << endl;
-			cerr << "time_count can be a number or a uint32 vector of which the size is taken." << endl; 
+			cerr << "time_count can be a number or a uint32 vector of which the size is taken." << endl;
 			return 1;
 		}else{
 			try{
@@ -42,13 +42,13 @@ int main(int argc, char*argv[]){
 		for(auto&x:source_time)
 			x = dist(gen);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Saving test queries ... " << flush;
 
 		save_vector(source_time_file, source_time);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
 	}

@@ -21,7 +21,7 @@ int main(int argc, char*argv[]){
 
 		if(argc != 5){
 			cerr << argv[0] << " node_count query_count random_seed file" << endl;
-			cerr << "node_count can be a number or a uint32 vector of which the size is taken." << endl; 
+			cerr << "node_count can be a number or a uint32 vector of which the size is taken." << endl;
 			return 1;
 		}else{
 			try{
@@ -42,13 +42,13 @@ int main(int argc, char*argv[]){
 		for(auto&x:v)
 			x = dist(gen);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Saving test queries ... " << flush;
 
 		save_vector(file, v);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
 	}

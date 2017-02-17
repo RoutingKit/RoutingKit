@@ -16,19 +16,19 @@ public:
 	static const unsigned default_max_pop_count = 500;
 
 	static ContractionHierarchy build(
-		unsigned node_count, std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight, 
+		unsigned node_count, std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 		const std::function<void(std::string)>&log_message = std::function<void(std::string)>(), unsigned max_pop_count = default_max_pop_count
 	);
 
 	static ContractionHierarchy build_given_rank(
 		std::vector<unsigned>rank,
-		std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight, 
+		std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 		const std::function<void(std::string)>&log_message = std::function<void(std::string)>(), unsigned max_pop_count = default_max_pop_count
 	);
 
 	static ContractionHierarchy build_given_order(
 		std::vector<unsigned>order,
-		std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight, 
+		std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 		const std::function<void(std::string)>&log_message = std::function<void(std::string)>(), unsigned max_pop_count = default_max_pop_count
 	);
 

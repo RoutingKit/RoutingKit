@@ -34,7 +34,7 @@ int main(int argc, char*argv[]){
 			weight_file = argv[5];
 		}
 
-		cout << "Loading graph ... " << flush;  
+		cout << "Loading graph ... " << flush;
 
 		vector<unsigned>first_out = load_vector<unsigned>(first_out_file);
 		vector<unsigned>head = load_vector<unsigned>(head_file);
@@ -42,14 +42,14 @@ int main(int argc, char*argv[]){
 		vector<float>latitude = load_vector<float>(latitude_file);
 		vector<float>longitude = load_vector<float>(longitude_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Validity tests ... " << flush;
 		check_if_graph_is_valid(first_out, head);
 		cout << "done" << endl;
 
 
-		cout << "Computing weights ... " << flush;  
+		cout << "Computing weights ... " << flush;
 		
 		std::vector<unsigned>weight(head.size());
 
@@ -60,13 +60,13 @@ int main(int argc, char*argv[]){
 			}
 		}
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Saving weights ... " << flush;  
+		cout << "Saving weights ... " << flush;
 		
 		save_vector(weight_file, weight);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;

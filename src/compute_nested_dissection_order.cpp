@@ -32,7 +32,7 @@ int main(int argc, char*argv[]){
 			cch_order_file = argv[5];
 		}
 
-		cout << "Loading Graph ... " << flush;  
+		cout << "Loading Graph ... " << flush;
 
 		auto first_out = load_vector<unsigned>(first_out_file);
 		unsigned node_count = first_out.size()-1;
@@ -41,16 +41,16 @@ int main(int argc, char*argv[]){
 		auto latitude = load_vector<float>(latitude_file);
 		auto longitude = load_vector<float>(longitude_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Compute order ... " << flush;  
+		cout << "Compute order ... " << flush;
 		timer = -get_micro_time();
 		auto cch_order = compute_nested_node_dissection_order_using_inertial_flow(node_count, tail, head, latitude, longitude);
 		timer += get_micro_time();
-		cout << "done ["<<timer <<"musec]" << endl;  
+		cout << "done ["<<timer <<"musec]" << endl;
 
 
-		cout << "Saving order ... " << flush;  
+		cout << "Saving order ... " << flush;
 		save_vector(cch_order_file, cch_order);
 		cout << "done" << endl;
 		

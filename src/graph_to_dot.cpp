@@ -27,13 +27,13 @@ int main(int argc, char*argv[]){
 			dot_file = argv[4];
 		}
 
-		cout << "Loading graph ... " << flush;  
+		cout << "Loading graph ... " << flush;
 
 		vector<unsigned>first_out_arc = load_vector<unsigned>(first_out_file);
 		vector<unsigned>head = load_vector<unsigned>(head_file);
 		vector<unsigned>weight = load_vector<unsigned>(weight_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Writing dot ... " << flush;
 

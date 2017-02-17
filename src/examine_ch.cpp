@@ -29,9 +29,9 @@ int main(int argc, char*argv[]){
 
 		cerr << "Loading ... " << flush;	
 		if(argc != 2){
-			cerr 
+			cerr
 				<< "Usage : \n"
-				<< argv[0] << " ch" << endl; 
+				<< argv[0] << " ch" << endl;
 			return 1;
 		}else{
 			ch = ContractionHierarchy::load_file(argv[1]);

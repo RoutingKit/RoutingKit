@@ -63,11 +63,11 @@ int main(){
 
 	{
 		char buf[] = {
-			(char)138, (char)168, (char)17, 
-			(char)220, (char)254, (char)219, (char)195, (char)2, 
-			(char)199, (char)254, (char)219, (char)195, (char)2, 
-			(char)180, (char)179, (char)169, (char)134, (char)10, 
-			(char)141, (char)229, (char)205, (char)194, (char)7, 
+			(char)138, (char)168, (char)17,
+			(char)220, (char)254, (char)219, (char)195, (char)2,
+			(char)199, (char)254, (char)219, (char)195, (char)2,
+			(char)180, (char)179, (char)169, (char)134, (char)10,
+			(char)141, (char)229, (char)205, (char)194, (char)7,
 			(char)167, (char)206, (char)219, (char)195, (char)2
 		};
 		const char*begin = buf, *end = buf+sizeof(buf);

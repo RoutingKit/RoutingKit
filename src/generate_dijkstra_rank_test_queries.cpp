@@ -27,7 +27,7 @@ int main(int argc, char*argv[]){
 
 		if(argc != 10){
 			cerr << argv[0] << " first_out head weight source_node_count random_seed source_file target_file rank_file distance_file" << endl;
-			cerr << "source_node_count can be a number or a uint32 vector of which the size is taken." << endl; 
+			cerr << "source_node_count can be a number or a uint32 vector of which the size is taken." << endl;
 			return 1;
 		}else{
 			first_out = load_vector<unsigned>(argv[1]);
@@ -91,7 +91,7 @@ int main(int argc, char*argv[]){
 			}
 		}
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Saving test queries ... " << flush;
 
@@ -100,7 +100,7 @@ int main(int argc, char*argv[]){
 		save_vector(rank_file, rank);
 		save_vector(distance_file, distance);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
 	}

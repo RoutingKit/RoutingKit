@@ -64,8 +64,8 @@ int main(int argc, char*argv[]){
 	try{
 		string data_type, output_vector_file;
 		if(argc != 3){
-			cerr 
-				<< "Usage: "<< argv[0] << " data_type output_vector_file\n" 
+			cerr
+				<< "Usage: "<< argv[0] << " data_type output_vector_file\n"
 				<< "\n"
 				<< "Reads textual data from the standard input and writes it in a binary format to output_vector_file. The input data should be one data element per line. The data is only written once an end of file is encountered on the input. data_type can be one of\n"
 				<< " * int8\n"

@@ -31,13 +31,13 @@ int main(int argc, char*argv[]){
 
 		vector<unsigned>v(size, value);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Saving test queries ... " << flush;
 
 		save_vector(file, v);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
 	}

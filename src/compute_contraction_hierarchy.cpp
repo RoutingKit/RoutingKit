@@ -32,13 +32,13 @@ int main(int argc, char*argv[]){
 			ch_file = argv[4];
 		}
 
-		cout << "Loading graph ... " << flush;  
+		cout << "Loading graph ... " << flush;
 
 		vector<unsigned>first_out = load_vector<unsigned>(graph_first_out);
 		vector<unsigned>head = load_vector<unsigned>(graph_head);
 		vector<unsigned>weight = load_vector<unsigned>(graph_weight);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Validity tests ... " << flush;
 		check_if_graph_is_valid(first_out, head);

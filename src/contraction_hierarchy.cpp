@@ -109,7 +109,7 @@ namespace{
 			assert(y < node_count());
 
 			auto reduce_arc_if_exists = [weight, hop_length, mid_node](
-				unsigned x, std::vector<Arc>&x_out, 
+				unsigned x, std::vector<Arc>&x_out,
 				unsigned y, std::vector<Arc>&y_in
 			){
 
@@ -231,7 +231,7 @@ namespace{
 	public:
 		ShorterPathTest(){}
 		ShorterPathTest(const Graph&graph, unsigned max_pop_count):
-			max_pop_count(max_pop_count), graph(&graph), 
+			max_pop_count(max_pop_count), graph(&graph),
 			forward_tentative_distance(graph.node_count()), backward_tentative_distance(graph.node_count()),
 			forward_queue(graph.node_count()), backward_queue(graph.node_count()),
 			was_forward_pushed(graph.node_count()), was_backward_pushed(graph.node_count())
@@ -295,7 +295,7 @@ namespace{
 
 		template<class GetOutDeg, class GetOutArc>
 		bool forward_settle(
-			MinIDQueue&forward_queue, 
+			MinIDQueue&forward_queue,
 			TimestampFlags&was_forward_pushed,
 			const TimestampFlags&was_backward_pushed,
 			std::vector<unsigned>&forward_tentative_distance,
@@ -395,12 +395,12 @@ namespace{
 				if(forward_queue.peek().key <= backward_queue.peek().key){
 					if(
 						forward_settle(
-							forward_queue, 
-							was_forward_pushed, was_backward_pushed, 
+							forward_queue,
+							was_forward_pushed, was_backward_pushed,
 							forward_tentative_distance, backward_tentative_distance,
 							[&](unsigned x){return graph->out_deg(x);},
 							[&](unsigned x, unsigned a){return graph->out(x, a);},
-							bypass_node, 
+							bypass_node,
 							len
 						)
 					){
@@ -412,12 +412,12 @@ namespace{
 				} else {
 					if(
 						forward_settle(
-							backward_queue, 
-							was_backward_pushed, was_forward_pushed, 
+							backward_queue,
+							was_backward_pushed, was_forward_pushed,
 							backward_tentative_distance, forward_tentative_distance,
 							[&](unsigned x){return graph->in_deg(x);},
 							[&](unsigned x, unsigned a){return graph->in(x, a);},
-							bypass_node, 
+							bypass_node,
 							len
 						)
 					){
@@ -469,12 +469,12 @@ namespace{
 				if(forward_queue.peek().key <= backward_queue.peek().key){
 					if(
 						forward_settle(
-							forward_queue, 
-							was_forward_pushed, was_backward_pushed, 
+							forward_queue,
+							was_forward_pushed, was_backward_pushed,
 							forward_tentative_distance, backward_tentative_distance,
 							[&](unsigned x){return graph->out_deg(x);},
 							[&](unsigned x, unsigned a){return graph->out(x, a);},
-							bypass, 
+							bypass,
 							len
 						)
 					){
@@ -486,12 +486,12 @@ namespace{
 				} else {
 					if(
 						forward_settle(
-							backward_queue, 
-							was_backward_pushed, was_forward_pushed, 
+							backward_queue,
+							was_backward_pushed, was_forward_pushed,
 							backward_tentative_distance, forward_tentative_distance,
 							[&](unsigned x){return graph->in_deg(x);},
 							[&](unsigned x, unsigned a){return graph->in(x, a);},
-							bypass, 
+							bypass,
 							len
 						)
 					){
@@ -538,7 +538,7 @@ namespace{
 				if(in_node != out_node){
 					if(
 						!shorter_path_test.does_shorter_or_equal_path_to_target_exist(
-							out_node, 
+							out_node,
 							graph.in(node, in_arc).weight + graph.out(node, out_arc).weight
 						)
 					){
@@ -572,7 +572,7 @@ namespace{
 				if(in_node != out_node){
 					if(
 						!shorter_path_test.does_shorter_or_equal_path_to_target_exist(
-							out_node, 
+							out_node,
 							graph.in(node_being_contracted, in_arc).weight + graph.out(node_being_contracted, out_arc).weight
 						)
 					){
@@ -831,7 +831,7 @@ namespace {
 
 
 	void make_internal_nodes_and_rank_coincide(
-		ContractionHierarchy&ch, 
+		ContractionHierarchy&ch,
 		ContractionHierarchyExtraInfo&ch_extra,
 		const std::function<void(std::string)>&log_message
 	){
@@ -862,7 +862,7 @@ namespace {
 	}
 
 	void sort_ch_arcs_and_build_first_out_arrays(
-		ContractionHierarchy&ch, 
+		ContractionHierarchy&ch,
 		ContractionHierarchyExtraInfo&ch_extra,
 		const std::function<void(std::string)>&log_message
 	){
@@ -900,7 +900,7 @@ namespace {
 	}
 
 	void optimize_order_for_cache(
-		ContractionHierarchy&ch, 
+		ContractionHierarchy&ch,
 		const ContractionHierarchyExtraInfo&ch_extra,
 		const std::function<void(std::string)>&log_message
 	){
@@ -975,7 +975,7 @@ namespace {
 		const std::vector<unsigned>&tail,
 		const std::vector<unsigned>&head,
 		const std::vector<unsigned>&input_arc_id,	
-		ContractionHierarchy&ch, 
+		ContractionHierarchy&ch,
 		const ContractionHierarchyExtraInfo&ch_extra,
 		const std::function<void(std::string)>&log_message
 	){
@@ -1091,7 +1091,7 @@ namespace {
 
 
 ContractionHierarchy ContractionHierarchy::build(
-	unsigned node_count, std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight, 
+	unsigned node_count, std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 	const std::function<void(std::string)>&log_message, unsigned max_pop_count
 ){
 	assert(tail.size() == head.size());
@@ -1136,7 +1136,7 @@ ContractionHierarchy ContractionHierarchy::build(
 
 ContractionHierarchy ContractionHierarchy::build_given_rank(
 	std::vector<unsigned>rank,
-	std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight, 
+	std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 	const std::function<void(std::string)>&log_message, unsigned max_pop_count
 ){
 	unsigned node_count = rank.size();
@@ -1180,7 +1180,7 @@ ContractionHierarchy ContractionHierarchy::build_given_rank(
 
 ContractionHierarchy ContractionHierarchy::build_given_order(
 	std::vector<unsigned>order,
-	std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight, 
+	std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 	const std::function<void(std::string)>&log_message, unsigned max_pop_count
 ){
 	return build_given_rank(invert_permutation(order), tail, head, weight, log_message, max_pop_count);
@@ -1370,20 +1370,20 @@ ContractionHierarchy ContractionHierarchy::read(std::function<void(char*, unsign
 	CHFileHeader header = read_value<CHFileHeader>(in);
 	check_header(header);
 	unsigned long long expected_file_size = (
-		  sizeof(CHFileHeader) 
+		  sizeof(CHFileHeader)
 		+ sizeof(unsigned)*(
 			header.node_count
 			+ (
-				header.node_count+1 + 
+				header.node_count+1 +
 				4*header.forward_arc_count
 				
 			)
 			+ (
-				header.node_count+1 + 
+				header.node_count+1 +
 				4*header.backward_arc_count
 				
 			)
-		) 
+		)
 		+ ((header.backward_arc_count+511)/512) * 64
 		+ ((header.forward_arc_count+511)/512) * 64
 	);
@@ -1434,7 +1434,7 @@ namespace{
 }
 
 ContractionHierarchyQuery::ContractionHierarchyQuery(const ContractionHierarchy&ch):
-	ch(&ch), 
+	ch(&ch),
 	was_forward_pushed(ch.node_count()), was_backward_pushed(ch.node_count()),
 	forward_queue(ch.node_count()), backward_queue(ch.node_count()),
 	forward_tentative_distance(ch.node_count()), backward_tentative_distance(ch.node_count()),
@@ -1516,7 +1516,7 @@ namespace{
 
 	template<class SetPred>
 	void forward_expand_upward_ch_arcs_of_node(
-		unsigned node, 
+		unsigned node,
 		unsigned distance_to_node,
 		const std::vector<unsigned>&forward_first_out,
 		const std::vector<unsigned>&forward_head,
@@ -1546,7 +1546,7 @@ namespace{
 	bool forward_can_stall_at_node(
 		unsigned node,
 		const std::vector<unsigned>&backward_first_out, const std::vector<unsigned>&backward_head, const std::vector<unsigned>&backward_weight,
-		const TimestampFlags&was_forward_pushed, 
+		const TimestampFlags&was_forward_pushed,
 		std::vector<unsigned>&forward_tentative_distance, const std::vector<unsigned>&backward_tentative_distance
 	){
 		for(unsigned arc = backward_first_out[node]; arc < backward_first_out[node+1]; ++arc){
@@ -1565,7 +1565,7 @@ namespace{
 		unsigned&shortest_path_meeting_node,
 		const std::vector<unsigned>&forward_first_out, const std::vector<unsigned>&forward_head, const std::vector<unsigned>&forward_weight,
 		const std::vector<unsigned>&backward_first_out, const std::vector<unsigned>&backward_head, const std::vector<unsigned>&backward_weight,
-		TimestampFlags&was_forward_pushed, const TimestampFlags&was_backward_pushed, 
+		TimestampFlags&was_forward_pushed, const TimestampFlags&was_backward_pushed,
 		MinIDQueue&forward_queue,
 		std::vector<unsigned>&forward_tentative_distance, const std::vector<unsigned>&backward_tentative_distance,
 		std::vector<unsigned>&forward_predecessor_node, std::vector<unsigned>&forward_predecessor_arc
@@ -1587,15 +1587,15 @@ namespace{
 			!forward_can_stall_at_node(
 				popped_node,
 				backward_first_out, backward_head, backward_weight,
-				was_forward_pushed, 
+				was_forward_pushed,
 				forward_tentative_distance, backward_tentative_distance
 			)
 		)
 			forward_expand_upward_ch_arcs_of_node(
-				popped_node, distance_to_popped_node, 
-				forward_first_out, forward_head, forward_weight, 
-				was_forward_pushed, forward_queue, 
-				forward_tentative_distance, 
+				popped_node, distance_to_popped_node,
+				forward_first_out, forward_head, forward_weight,
+				was_forward_pushed, forward_queue,
+				forward_tentative_distance,
 				[&](unsigned x, unsigned pred_node, unsigned pred_arc){
 					forward_predecessor_node[x] = pred_node;
 					forward_predecessor_arc[x] = pred_arc;
@@ -1605,7 +1605,7 @@ namespace{
 
 	void full_forward_search(
 		const std::vector<unsigned>&forward_first_out, const std::vector<unsigned>&forward_head, const std::vector<unsigned>&forward_weight,
-		TimestampFlags&was_forward_pushed, 
+		TimestampFlags&was_forward_pushed,
 		MinIDQueue&forward_queue,
 		std::vector<unsigned>&forward_tentative_distance,
 		std::vector<unsigned>&forward_predecessor_node, std::vector<unsigned>&forward_predecessor_arc
@@ -1616,10 +1616,10 @@ namespace{
 			auto distance_to_popped_node = p.key;
 
 			forward_expand_upward_ch_arcs_of_node(
-				popped_node, distance_to_popped_node, 
-				forward_first_out, forward_head, forward_weight, 
-				was_forward_pushed, forward_queue, 
-				forward_tentative_distance, 
+				popped_node, distance_to_popped_node,
+				forward_first_out, forward_head, forward_weight,
+				was_forward_pushed, forward_queue,
+				forward_tentative_distance,
 				[&](unsigned x, unsigned pred_node, unsigned pred_arc){
 					forward_predecessor_node[x] = pred_node;
 					forward_predecessor_arc[x] = pred_arc;
@@ -1757,13 +1757,13 @@ namespace{
 	}
 }
 
-unsigned ContractionHierarchyQuery::get_distance() { 
+unsigned ContractionHierarchyQuery::get_distance() {
 	assert(state == query_state_run);
 
 	if(shortest_path_meeting_node == invalid_id)
 		return inf_weight;
 	else
-		return forward_tentative_distance[shortest_path_meeting_node] + backward_tentative_distance[shortest_path_meeting_node]; 
+		return forward_tentative_distance[shortest_path_meeting_node] + backward_tentative_distance[shortest_path_meeting_node];
 }
 	
 
@@ -1918,7 +1918,7 @@ namespace{
 	){
 		full_forward_search(
 			forward_first_out, forward_head, forward_weight,
-			was_forward_pushed, 
+			was_forward_pushed,
 			forward_queue,
 			forward_tentative_distance,
 			forward_predecessor_node, forward_predecessor_arc

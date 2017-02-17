@@ -16,9 +16,9 @@ public:
 		predecessor(first_out.size()-1),
 		predecessor_arc(first_out.size()-1),
 		was_popped(first_out.size()-1),
-		queue(first_out.size()-1), 
-		first_out(first_out), 
-		head(head), 
+		queue(first_out.size()-1),
+		first_out(first_out),
+		head(head),
 		get_weight(std::move(get_weight)){}
 
 	void clear(){

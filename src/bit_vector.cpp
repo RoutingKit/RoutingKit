@@ -25,7 +25,7 @@ namespace RoutingKit{
 //		uint8_t shift = *(buffer-1);
 //		buffer -= shift;
 //		free(buffer);
-//	} 
+//	}
 //}
 
 
@@ -187,8 +187,8 @@ BitVector::BitVector(uint64_t size, bool init_value)
 		assert(init_value || init_vec[0] == 0ull);
 			
 		for(
-			v8_uint64_t*i = (v8_uint64_t*)data_; 
-			i<((v8_uint64_t*)data_)+get_v8_uint64_count(size); 
+			v8_uint64_t*i = (v8_uint64_t*)data_;
+			i<((v8_uint64_t*)data_)+get_v8_uint64_count(size);
 			++i
 		)
 			*i = init_vec;
@@ -215,8 +215,8 @@ BitVector::BitVector(const BitVector&o):
 	assert(are_all_padding_bits_zero(o));
 
 	for(
-		v8_uint64_t*i = (v8_uint64_t*)data_, *j=(v8_uint64_t*)o.data_; 
-		i<((v8_uint64_t*)data_)+get_v8_uint64_count(size_); 
+		v8_uint64_t*i = (v8_uint64_t*)data_, *j=(v8_uint64_t*)o.data_;
+		i<((v8_uint64_t*)data_)+get_v8_uint64_count(size_);
 		++i, ++j
 	)
 		*i = *j;
@@ -275,8 +275,8 @@ void BitVector::resize(uint64_t new_size, BitVector::Uninitialized){
 			BitVector o(new_size);
 
 			for(
-				v8_uint64_t*i = (v8_uint64_t*)data_, *j=(v8_uint64_t*)o.data_; 
-				i<((v8_uint64_t*)data_)+std::min(get_v8_uint64_count(size_), get_v8_uint64_count(new_size)); 
+				v8_uint64_t*i = (v8_uint64_t*)data_, *j=(v8_uint64_t*)o.data_;
+				i<((v8_uint64_t*)data_)+std::min(get_v8_uint64_count(size_), get_v8_uint64_count(new_size));
 				++i, ++j
 			){
 				*j = *i;
@@ -485,7 +485,7 @@ void BitVector::inplace_not(){
 bool operator==(const BitVector&l, const BitVector&r){
 	assert(are_all_padding_bits_zero(l));
 	assert(are_all_padding_bits_zero(r));
-	if(__builtin_expect(l.size_ != r.size_, false)) 
+	if(__builtin_expect(l.size_ != r.size_, false))
 		return false;
 
 	v8_uint64_t x;
@@ -502,7 +502,7 @@ bool operator==(const BitVector&l, const BitVector&r){
 bool operator<(const BitVector&l, const BitVector&r){
 	assert(are_all_padding_bits_zero(l));
 	assert(are_all_padding_bits_zero(r));
-	if(__builtin_expect(l.size_ != r.size_, false)) 
+	if(__builtin_expect(l.size_ != r.size_, false))
 		return l.size_ < r.size_;
 
 	for(uint64_t*i = l.data_, *j = r.data_; i<l.data_+get_uint64_count(l.size_); ++i, ++j)

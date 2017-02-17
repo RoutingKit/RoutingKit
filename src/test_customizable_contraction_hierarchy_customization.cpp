@@ -32,53 +32,53 @@ int main(int argc, char*argv[]){
 
 		long long timer;
 
-		cout << "Loading Graph ... " << flush;  
+		cout << "Loading Graph ... " << flush;
 
 		auto first_out = load_vector<unsigned>(first_out_file);
 		auto tail = invert_inverse_vector(first_out);
 		auto head = load_vector<unsigned>(head_file);
 		auto weight = load_vector<unsigned>(weight_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Loading order ... " << flush;  
+		cout << "Loading order ... " << flush;
 		
 		auto cch_order = load_vector<unsigned>(cch_order_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		
-		cout << "Building CCH ... " << flush;  
+		cout << "Building CCH ... " << flush;
 		
 		timer = -get_micro_time();
 		CustomizableContractionHierarchy cch(cch_order, invert_inverse_vector(first_out), head);
 		timer += get_micro_time();
 
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
-		cout << "Regular CCH Customization ... " << flush;  
+		cout << "Regular CCH Customization ... " << flush;
 		
 		timer = -get_micro_time();
 		CustomizableContractionHierarchyMetric reference_metric(cch, weight);
 		reference_metric.customize();
 		timer += get_micro_time();
 
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
 		
 		#ifdef LIB_ROUTING_CUSTOMIZABLE_CONTRACTION_HIERARCHY_USE_PARALLELIZATION
-		cout << "Constructing Parallelization data structures ... " << flush;  
+		cout << "Constructing Parallelization data structures ... " << flush;
 		timer = -get_micro_time();
 		CustomizableContractionHierarchyParallelization parallel_customization(cch);
 		timer += get_micro_time();
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
-		cout << "Parallel CCH Customization ... " << flush;  
+		cout << "Parallel CCH Customization ... " << flush;
 		timer = -get_micro_time();
 		CustomizableContractionHierarchyMetric parallel_metric(cch, weight);
 		parallel_customization.customize(parallel_metric);
 		timer += get_micro_time();
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
 		if(reference_metric.forward != parallel_metric.forward || reference_metric.backward != parallel_metric.backward){
 			throw std::runtime_error("Parallel Customization is broken");
@@ -90,11 +90,11 @@ int main(int argc, char*argv[]){
 		CustomizableContractionHierarchyMetric partial_metric = reference_metric;
 		CustomizableContractionHierarchyPartialCustomization partial_update(cch);
 
-		cout << "Nop Partial Customization ... " << flush;  
+		cout << "Nop Partial Customization ... " << flush;
 		timer = -get_micro_time();
 		partial_update.customize(partial_metric);
 		timer += get_micro_time();
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
 
 		if(reference_metric.forward != partial_metric.forward || reference_metric.backward != partial_metric.backward){
@@ -103,13 +103,13 @@ int main(int argc, char*argv[]){
 			cout << "Nop Partial Customization is ok" << endl;
 		}	
 
-		cout << "No-Change Partial Customization ... " << flush;  
+		cout << "No-Change Partial Customization ... " << flush;
 		timer = -get_micro_time();
 		for(unsigned i=0; i<1000; ++i)
 			partial_update.update_arc(rand()%head.size());
 		partial_update.customize(partial_metric);
 		timer += get_micro_time();
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
 		if(reference_metric.forward != partial_metric.forward || reference_metric.backward != partial_metric.backward){
 			throw std::runtime_error("No-Change Partial Customization is broken");
@@ -117,7 +117,7 @@ int main(int argc, char*argv[]){
 			cout << "No-Change Partial Customization is ok" << endl;
 		}	
 
-		cout << "Partial Customization ... " << flush;  
+		cout << "Partial Customization ... " << flush;
 		timer = -get_micro_time();
 		for(unsigned i=0; i<1000; ++i){
 			unsigned a = rand()%head.size();
@@ -126,7 +126,7 @@ int main(int argc, char*argv[]){
 		}
 		partial_update.customize(partial_metric);
 		timer += get_micro_time();
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
 		reference_metric.customize();
 

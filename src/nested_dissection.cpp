@@ -87,7 +87,7 @@ BlockingFlow::BlockingFlow(
 ):
 	fragment(&fragment), is_source(std::move(is_source_)), is_target(std::move(is_target_)),
 
-	flow_intensity(0), 
+	flow_intensity(0),
 	is_arc_saturated(fragment.arc_count(), false),
 	is_arc_blocked(fragment.arc_count(), BitVector::uninitialized),
 	is_finished_flag(false)
@@ -422,9 +422,9 @@ namespace{
 	template<class GetKey>
 	BitVector mark_first_n_elements(unsigned n, unsigned total_element_count, const GetKey&sort_key){
 		auto v = identity_permutation(total_element_count);
-		auto 
-			begin = v.begin(), 
-			mid = v.begin() + n, 
+		auto
+			begin = v.begin(),
+			mid = v.begin() + n,
 			end = v.end();
 
 		std::nth_element(begin, mid, end, [&](unsigned l, unsigned r){return sort_key(l) < sort_key(r);});
@@ -445,10 +445,10 @@ namespace{
 	SourceTargetResult select_source_and_target(unsigned n, unsigned node_count, const GetKey&sort_key){
 		assert(n <= node_count/2);
 		auto v = identity_permutation(node_count);
-		auto 
-			begin = v.begin(), 
-			source_end = v.begin() + n, 
-			target_begin = v.begin() + node_count - n, 
+		auto
+			begin = v.begin(),
+			source_end = v.begin() + n,
+			target_begin = v.begin() + node_count - n,
 			end = v.end();
 
 		std::nth_element(begin, source_end, end, [&](unsigned l, unsigned r){return sort_key(l) < sort_key(r);});
@@ -783,7 +783,7 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 				}
 
 				BitVector f = make_bit_vector(
-					part.arc_count(), 
+					part.arc_count(),
 					[&](unsigned a){
 						return !is_separator_node.is_set(part.tail[a]) && !is_separator_node.is_set(part.head[a]);
 					}
@@ -824,7 +824,7 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 }
 
 std::vector<unsigned>compute_nested_node_dissection_order_using_inertial_flow(
-	unsigned node_count, const std::vector<unsigned>&tail, const std::vector<unsigned>&head, 
+	unsigned node_count, const std::vector<unsigned>&tail, const std::vector<unsigned>&head,
 	const std::vector<float>&latitude, const std::vector<float>&longitude,
 	const std::function<void(const std::string&)>&log_message
 ){

@@ -32,46 +32,46 @@ int main(int argc, char*argv[]){
 			cch_order_file = argv[4];
 		}
 
-		cout << "Loading Graph ... " << flush;  
+		cout << "Loading Graph ... " << flush;
 
 		auto first_out = load_vector<unsigned>(first_out_file);
 		auto tail = invert_inverse_vector(first_out);
 		auto head = load_vector<unsigned>(head_file);
 		auto weight = load_vector<unsigned>(weight_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Loading order ... " << flush;  
+		cout << "Loading order ... " << flush;
 		
 		auto cch_order = load_vector<unsigned>(cch_order_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Building CCH ... " << flush;  
+		cout << "Building CCH ... " << flush;
 		
 		timer = -get_micro_time();
 		CustomizableContractionHierarchy cch(cch_order, invert_inverse_vector(first_out), head);
 		timer += get_micro_time();
 
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
-		cout << "Customizing CCH ... " << flush;  
+		cout << "Customizing CCH ... " << flush;
 		
 		timer = -get_micro_time();
 		CustomizableContractionHierarchyMetric metric(cch, weight);
 		metric.customize();
 		timer += get_micro_time();
 
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
-		cout << "Generating queries ... " << flush;  
+		cout << "Generating queries ... " << flush;
 
-		const unsigned 
-			source_count = 500, 
+		const unsigned
+			source_count = 500,
 			target_count = 500;
 
 		std::vector<unsigned>
-			source_set(source_count), 
+			source_set(source_count),
 			target_set(target_count);
 
 		for(unsigned i=0; i<source_count; ++i)
@@ -79,14 +79,14 @@ int main(int argc, char*argv[]){
 		for(unsigned i=0; i<target_count; ++i)
 			target_set[i] = rand() % cch.node_count();
 		
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 
 		std::vector<unsigned>optimal_result(source_count * target_count);
 
 		{
 			timer = -get_micro_time();
-			cout << "Running baseline ... " << flush;  
+			cout << "Running baseline ... " << flush;
 		
 			CustomizableContractionHierarchyQuery query(metric);
 			for(unsigned s=0; s<source_count; ++s){
@@ -97,7 +97,7 @@ int main(int argc, char*argv[]){
 
 			timer += get_micro_time();
 
-			cout << "done ["<<timer << "musec]" << endl; 
+			cout << "done ["<<timer << "musec]" << endl;
 		}
 
 
@@ -112,7 +112,7 @@ int main(int argc, char*argv[]){
 			unsigned query_count = 0;
 
 			timer = -get_micro_time();
-			cout << "Running forward pinning ... " << flush;  
+			cout << "Running forward pinning ... " << flush;
 		
 			CustomizableContractionHierarchyQuery query(metric);
 
@@ -136,7 +136,7 @@ int main(int argc, char*argv[]){
 
 			timer += get_micro_time();
 
-			cout << "done [" << timer << "musec]" << endl; 
+			cout << "done [" << timer << "musec]" << endl;
 
 			cout << "query_time" << " : " << query_time / query_count << "musec" << endl;
 			cout << "pin_time" << " : " << select_time / select_count << "musec" << endl;
@@ -159,7 +159,7 @@ int main(int argc, char*argv[]){
 			unsigned query_count = 0;
 
 			timer = -get_micro_time();
-			cout << "Running forward pinning ... " << flush;  
+			cout << "Running forward pinning ... " << flush;
 		
 			CustomizableContractionHierarchyQuery query(metric);
 
@@ -182,7 +182,7 @@ int main(int argc, char*argv[]){
 
 			timer += get_micro_time();
 
-			cout << "done [" << timer << "musec]" << endl; 
+			cout << "done [" << timer << "musec]" << endl;
 
 			cout << "query_time" << " : " << query_time / query_count << "musec" << endl;
 			cout << "pin_time" << " : " << select_time / select_count << "musec" << endl;

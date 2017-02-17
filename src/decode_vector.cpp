@@ -36,8 +36,8 @@ int main(int argc, char*argv[]){
 	try{
 		string data_type, input_vector_file;
 		if(argc != 3){
-			cerr 
-				<< "Usage: "<< argv[0] << " data_type input_vector_file\n" 
+			cerr
+				<< "Usage: "<< argv[0] << " data_type input_vector_file\n"
 				<< "\n"
 				<< "Reads binary data from input_vector_file and writes the data to the standard output. data_type can be one of\n"
 				<< " * int8\n"

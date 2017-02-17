@@ -12,7 +12,7 @@ namespace detail{
 	inline const char* handle_null_ptr(const decltype(nullptr)) {return "nullptr";}
 
 }
- 
+
 
 #define EXPECT2(c, c_msg, line) \
 	((c) ? std::cerr : (std::cerr << c_msg <<" failed in line "<<line << std::endl))

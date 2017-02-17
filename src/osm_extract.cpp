@@ -13,7 +13,7 @@ using namespace std;
 
 int main(int argc, char*argv[]){
 	try {
-		std::string 
+		std::string
 			pbf_file,
 			first_out_file,
 			head_file,

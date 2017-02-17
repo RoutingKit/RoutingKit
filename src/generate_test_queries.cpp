@@ -41,14 +41,14 @@ int main(int argc, char*argv[]){
 			target[i] = dist(gen);
 		}
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "Saving test queries ... " << flush;
 
 		save_vector(source_file, source);
 		save_vector(target_file, target);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
 	}

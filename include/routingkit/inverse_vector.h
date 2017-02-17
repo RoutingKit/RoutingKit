@@ -11,9 +11,9 @@
 namespace RoutingKit{
 
 //
-// The inverse vector p of a vector v is a vector such that the elements 
-// v[p[i]], v[p[i]+1], v[p[i]+2], ..., v[p[i+1]-1] are exactly the elements 
-// with value i in v. If i does not occur in v, then p[i] == p[i+1]. v must be 
+// The inverse vector p of a vector v is a vector such that the elements
+// v[p[i]], v[p[i]+1], v[p[i]+2], ..., v[p[i+1]-1] are exactly the elements
+// with value i in v. If i does not occur in v, then p[i] == p[i+1]. v must be
 // a sorted vector of unsigned integers.
 //
 

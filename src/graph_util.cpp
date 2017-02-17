@@ -34,8 +34,8 @@ unsigned find_arc_or_return_invalid_given_sorted_head(const std::vector<unsigned
 	assert(x < first_out.size()-1 && "node id out of bounds");
 	assert(y < first_out.size()-1 && "node id out of bounds");
 
-	auto 
-		begin = head.begin() + first_out[x], 
+	auto
+		begin = head.begin() + first_out[x],
 		end = head.begin() + first_out[x+1];
 
 	assert(std::is_sorted(begin, end) && "heads are not sorted");
@@ -80,9 +80,9 @@ std::vector<unsigned>convert_arc_path_to_node_path(unsigned source, const std::v
 
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_left_then_by_right(
-	unsigned a_count, 
-	const std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	const std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 ){
 	auto p = compute_inverse_stable_sort_permutation_using_key(b, b_count, [](unsigned x){return x;});
@@ -92,9 +92,9 @@ std::vector<unsigned>compute_inverse_sort_permutation_first_by_left_then_by_righ
 }
 
 std::vector<unsigned>compute_sort_permutation_first_by_left_then_by_right(
-	unsigned a_count, 
-	const std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	const std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 ){
 	auto p = compute_stable_sort_permutation_using_key(b, b_count, [](unsigned x){return x;});
@@ -104,9 +104,9 @@ std::vector<unsigned>compute_sort_permutation_first_by_left_then_by_right(
 }
 
 std::vector<unsigned>compute_sort_permutation_first_by_left_then_by_right_and_apply_sort_to_left(
-	unsigned a_count, 
-	std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 ){
 	auto p = compute_stable_sort_permutation_using_key(b, b_count, [](unsigned x){return x;});
@@ -118,9 +118,9 @@ std::vector<unsigned>compute_sort_permutation_first_by_left_then_by_right_and_ap
 }
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_left_then_by_right_and_apply_sort_to_left(
-	unsigned a_count, 
-	std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 ){
 	auto p = compute_inverse_stable_sort_permutation_using_key(b, b_count, [](unsigned x){return x;});
@@ -132,31 +132,31 @@ std::vector<unsigned>compute_inverse_sort_permutation_first_by_left_then_by_righ
 }
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_tail_then_by_head_and_apply_sort_to_tail(
-	unsigned node_count, 
-	std::vector<unsigned>&tail, 
+	unsigned node_count,
+	std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 ){
 	return compute_inverse_sort_permutation_first_by_left_then_by_right_and_apply_sort_to_left(node_count, tail, node_count, head);
 }
 
 std::vector<unsigned>compute_sort_permutation_first_by_tail_then_by_head_and_apply_sort_to_tail(
-	unsigned node_count, 
-	std::vector<unsigned>&tail, 
+	unsigned node_count,
+	std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 ){
 	return compute_sort_permutation_first_by_left_then_by_right_and_apply_sort_to_left(node_count, tail, node_count, head);
 }
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_tail_then_by_head(
-	unsigned node_count, 
-	const std::vector<unsigned>&tail, 
+	unsigned node_count,
+	const std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 ){
 	return compute_inverse_sort_permutation_first_by_left_then_by_right(node_count, tail, node_count, head);
 }
 
 std::vector<unsigned>compute_sort_permutation_first_by_tail_then_by_head(
-	unsigned node_count, 
+	unsigned node_count,
 	const std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 ){

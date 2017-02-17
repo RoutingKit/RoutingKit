@@ -47,7 +47,7 @@ int main(){
 
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_sort_permutation_using_key(v, key_count, get_key),
 				v
@@ -55,7 +55,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_inverse_permutation(
 				compute_inverse_sort_permutation_using_key(v, key_count, get_key),
 				v
@@ -63,7 +63,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_stable_sort_permutation_using_key(v, key_count, get_key),
 				v
@@ -71,7 +71,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_inverse_permutation(
 				compute_inverse_stable_sort_permutation_using_key(v, key_count, get_key),
 				v
@@ -84,7 +84,7 @@ int main(){
 
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_sort_permutation_using_comparator(v, less_comparator),
 				v
@@ -92,7 +92,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_stable_sort_permutation_using_comparator(v, less_comparator),
 				v
@@ -100,7 +100,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_sort_permutation_using_less(v),
 				v
@@ -108,7 +108,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_stable_sort_permutation_using_less(v),
 				v
@@ -126,7 +126,7 @@ int main(){
 		std::reverse(sorted_v.begin(), sorted_v.end());
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_sort_permutation_using_comparator(v, greater_comparator),
 				v
@@ -134,7 +134,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_stable_sort_permutation_using_comparator(v, greater_comparator),
 				v
@@ -188,7 +188,7 @@ int main(){
 		std::stable_sort(sorted_v.begin(), sorted_v.end(), x_less_comparator);
 		
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_stable_sort_permutation_using_key(v, key_count, get_x_key),
 				v
@@ -196,7 +196,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_inverse_permutation(
 				compute_inverse_stable_sort_permutation_using_key(v, key_count, get_x_key),
 				v
@@ -204,7 +204,7 @@ int main(){
 		);
 
 		EXPECT(
-			sorted_v == 
+			sorted_v ==
 			apply_permutation(
 				compute_stable_sort_permutation_using_comparator(v, x_less_comparator),
 				v

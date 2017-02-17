@@ -17,28 +17,28 @@ namespace RoutingKit{
 #ifndef ROUTING_KIT_NO_POSIX
 
 FileDataSource::FileDataSource():
-	file_descriptor(-1){ 
+	file_descriptor(-1){
 }
 
 FileDataSource::FileDataSource(const char*file_name):
-	file_descriptor(-1){ 
-	open(file_name); 
+	file_descriptor(-1){
+	open(file_name);
 }
 
 FileDataSource::FileDataSource(const std::string&file_name):
-	file_descriptor(-1){ 
-	open(file_name); 
+	file_descriptor(-1){
+	open(file_name);
 }
 	
 FileDataSource::FileDataSource(FileDataSource&&o):
-	file_descriptor(o.file_descriptor){ 
-	o.file_descriptor = -1; 
+	file_descriptor(o.file_descriptor){
+	o.file_descriptor = -1;
 }
 
-const FileDataSource&FileDataSource::operator=(FileDataSource&&o){ 
-	file_descriptor = o.file_descriptor; 
-	o.file_descriptor = -1; 
-	return *this; 
+const FileDataSource&FileDataSource::operator=(FileDataSource&&o){
+	file_descriptor = o.file_descriptor;
+	o.file_descriptor = -1;
+	return *this;
 }
 
 
@@ -88,28 +88,28 @@ namespace{
 #else
 
 FileDataSource::FileDataSource():
-	file_descriptor(nullptr){ 
+	file_descriptor(nullptr){
 }
 
 FileDataSource::FileDataSource(const char*file_name):
-	file_descriptor(nullptr){ 
-	open(file_name); 
+	file_descriptor(nullptr){
+	open(file_name);
 }
 
 FileDataSource::FileDataSource(const std::string&file_name):
-	file_descriptor(nullptr){ 
-	open(file_name); 
+	file_descriptor(nullptr){
+	open(file_name);
 }
 	
 FileDataSource::FileDataSource(FileDataSource&&o):
-	file_descriptor(o.file_descriptor){ 
-	o.file_descriptor = nullptr; 
+	file_descriptor(o.file_descriptor){
+	o.file_descriptor = nullptr;
 }
 
-const FileDataSource&FileDataSource::operator=(FileDataSource&&o){ 
-	file_descriptor = o.file_descriptor; 
-	o.file_descriptor = nullptr; 
-	return *this; 
+const FileDataSource&FileDataSource::operator=(FileDataSource&&o){
+	file_descriptor = o.file_descriptor;
+	o.file_descriptor = nullptr;
+	return *this;
 }
 
 void FileDataSource::open(const char*file_name){

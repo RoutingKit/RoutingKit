@@ -50,7 +50,7 @@ public:
 	IDSetMinQueue(){}
 
 	explicit IDSetMinQueue(unsigned n):
-		min_id(invalid_id), 
+		min_id(invalid_id),
 		offset(smallest_two_power_no_smaller_than(n)),
 		data(n+offset, false){}
 

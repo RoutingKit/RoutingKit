@@ -20,7 +20,7 @@ LocalIDMapper::LocalIDMapper(uint64_t bit_count, const uint64_t*bits):
 		
 	for(uint64_t j = 0; j<rank_.size()-1; ++j){
 		rank_[j] = s;
-		uint64_t 
+		uint64_t
 			s0 = __builtin_popcountll(bits_[i+0]),
 			s1 = __builtin_popcountll(bits_[i+1]),
 			s2 = __builtin_popcountll(bits_[i+2]),
@@ -69,7 +69,7 @@ uint64_t LocalIDMapper::to_local(uint64_t global_id, uint64_t invalid) const {
 		return invalid;
 	}
 
-	uint64_t uint512_index = global_id / 512; 
+	uint64_t uint512_index = global_id / 512;
 
 	uint64_t local_id = rank_[uint512_index];
 
@@ -91,7 +91,7 @@ uint64_t LocalIDMapper::to_local(uint64_t global_id) const {
 
 	assert((bits_[uint64_index] & (1ull<<uint64_offset))!=0 && "global id is not mapped");
 
-	uint64_t uint512_index = global_id / 512; 
+	uint64_t uint512_index = global_id / 512;
 
 	uint64_t local_id = rank_[uint512_index];
 

@@ -36,7 +36,7 @@ private:
 		else
 			--last_char;
 
-		return 
+		return
 			(
 				(
 					compute_char_hash(str[0])

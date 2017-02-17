@@ -17,49 +17,49 @@ unsigned find_arc_or_return_invalid_given_sorted_head(const std::vector<unsigned
 
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_left_then_by_right(
-	unsigned a_count, 
-	const std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	const std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 );
 
 std::vector<unsigned>compute_sort_permutation_first_by_left_then_by_right(
-	unsigned a_count, 
-	const std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	const std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 );
 
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_left_then_by_right_and_apply_sort_to_left(
-	unsigned a_count, 
-	std::vector<unsigned>&a, 
-	unsigned b_count, 
+	unsigned a_count,
+	std::vector<unsigned>&a,
+	unsigned b_count,
 	const std::vector<unsigned>&b
 );
 
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_tail_then_by_head(
-	unsigned node_count, 
-	const std::vector<unsigned>&tail, 
+	unsigned node_count,
+	const std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 );
 
 std::vector<unsigned>compute_sort_permutation_first_by_tail_then_by_head(
-	unsigned node_count, 
+	unsigned node_count,
 	const std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 );
 
 std::vector<unsigned>compute_inverse_sort_permutation_first_by_tail_then_by_head_and_apply_sort_to_tail(
-	unsigned node_count, 
-	std::vector<unsigned>&tail, 
+	unsigned node_count,
+	std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 );
 
 std::vector<unsigned>compute_sort_permutation_first_by_tail_then_by_head_and_apply_sort_to_tail(
-	unsigned node_count, 
-	std::vector<unsigned>&tail, 
+	unsigned node_count,
+	std::vector<unsigned>&tail,
 	const std::vector<unsigned>&head
 );
 

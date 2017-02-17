@@ -39,49 +39,49 @@ int main(int argc, char*argv[]){
 
 		long long timer;
 
-		cout << "Loading Graph ... " << flush;  
+		cout << "Loading Graph ... " << flush;
 
 		auto first_out = load_vector<unsigned>(first_out_file);
 		auto tail = invert_inverse_vector(first_out);
 		auto head = load_vector<unsigned>(head_file);
 		auto weight = load_vector<unsigned>(weight_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 
-		cout << "Loading order ... " << flush;  
+		cout << "Loading order ... " << flush;
 		
 		auto cch_order = load_vector<unsigned>(cch_order_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		
-		cout << "Building CCH ... " << flush;  
+		cout << "Building CCH ... " << flush;
 		
 		timer = -get_micro_time();
 		CustomizableContractionHierarchy cch(cch_order, invert_inverse_vector(first_out), head);
 		timer += get_micro_time();
 
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
-		cout << "Customizing CCH ... " << flush;  
+		cout << "Customizing CCH ... " << flush;
 		
 		timer = -get_micro_time();
 		CustomizableContractionHierarchyMetric metric(cch, weight);
 		ContractionHierarchy ch = metric.build_contraction_hierarchy_using_perfect_witness_search();
 		timer += get_micro_time();
 
-		cout << "done [" << timer << "musec]" << endl;  
+		cout << "done [" << timer << "musec]" << endl;
 
 		check_contraction_hierarchy_for_errors(ch);
 
-		cout << "Loading test queries ... " << flush;  
+		cout << "Loading test queries ... " << flush;
 
 		auto source = load_vector<unsigned>(source_file);
 		auto target = load_vector<unsigned>(target_file);
 		auto ref_distance = load_vector<unsigned>(distance_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		const unsigned query_count = source.size();
 
@@ -156,7 +156,7 @@ int main(int argc, char*argv[]){
 			}
 		}
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "max dist running time : " << dist_time_max << "musec" << endl;
 		cout << "avg dist running time : " << dist_time_sum/query_count << "musec" << endl;

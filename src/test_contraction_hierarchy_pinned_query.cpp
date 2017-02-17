@@ -24,20 +24,20 @@ int main(int argc, char*argv[]){
 			ch_file = argv[1];
 		}
 
-		cout << "Loading Contraction Hierarchy ... " << flush;  
+		cout << "Loading Contraction Hierarchy ... " << flush;
 
 		ContractionHierarchy ch = ContractionHierarchy::load_file(ch_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Generating queries ... " << flush;  
+		cout << "Generating queries ... " << flush;
 
-		const unsigned 
-			source_count = 500, 
+		const unsigned
+			source_count = 500,
 			target_count = 500;
 
 		std::vector<unsigned>
-			source_set(source_count), 
+			source_set(source_count),
 			target_set(target_count);
 
 		for(unsigned i=0; i<source_count; ++i)
@@ -48,11 +48,11 @@ int main(int argc, char*argv[]){
 		
 		std::vector<unsigned>optimal_result(source_count * target_count);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 		
 		{
 			long long time = -get_micro_time();
-			cout << "Running baseline ... " << flush;  
+			cout << "Running baseline ... " << flush;
 		
 			ContractionHierarchyQuery ch_query(ch);
 			for(unsigned s=0; s<source_count; ++s){
@@ -63,7 +63,7 @@ int main(int argc, char*argv[]){
 
 			time += get_micro_time();
 
-			cout << "done ["<<time << "musec]" << endl; 
+			cout << "done ["<<time << "musec]" << endl;
 		}
 
 		std::vector<unsigned>pinned_source_result(source_count * target_count);
@@ -77,7 +77,7 @@ int main(int argc, char*argv[]){
 			unsigned query_count = 0;
 
 			long long time = -get_micro_time();
-			cout << "Running forward pinning ... " << flush;  
+			cout << "Running forward pinning ... " << flush;
 		
 			ContractionHierarchyQuery ch_query(ch);
 
@@ -101,7 +101,7 @@ int main(int argc, char*argv[]){
 
 			time += get_micro_time();
 
-			cout << "done ["<<time << "musec]" << endl; 
+			cout << "done ["<<time << "musec]" << endl;
 
 			cout << "query_time" << " : " << query_time / query_count << "musec" << endl;
 			cout << "pin_time" << " : " << select_time / select_count << "musec" << endl;
@@ -124,7 +124,7 @@ int main(int argc, char*argv[]){
 			unsigned query_count = 0;
 
 			long long time = -get_micro_time();
-			cout << "Running forward pinning ... " << flush;  
+			cout << "Running forward pinning ... " << flush;
 		
 			ContractionHierarchyQuery ch_query(ch);
 
@@ -147,7 +147,7 @@ int main(int argc, char*argv[]){
 
 			time += get_micro_time();
 
-			cout << "done ["<<time << "musec]" << endl; 
+			cout << "done ["<<time << "musec]" << endl;
 
 			cout << "query_time" << " : " << query_time / query_count << "musec" << endl;
 			cout << "pin_time" << " : " << select_time / select_count << "musec" << endl;

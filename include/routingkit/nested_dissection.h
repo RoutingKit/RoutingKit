@@ -47,7 +47,7 @@ private:
 
 	unsigned flow_intensity;
 	
-	BitVector is_arc_saturated; 
+	BitVector is_arc_saturated;
 	BitVector is_arc_blocked;
 
 	bool is_finished_flag;
@@ -71,30 +71,30 @@ public:
 };
 
 CutSide inertial_flow(
-	const GraphFragment&fragment, 
-	unsigned min_balance, 
-	const std::vector<float>&latitude, const std::vector<float>&longitude, 
+	const GraphFragment&fragment,
+	unsigned min_balance,
+	const std::vector<float>&latitude, const std::vector<float>&longitude,
 	const std::function<void(const std::string&)>&log_message = [](const std::string&){}
 );
 
 CutSide inertial_flow(
-	const GraphFragment&fragment, 
-	const std::vector<float>&latitude, const std::vector<float>&longitude, 
+	const GraphFragment&fragment,
+	const std::vector<float>&latitude, const std::vector<float>&longitude,
 	const std::function<void(const std::string&)>&log_message = [](const std::string&){}
 );
 
 BitVector derive_separator_from_cut(const GraphFragment&fragment, const BitVector&cut);
 
 std::vector<unsigned>compute_nested_node_dissection_order(
-	GraphFragment fragment, 
+	GraphFragment fragment,
 	const std::function<BitVector(const GraphFragment&)>&compute_separator,
 	const std::function<void(const std::string&)>&log_message = [](const std::string&){}
 );
 
 std::vector<unsigned>compute_nested_node_dissection_order_using_inertial_flow(
-	unsigned node_count, 
-	const std::vector<unsigned>&tail, const std::vector<unsigned>&head, 
-	const std::vector<float>&latitude, const std::vector<float>&longitude, 
+	unsigned node_count,
+	const std::vector<unsigned>&tail, const std::vector<unsigned>&head,
+	const std::vector<float>&latitude, const std::vector<float>&longitude,
 	const std::function<void(const std::string&)>&log_message = [](const std::string&){}
 );
 

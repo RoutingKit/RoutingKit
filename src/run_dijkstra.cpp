@@ -33,13 +33,13 @@ int main(int argc, char*argv[]){
 			distance_file = argv[6];
 		}
 
-		cout << "Loading graph ... " << flush;  
+		cout << "Loading graph ... " << flush;
 
 		vector<unsigned>first_out = load_vector<unsigned>(first_out_file);
 		vector<unsigned>head = load_vector<unsigned>(head_file);
 		vector<unsigned>weight = load_vector<unsigned>(weight_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		const unsigned node_count = first_out.size()-1;
 		const unsigned arc_count = head.size();
@@ -55,12 +55,12 @@ int main(int argc, char*argv[]){
 
 		auto dij = make_dijkstra(first_out, head, [&](unsigned arc, unsigned dep_time){ return weight[arc]; });
 
-		cout << "Loading test queries ... " << flush;  
+		cout << "Loading test queries ... " << flush;
 
 		vector<unsigned>source = load_vector<unsigned>(source_file);
 		vector<unsigned>target = load_vector<unsigned>(target_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		if(source.size() != target.size())
 			throw runtime_error("The source and target vectors must be of the same length.");
@@ -96,7 +96,7 @@ int main(int argc, char*argv[]){
 			time_sum += time;
 		}
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "max running time : " << time_max << "musec" << endl;
 		cout << "avg running time : " << time_sum/query_count << "musec" << endl;

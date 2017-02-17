@@ -34,9 +34,9 @@ void compare_num_data(const string&vector1_file, const string&vector2_file){
 		if(vector1_smaller_count == 0 && vector2_smaller_count == 0){
 			cout << "The vectors are the same and have "<<vector1.size()<<" elements." << endl;
 		}else{
-			cout 
+			cout
 				<< "The vectors differ. "
-				<< vector1_smaller_count <<" elements are smaller in \""<<vector1_file<<"\". " 
+				<< vector1_smaller_count <<" elements are smaller in \""<<vector1_file<<"\". "
 				<< vector2_smaller_count <<" elements are smaller in \""<<vector2_file<<"\". "
 				<< (vector1.size()-vector1_smaller_count-vector2_smaller_count) <<" elements are the same. "
 				<< (vector1_smaller_count+vector2_smaller_count) <<" elements are different. "
@@ -68,7 +68,7 @@ void compare_string_data(const std::string&vector1_file, const std::string&vecto
 		if(equal_count == vector1.size()){
 			cout << "The vectors are the same and have "<<vector1.size()<<" elements." << endl;
 		}else{
-			cout 
+			cout
 				<< "The vectors differ. "
 				<< equal_count <<" elements are the same. "
 				<< vector1.size()-equal_count <<" elements are different. "

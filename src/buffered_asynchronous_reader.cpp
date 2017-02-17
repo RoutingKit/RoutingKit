@@ -26,7 +26,7 @@ struct BufferedAsynchronousReader::Impl{
 
         std::mutex lock;
         std::condition_variable main_thread_has_done_something;
-        std::condition_variable worker_thread_has_done_something;  
+        std::condition_variable worker_thread_has_done_something;
 
 	~Impl(){
 		{
@@ -87,7 +87,7 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 			try{
 				for(;;){
 					ptr->main_thread_has_done_something.wait(
-						guard, 
+						guard,
 						[&]{
 							return (blocks_per_buffer * block_size - ptr->how_many_bytes_are_in_the_buffer()) >= 2*block_size || ptr->was_termination_requested;
 						}
@@ -145,7 +145,7 @@ char* BufferedAsynchronousReader::read(unsigned size) {
 	std::unique_lock<std::mutex>guard(impl->lock);
 
         impl->worker_thread_has_done_something.wait(
-                guard, 
+                guard,
                 [&]{
                         return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() >= size || impl->read_exception;
                 }
@@ -191,15 +191,15 @@ bool BufferedAsynchronousReader::were_all_bytes_read() const{
 	return impl->was_end_of_file_reached;
 }
 
-bool BufferedAsynchronousReader::is_finished() const{ 
+bool BufferedAsynchronousReader::is_finished() const{
 	std::unique_lock<std::mutex>guard(impl->lock);
-	return impl->was_end_of_file_reached && impl->how_many_bytes_are_in_the_buffer() == 0; 
+	return impl->was_end_of_file_reached && impl->how_many_bytes_are_in_the_buffer() == 0;
 }
 
 void BufferedAsynchronousReader::wait_until_buffer_is_non_empty_or_all_bytes_were_read() const{
 	std::unique_lock<std::mutex>guard(impl->lock);
 	impl->worker_thread_has_done_something.wait(
-                guard, 
+                guard,
                 [&]{
                         return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() > 0 || impl->read_exception;
                 }

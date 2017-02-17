@@ -43,7 +43,7 @@ int main(int argc, char*argv[]){
 
 			ch_query.reset().add_source(source).add_target(target).run();
 
-			cout << 
+			cout <<
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				"<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
 		  		"<Document>\n"

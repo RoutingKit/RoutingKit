@@ -11,8 +11,8 @@
 namespace RoutingKit{
 
 //
-// A sort permutation p of a vector v is a permutation such that 
-// v[p[0]] <= v[p[1]] <= v[p[2]] <= ... . Applying a sort permutation p of v to 
+// A sort permutation p of a vector v is a permutation such that
+// v[p[0]] <= v[p[1]] <= v[p[2]] <= ... . Applying a sort permutation p of v to
 // v yields a sorted vector.
 //
 // The functions in this header follow the following naming sheme:
@@ -28,23 +28,23 @@ namespace RoutingKit{
 //     sort any array. The sorting is done by applying the resulting permutation
 //     to one or more vectors.
 //   * The functions of category 2 copy their argument vector, sort the copy and
-//     return it. If an rvalue vector is given as parameter then the copy is 
+//     return it. If an rvalue vector is given as parameter then the copy is
 //     omitted.
 //   * The functions of category 3 sort their argument array inplace.
 //   * The functions of category 4 do not sort anything but check whether their
 //     argument array is sorted.
-//   * "inverse" indicates that not a sort permutation but its inverse is 
-//     computed. In combination with the _using_key function it is slightly 
-//     faster to compute an inverse sort permutation and then to use 
+//   * "inverse" indicates that not a sort permutation but its inverse is
+//     computed. In combination with the _using_key function it is slightly
+//     faster to compute an inverse sort permutation and then to use
 //     apply_inverse_permutation then to compute a sort permutation and to use
 //     apply_permutation.
 //   * "stable" indicates that the relative order of values that compare equally
 //     is not changed.
 //   * "key" indicates that elements are sorted using bucket sort. All functions
-//     take a (key_count, get_key) pair of parameters to specify the order. 
+//     take a (key_count, get_key) pair of parameters to specify the order.
 //     get_key is a function  object that must map every element onto a value in
-//     [0,key_count).  get_key is assumed to have a quick execution and is 
-//     called several times per sort operation. However, get_key is never 
+//     [0,key_count).  get_key is assumed to have a quick execution and is
+//     called several times per sort operation. However, get_key is never
 //     copied.
 //   * "comparator" indicates that an STL like comparator is used and needs to
 //     be passed to every function.
@@ -203,12 +203,12 @@ std::vector<T>sort_using_comparator(std::vector<T>&&v, const C&is_less){
 
 template<class T>
 std::vector<unsigned> compute_sort_permutation_using_less(const std::vector<T>&v){
-	return compute_sort_permutation_using_comparator(v, [](const T&l, const T&r){return l < r;}); 
+	return compute_sort_permutation_using_comparator(v, [](const T&l, const T&r){return l < r;});
 }
 
 template<class T>
 std::vector<unsigned> compute_stable_sort_permutation_using_less(const std::vector<T>&v){
-	return compute_stable_sort_permutation_using_comparator(v, [](const T&l, const T&r){return l < r;}); 
+	return compute_stable_sort_permutation_using_comparator(v, [](const T&l, const T&r){return l < r;});
 }
 
 template<class T>

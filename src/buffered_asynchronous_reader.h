@@ -1,5 +1,5 @@
 #ifndef BUFFERED_ASYNCHRONOUS_READER_H
-#define BUFFERED_ASYNCHRONOUS_READER_H 
+#define BUFFERED_ASYNCHRONOUS_READER_H
 
 #include <functional>
 #include <memory>
@@ -35,7 +35,7 @@ public:
 		return *(T*)read_or_throw(sizeof(T));
 	}
 	
-private:           
+private:
 	struct Impl;
 	std::unique_ptr<Impl>impl;
 };

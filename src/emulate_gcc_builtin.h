@@ -29,7 +29,7 @@ namespace RoutingKit{namespace detail{
 	template<class T>
 	bool emulated_sync_bool_compare_and_swap(T*var, T comp_value, T new_value){
 		static std::mutex m;
-		std::lock_guard<std::mutex> lock(m); 
+		std::lock_guard<std::mutex> lock(m);
 
 		std::atomic_thread_fence(std::memory_order_seq_cst);
 

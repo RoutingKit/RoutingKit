@@ -19,8 +19,8 @@ int main(int argc, char*argv[]){
 	string pbf_file;
 
 	if(argc != 2){
-		cout 
-			<< "Usage: "<< argv[0] << " test.pbf\n" 
+		cout
+			<< "Usage: "<< argv[0] << " test.pbf\n"
 			<< "Example: \n"
 			<< "wget https://download.geofabrik.de/europe/germany/baden-wuerttemberg-latest.osm.pbf\n"
 			<< argv[0] << " baden-wuerttemberg-latest.osm.pbf" << endl;

@@ -23,9 +23,9 @@ public:
 		return bit_count_;
 	}
 
-	uint64_t local_id_count()const{ 
+	uint64_t local_id_count()const{
 		if(!rank_.empty())
-			return rank_.back(); 
+			return rank_.back();
 		else
 			return 0;
 	}

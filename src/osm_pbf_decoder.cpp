@@ -205,9 +205,9 @@ namespace{
 namespace {
 	void internal_read_osm_pbf(
 		BufferedAsynchronousReader&reader,
-		std::function<void(uint64_t osm_node_id, double latitude, double longitude, const TagMap&tags)>node_callback, 
-		std::function<void(uint64_t osm_way_id, const std::vector<std::uint64_t>&osm_node_id_list, const TagMap&tags)>way_callback, 
-		std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback, 
+		std::function<void(uint64_t osm_node_id, double latitude, double longitude, const TagMap&tags)>node_callback,
+		std::function<void(uint64_t osm_way_id, const std::vector<std::uint64_t>&osm_node_id_list, const TagMap&tags)>way_callback,
+		std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback,
 		std::function<void(const std::string&msg)>log_message
 	){
 		TagMap tag_map;
@@ -280,7 +280,7 @@ namespace {
 				double latitude, longitude;
 
 				const char
-					*key_begin = nullptr, *key_end = nullptr, 
+					*key_begin = nullptr, *key_end = nullptr,
 					*value_begin = nullptr, *value_end = nullptr;
 
 				decode_protobuf_message_with_callbacks(
@@ -318,13 +318,13 @@ namespace {
 					throw std::runtime_error("PBF error: key and value arrays do not decode to equal length.");
 
 				tag_map.build(
-					key_list.size(), 
+					key_list.size(),
 					[&](uint64_t i){
 						i = key_list[i];
 						if(i > string_table.size())
 							throw std::runtime_error("PBF error: key string ID is out of bounds.");
 						return string_table[i];
-					}, 
+					},
 					[&](uint64_t i){	
 						i = value_list[i];
 						if(i > string_table.size())
@@ -391,13 +391,13 @@ namespace {
 							value_list.push_back(y);
 						}
 						tag_map.build(
-							key_list.size(), 
+							key_list.size(),
 							[&](uint64_t i){
 								i = key_list[i];
 								if(i > string_table.size())
 									throw std::runtime_error("PBF error: key string ID is out of bounds.");
 								return string_table[i];
-							}, 
+							},
 							[&](uint64_t i){	
 								i = value_list[i];
 								if(i > string_table.size())
@@ -422,7 +422,7 @@ namespace {
 				uint64_t osm_way_id = (uint64_t)-1;
 
 				const char
-					*key_begin = nullptr, *key_end = nullptr, 
+					*key_begin = nullptr, *key_end = nullptr,
 					*value_begin = nullptr, *value_end = nullptr,
 					*node_list_begin = nullptr, *node_list_end = nullptr;
 
@@ -461,13 +461,13 @@ namespace {
 					throw std::runtime_error("PBF error: key and value arrays do not decode to equal length.");
 
 				tag_map.build(
-					key_list.size(), 
+					key_list.size(),
 					[&](uint64_t i){
 						i = key_list[i];
 						if(i > string_table.size())
 							throw std::runtime_error("PBF error: key string ID is out of bounds.");
 						return string_table[i];
-					}, 
+					},
 					[&](uint64_t i){	
 						i = value_list[i];
 						if(i > string_table.size())
@@ -493,7 +493,7 @@ namespace {
 				uint64_t osm_relation_id = (uint64_t)-1;
 
 				const char
-					*key_begin = nullptr, *key_end = nullptr, 
+					*key_begin = nullptr, *key_end = nullptr,
 					*value_begin = nullptr, *value_end = nullptr,
 					*member_role_begin = nullptr, *member_role_end = nullptr,
 					*member_id_begin = nullptr, *member_id_end = nullptr,
@@ -541,13 +541,13 @@ namespace {
 					throw std::runtime_error("PBF error: key and value arrays do not decode to equal length.");
 
 				tag_map.build(
-					key_list.size(), 
+					key_list.size(),
 					[&](uint64_t i){
 						i = key_list[i];
 						if(i > string_table.size())
 							throw std::runtime_error("PBF error: key string ID is out of bounds.");
 						return string_table[i];
-					}, 
+					},
 					[&](uint64_t i){	
 						i = value_list[i];
 						if(i > string_table.size())
@@ -605,9 +605,9 @@ namespace {
 
 void unordered_read_osm_pbf(
 	const std::string&file_name,
-	std::function<void(uint64_t osm_node_id, double latitude, double longitude, const TagMap&tags)>node_callback, 
-	std::function<void(uint64_t osm_way_id, const std::vector<std::uint64_t>&osm_node_id_list, const TagMap&tags)>way_callback, 
-	std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback, 
+	std::function<void(uint64_t osm_node_id, double latitude, double longitude, const TagMap&tags)>node_callback,
+	std::function<void(uint64_t osm_way_id, const std::vector<std::uint64_t>&osm_node_id_list, const TagMap&tags)>way_callback,
+	std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback,
 	std::function<void(const std::string&msg)>log_message
 ){
 	assert(node_callback || way_callback || relation_callback);
@@ -620,9 +620,9 @@ void unordered_read_osm_pbf(
 
 void ordered_read_osm_pbf(
 	const std::string&file_name,
-	std::function<void(uint64_t osm_node_id, double latitude, double longitude, const TagMap&tags)>node_callback, 
-	std::function<void(uint64_t osm_way_id, const std::vector<std::uint64_t>&osm_node_id_list, const TagMap&tags)>way_callback, 
-	std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback, 
+	std::function<void(uint64_t osm_node_id, double latitude, double longitude, const TagMap&tags)>node_callback,
+	std::function<void(uint64_t osm_way_id, const std::vector<std::uint64_t>&osm_node_id_list, const TagMap&tags)>way_callback,
+	std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback,
 	std::function<void(const std::string&msg)>log_message,
 	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
 ){
@@ -698,7 +698,7 @@ void speedtest_osm_pbf_reading(
 
 
 	unordered_read_osm_pbf(
-		pbf_file, 
+		pbf_file,
 		[&](uint64_t osm_node_id, double lat, double lon, const TagMap&tags){
 			++node_count;
 			produce_report();

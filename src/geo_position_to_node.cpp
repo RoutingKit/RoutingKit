@@ -33,7 +33,7 @@ namespace{
 			auto mid = begin + (end - begin)/2;
 
 			std::nth_element(
-				d.begin() + begin+1, d.begin() + mid, d.begin() + end, 
+				d.begin() + begin+1, d.begin() + mid, d.begin() + end,
 				[](PointData l, PointData r){
 					return l.distance_to_pivot < r.distance_to_pivot;
 				}
@@ -69,8 +69,8 @@ namespace{
 	// I envy the day that C++ will finally support recursive lambda functions...
 
 	void nearest_neighbor_recursion(
-		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id, 
-		unsigned begin, unsigned end, 
+		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id,
+		unsigned begin, unsigned end,
 		GeoPositionToNode::PointPosition query_position,
 		GeoPositionToNode::NearestNeighborhoodQueryResult&current_result
 	){
@@ -113,8 +113,8 @@ namespace{
 
 
 	void find_all_nodes_recursion(
-		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id, 
-		unsigned begin, unsigned end, 
+		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id,
+		unsigned begin, unsigned end,
 		GeoPositionToNode::PointPosition query_position,
 		float query_radius,
 		std::vector<GeoPositionToNode::NearestNeighborhoodQueryResult>&result

@@ -128,7 +128,7 @@ int main(){
 			BitVector dense_regular_vector = make_bit_vector(8888888, [](uint64_t x){ return x % 7 == 0;});
 		
 			BitVector dense_irregular_vector = make_bit_vector(
-				7777777, 
+				7777777,
 				[](uint64_t x){
 					if(((x/1000000) % 2) == 0)
 						return false;
@@ -139,7 +139,7 @@ int main(){
 			);
 
 			BitVector sparse_irregular_vector = make_bit_vector(
-				18978978, 
+				18978978,
 				[](uint64_t x){
 					if(((x/1000000) % 2) != 0)
 						return false;
@@ -248,7 +248,7 @@ int main(){
 		{
 			cout << "Start sparse speed test " << endl;
 			BitVector bits = make_bit_vector(
-				1856497897ull, 
+				1856497897ull,
 				[](uint64_t x){
 					if(((x/10000000) % 2) != 0)
 						return false;
@@ -281,14 +281,14 @@ int main(){
 			}
 			cout << "memory overhead : "<<static_cast<float>(map.memory_overhead_in_bits()) / static_cast<float>(map.global_id_count()) << "bits" << endl;
 
-			cout << "output junk to stop optimizer " << junk << endl; 
+			cout << "output junk to stop optimizer " << junk << endl;
 		
 		}
 
 		{
 			cout << "Start dense speed test " << endl;
 			BitVector bits = make_bit_vector(
-				1856497897ull, 
+				1856497897ull,
 				[](uint64_t x){
 					if(((x/10000000) % 2) != 0)
 						return false;
@@ -321,7 +321,7 @@ int main(){
 			}
 			cout << "memory overhead : "<<static_cast<float>(map.memory_overhead_in_bits()) / static_cast<float>(map.global_id_count()) << "bits" << endl;
 
-			cout << "output junk to stop optimizer " << junk << endl; 
+			cout << "output junk to stop optimizer " << junk << endl;
 		
 		}
 

@@ -36,28 +36,28 @@ int main(int argc, char*argv[]){
 			distance_file = argv[7];
 		}
 
-		cout << "Loading Graph ... " << flush;  
+		cout << "Loading Graph ... " << flush;
 
 		auto first_out = load_vector<unsigned>(first_out_file);
 		auto tail = invert_inverse_vector(first_out);
 		auto head = load_vector<unsigned>(head_file);
 		auto weight = load_vector<unsigned>(weight_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Loading Contraction Hierarchy ... " << flush;  
+		cout << "Loading Contraction Hierarchy ... " << flush;
 
 		ContractionHierarchy ch = ContractionHierarchy::load_file(ch_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
-		cout << "Loading test queries ... " << flush;  
+		cout << "Loading test queries ... " << flush;
 
 		auto source = load_vector<unsigned>(source_file);
 		auto target = load_vector<unsigned>(target_file);
 		auto ref_distance = load_vector<unsigned>(distance_file);
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		const unsigned query_count = source.size();
 
@@ -145,7 +145,7 @@ int main(int argc, char*argv[]){
 			}
 		}
 
-		cout << "done" << endl;  
+		cout << "done" << endl;
 
 		cout << "max dist running time : " << dist_time_max << "musec" << endl;
 		cout << "avg dist running time : " << dist_time_sum/query_count << "musec" << endl;
