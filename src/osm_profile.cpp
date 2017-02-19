@@ -77,6 +77,29 @@ bool is_osm_way_used_by_pedestrians(uint64_t osm_way_id, const TagMap&tags, std:
 	if(ferry && str_eq(ferry, "ferry"))
 		return true;
 
+	const char* public_transport = tags["public_transport"];
+	if(public_transport != nullptr &&
+	   (str_eq(public_transport, "stop_position") ||
+	    str_eq(public_transport, "platform") ||
+	    str_eq(public_transport, "stop_area") ||
+	    str_eq(public_transport, "station")
+	   )
+	  ) {
+		return true;
+	}
+
+	const char* railway = tags["railway"];
+	if(railway != nullptr &&
+	   (str_eq(railway, "halt") ||
+	    str_eq(railway, "platform") ||
+	    str_eq(railway, "subway_entrance") ||
+	    str_eq(railway, "station") ||
+	    str_eq(railway, "tram_stop")
+	   )
+	  ) {
+		return true;
+	}
+
 	const char* highway = tags["highway"];
 	if(highway == nullptr)
 		return false;
@@ -116,6 +139,10 @@ bool is_osm_way_used_by_pedestrians(uint64_t osm_way_id, const TagMap&tags, std:
 		str_eq(highway, "pedestrian") ||
 		str_eq(highway, "escape") ||
 		str_eq(highway, "steps") ||
+		str_eq(highway, "crossing") ||
+		str_eq(highway, "escalator") ||
+		str_eq(highway, "elevator") ||
+		str_eq(highway, "platform") ||
 		str_eq(highway, "ferry")
 	)
 		return true;
