@@ -190,7 +190,7 @@ bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::fu
 
 	/* if a cycleway is specified we can be sure
 	 * that the highway will be used in a direction
-     */
+	 */
 	if(cycleway != nullptr || cycleway_left != nullptr || cycleway_right != nullptr || cycleway_both != nullptr)
 		return true;
 
@@ -211,6 +211,7 @@ bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::fu
 		str_eq(highway, "cycleway") ||
 		str_eq(highway, "bridleway") ||
 		str_eq(highway, "pedestrian") ||
+		str_eq(highway, "crossing") ||
 		str_eq(highway, "escape") ||
 		str_eq(highway, "steps") ||
 		str_eq(highway, "ferry")
@@ -341,6 +342,9 @@ inline bool tag_cmp_no(const char *tag) {
 OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
 	const char
 		*oneway = tags["oneway"],
+		*cycleway = tags["cycleway"],
+		*cycleway_left = tags["cycleway_left"],
+		*cycleway_right = tags["cycleway_right"],
 		*oneway_bicycle = tags["oneway:bicycle"],
 		*junction = tags["junction"];
 
@@ -355,6 +359,18 @@ OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, 
 
 	if (tag_cmp_yes(oneway))
 		return OSMWayDirectionCategory::only_open_forwards;
+
+	if (cycleway_left != nullptr && cycleway_right != nullptr)
+		return OSMWayDirectionCategory::open_in_both;
+
+	if (cycleway != nullptr && (str_eq(cycleway, "opposite") || str_eq(cycleway, "opposite_lane") || str_eq(cycleway, "opposite_track")))
+		return OSMWayDirectionCategory::open_in_both;
+
+	if (cycleway_left != nullptr && (str_eq(cycleway_left, "opposite") || str_eq(cycleway_left, "opposite_lane") || str_eq(cycleway_left, "opposite_track")))
+		return OSMWayDirectionCategory::open_in_both;
+
+	if (cycleway_right != nullptr && (str_eq(cycleway_right, "opposite") || str_eq(cycleway_right, "opposite_lane") || str_eq(cycleway_right, "opposite_track")))
+		return OSMWayDirectionCategory::open_in_both;
 
 	if (oneway_bicycle != nullptr)
 		oneway = oneway_bicycle;
