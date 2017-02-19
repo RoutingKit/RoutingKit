@@ -120,6 +120,10 @@ bool is_osm_way_used_by_pedestrians(uint64_t osm_way_id, const TagMap&tags, std:
 		}
 	}
 
+	const char* crossing = tags["crossing"];
+	if(crossing != nullptr && str_eq(crossing, "no"))
+		return false;
+
 	if(
 		str_eq(highway, "secondary") ||
 		str_eq(highway, "tertiary") ||
