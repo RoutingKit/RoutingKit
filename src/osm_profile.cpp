@@ -194,6 +194,10 @@ bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::fu
 	if(cycleway != nullptr || cycleway_left != nullptr || cycleway_right != nullptr || cycleway_both != nullptr)
 		return true;
 
+	const char* crossing = tags["crossing"];
+	if(crossing != nullptr && str_eq(crossing, "no"))
+		return false;
+
 	if(
 		str_eq(highway, "secondary") ||
 		str_eq(highway, "tertiary") ||
