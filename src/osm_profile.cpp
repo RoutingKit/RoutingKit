@@ -347,6 +347,7 @@ OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, 
 	const char
 		*oneway = tags["oneway"],
 		*cycleway = tags["cycleway"],
+		*cycleway_both = tags["cycleway:both"],
 		*cycleway_left = tags["cycleway:left"],
 		*cycleway_right = tags["cycleway:right"],
 		*oneway_bicycle = tags["oneway:bicycle"],
@@ -355,14 +356,11 @@ OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, 
 	if(junction != nullptr && str_eq(junction, "roundabout"))
 		return OSMWayDirectionCategory::only_open_forwards;
 
-	if(oneway == nullptr)
-		return OSMWayDirectionCategory::open_in_both;
-
 	if(oneway_bicycle != nullptr && tag_cmp_no(oneway_bicycle))
 		return OSMWayDirectionCategory::open_in_both;
 
-	if (tag_cmp_yes(oneway))
-		return OSMWayDirectionCategory::only_open_forwards;
+	if(oneway == nullptr || cycleway_both != nullptr)
+		return OSMWayDirectionCategory::open_in_both;
 
 	if (cycleway_left != nullptr && cycleway_right != nullptr)
 		return OSMWayDirectionCategory::open_in_both;
