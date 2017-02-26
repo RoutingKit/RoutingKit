@@ -347,8 +347,8 @@ OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, 
 	const char
 		*oneway = tags["oneway"],
 		*cycleway = tags["cycleway"],
-		*cycleway_left = tags["cycleway_left"],
-		*cycleway_right = tags["cycleway_right"],
+		*cycleway_left = tags["cycleway:left"],
+		*cycleway_right = tags["cycleway:right"],
 		*oneway_bicycle = tags["oneway:bicycle"],
 		*junction = tags["junction"];
 
