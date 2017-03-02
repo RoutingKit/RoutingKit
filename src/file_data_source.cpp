@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#else
+typedef unsigned long ssize_t;
 #endif
 
 #include <string.h>

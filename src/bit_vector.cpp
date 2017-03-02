@@ -7,6 +7,11 @@
 #include <algorithm>
 #include <new>
 
+#ifdef _MSC_VER
+#include <malloc.h>
+#define aligned_alloc(alignment, size) _aligned_malloc(size, alignment)
+#endif
+
 namespace RoutingKit{
 
 // Not all compilers support aligned_alloc such as GCC 4.6. If you have such a compiler then uncomment these
@@ -34,7 +39,7 @@ namespace {
 	typedef uint64_t v8_uint64_t __attribute__((vector_size(64)));
 	#else
 	struct v8_uint64_t{
-		uint64_t v[8];
+		uint64_t v[8] = {0};
 		void operator^=(v8_uint64_t o){
 			for(unsigned i=0; i<8; ++i)
 				v[i] ^= o.v[i];
@@ -151,6 +156,8 @@ namespace {
 	}
 }
 
+const BitVector::Uninitialized BitVector::uninitialized;
+
 BitVector::BitVector():
 	data_(nullptr), size_(0){}
 
@@ -204,7 +211,11 @@ BitVector::BitVector(uint64_t size, bool init_value)
 }
 
 BitVector::~BitVector(){
+#ifndef _MSC_VER
 	free(data_);
+#else
+	_aligned_free(data_);
+#endif
 }
 
 BitVector::BitVector(const BitVector&o):

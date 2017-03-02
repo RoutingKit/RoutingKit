@@ -7,7 +7,11 @@
 
 #include <zlib.h>
 #include <stdexcept>
+#ifdef ROUTING_KIT_NO_POSIX
+#include <winsock2.h> 
+#else
 #include <netinet/in.h>
+#endif
 #include <thread>
 #include <iomanip>
 #include <sstream>
