@@ -7,6 +7,14 @@
 #include <algorithm>
 #include <new>
 
+#ifdef _MSC_VER
+#include <malloc.h>
+// Let us hope that this workaround does not break when MS finally implements the C11 standard function aligned_alloc from <stdlib.h>...
+// If it does break then please open an issue with the information of upto what values of _MSC_VER the workaround is needed.
+#define aligned_alloc(alignment, size) _aligned_malloc(size, alignment)
+#define aligned_free(ptr) _aligned_free(ptr)
+#endif
+
 namespace RoutingKit{
 
 // Not all compilers support aligned_alloc such as GCC 4.6. If you have such a compiler then uncomment these
