@@ -5,6 +5,12 @@
 #include <assert.h>
 #include <utility>
 
+#ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
+#ifndef __attribute__
+#define __attribute__(A) /* do nothing */
+#endif
+#endif
+
 namespace RoutingKit{
 
 class BitVector{
