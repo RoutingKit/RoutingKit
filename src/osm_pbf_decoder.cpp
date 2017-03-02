@@ -7,12 +7,31 @@
 
 #include <zlib.h>
 #include <stdexcept>
-#include <netinet/in.h>
 #include <thread>
 #include <iomanip>
 #include <sstream>
 #include <algorithm>
 #include <string.h>
+
+// The following includes are only there to get access to ntohl. Nothing else is 
+// used from the networking headers. If someone has a good idea of how to 
+// implement ntohl in a portable way that 
+// (a) runs on big endian machines
+// (b) runs on a semi-recent MSVC
+// (c) does the endian check at compile time
+// then please open an issue and tell me how.
+//
+// Another option would be to drop support for big-endian hosts. I know of no 
+// recent architecture that uses big-endian. Maybe this will happen sometime in
+// the future.
+#ifdef ROUTING_KIT_NO_POSIX
+// Currently, we assume that everything that is not POSIX is Windows. 
+// If you have an architecture for which this logic is not good enough, please 
+// open an issue. 
+#include <winsock2.h> 
+#else
+#include <netinet/in.h>
+#endif
 
 // link with -lz
 
