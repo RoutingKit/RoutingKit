@@ -16,19 +16,10 @@ namespace RoutingKit{namespace detail{
 				++n;
 		return n;
 	}
-	
-	inline
-	unsigned emulated_builtin_popcount(unsigned int x){
-		int n=0;
-		for(unsigned int i=1; i!=0; i<<=1)
-			if(x & i)
-				++n;
-		return n;
-	}
 
 	inline
 	unsigned emulated_builtin_popcount(unsigned x){
-		return emulated_builtin_popcountll(x)
+		return emulated_builtin_popcountll(x);
 	}
 
 	inline
@@ -62,8 +53,6 @@ namespace RoutingKit{namespace detail{
 #define __builtin_popcount(x) ::RoutingKit::detail::emulated_builtin_popcount(x)
 
 #define __builtin_popcountll(x) ::RoutingKit::detail::emulated_builtin_popcountll(x)
-
-#define __builtin_popcount(x) ::RoutingKit::detail::emulated_builtin_popcount(x)
 
 #define __builtin_ffsll(x) ::RoutingKit::detail::emulated_builtin_ffsll(x)
 
