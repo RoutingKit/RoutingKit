@@ -159,8 +159,6 @@ namespace {
 	}
 }
 
-const BitVector::Uninitialized BitVector::uninitialized;
-
 BitVector::BitVector():
 	data_(nullptr), size_(0){}
 
