@@ -8,8 +8,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#else
-typedef unsigned long ssize_t;
 #endif
 
 #include <string.h>
@@ -152,9 +150,10 @@ unsigned long long FileDataSource::size()const{
 
 namespace{
 	unsigned long long my_read(FILE* file_descriptor, char*buffer, unsigned long long to_read){
-		ssize_t s = ::fread(buffer, 1, to_read, file_descriptor);
-		if(s < 0)
-			throw std::runtime_error("fread failed on file opened for reading.");
+		size_t s = ::fread(buffer, 1, to_read, file_descriptor);
+		int err = ferror(file_descriptor);
+		if(err != 0)
+			throw std::runtime_error("fread failed on file opened for reading. ferror returns "+std::to_string(err)+".");
 		return s;
 	}
 }

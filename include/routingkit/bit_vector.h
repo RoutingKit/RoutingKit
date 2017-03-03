@@ -1,13 +1,15 @@
 #ifndef ROUTING_KIT_BIT_VECTOR_H
 #define ROUTING_KIT_BIT_VECTOR_H
 
-#ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
-#define __attribute__(A) /* do nothing */
-#endif
-
 #include <stdint.h>
 #include <assert.h>
 #include <utility>
+
+#ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
+#ifndef __attribute__
+#define __attribute__(A) /* do nothing */
+#endif
+#endif
 
 namespace RoutingKit{
 

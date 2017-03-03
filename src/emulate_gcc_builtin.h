@@ -27,6 +27,11 @@ namespace RoutingKit{namespace detail{
 	}
 
 	inline
+	unsigned emulated_builtin_popcount(unsigned x){
+		return emulated_builtin_popcountll(x)
+	}
+
+	inline
 	unsigned emulated_builtin_ffsll(unsigned long long x){
 		int n=1;
 		for(unsigned long long i=1; i!=0; i<<=1, ++n)
@@ -53,6 +58,8 @@ namespace RoutingKit{namespace detail{
 	}
 
 }}
+
+#define __builtin_popcount(x) ::RoutingKit::detail::emulated_builtin_popcount(x)
 
 #define __builtin_popcountll(x) ::RoutingKit::detail::emulated_builtin_popcountll(x)
 
