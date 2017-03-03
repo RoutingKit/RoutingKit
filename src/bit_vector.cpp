@@ -13,6 +13,8 @@
 // If it does break then please open an issue with the information of upto what values of _MSC_VER the workaround is needed.
 #define aligned_alloc(alignment, size) _aligned_malloc(size, alignment)
 #define aligned_free(ptr) _aligned_free(ptr)
+#else 
+#define aligned_free(ptr)
 #endif
 
 namespace RoutingKit{
@@ -212,11 +214,7 @@ BitVector::BitVector(uint64_t size, bool init_value)
 }
 
 BitVector::~BitVector(){
-#ifndef _MSC_VER
-	free(data_);
-#else
-	_aligned_free(data_);
-#endif
+	aligned_free(data_);
 }
 
 BitVector::BitVector(const BitVector&o):
