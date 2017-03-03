@@ -16,7 +16,7 @@ namespace RoutingKit{
 class BitVector{
 public:
 	struct Uninitialized{};
-	static const Uninitialized uninitialized;
+	static constexpr Uninitialized uninitialized = {};
 
 	BitVector();
 	BitVector(uint64_t size, Uninitialized);
