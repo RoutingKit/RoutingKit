@@ -44,7 +44,7 @@ namespace {
 	typedef uint64_t v8_uint64_t __attribute__((vector_size(64)));
 	#else
 	struct v8_uint64_t{
-		uint64_t v[8];
+		uint64_t v[8] = {0};
 		void operator^=(v8_uint64_t o){
 			for(unsigned i=0; i<8; ++i)
 				v[i] ^= o.v[i];
