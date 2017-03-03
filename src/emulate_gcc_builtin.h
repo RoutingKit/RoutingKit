@@ -19,7 +19,7 @@ namespace RoutingKit{namespace detail{
 
 	inline
 	unsigned emulated_builtin_popcount(unsigned x){
-		return emulated_builtin_popcountll(x)
+		return emulated_builtin_popcountll(x);
 	}
 
 	inline

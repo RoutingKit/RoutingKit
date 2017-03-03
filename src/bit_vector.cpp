@@ -13,6 +13,8 @@
 // If it does break then please open an issue with the information of upto what values of _MSC_VER the workaround is needed.
 #define aligned_alloc(alignment, size) _aligned_malloc(size, alignment)
 #define aligned_free(ptr) _aligned_free(ptr)
+#else 
+#define aligned_free(ptr)
 #endif
 
 namespace RoutingKit{
@@ -42,7 +44,7 @@ namespace {
 	typedef uint64_t v8_uint64_t __attribute__((vector_size(64)));
 	#else
 	struct v8_uint64_t{
-		uint64_t v[8];
+		uint64_t v[8] = {0};
 		void operator^=(v8_uint64_t o){
 			for(unsigned i=0; i<8; ++i)
 				v[i] ^= o.v[i];
@@ -212,7 +214,7 @@ BitVector::BitVector(uint64_t size, bool init_value)
 }
 
 BitVector::~BitVector(){
-	free(data_);
+	aligned_free(data_);
 }
 
 BitVector::BitVector(const BitVector&o):
