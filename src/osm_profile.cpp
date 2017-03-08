@@ -520,11 +520,6 @@ bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::fu
 	const char* cycleway_both = tags["cycleway:both"];
 	if(cycleway_both != nullptr)
 		return true;
-	
-	// TODO: Do we want this?
-	const char* crossing = tags["crossing"];
-	if(crossing != nullptr && str_eq(crossing, "no"))
-		return false;
 
 	if(
 		str_eq(highway, "secondary") ||
@@ -538,6 +533,8 @@ bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::fu
 		str_eq(highway, "residential") ||
 		str_eq(highway, "track") ||
 		str_eq(highway, "bicycle_road") ||
+		str_eq(highway, "primary") ||
+		str_eq(highway, "primary_link") ||
 		str_eq(highway, "path") ||
 		str_eq(highway, "footway") ||
 		str_eq(highway, "cycleway") ||
@@ -556,8 +553,6 @@ bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::fu
 		str_eq(highway, "motorway_junction") ||
 		str_eq(highway, "trunk") ||
 		str_eq(highway, "trunk_link") ||
-		str_eq(highway, "primary") ||
-		str_eq(highway, "primary_link") ||
 		str_eq(highway, "construction") ||
 		str_eq(highway, "bus_guideway") ||
 		str_eq(highway, "raceway") ||
@@ -633,23 +628,30 @@ unsigned char get_min_bicycle_comfort_level(){
 }
 
 unsigned char get_max_bicycle_comfort_level(){
-	return 3;
+	return 4;
 }
 
 unsigned char get_osm_way_bicycle_comfort_level(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
 	const char*highway = tags["highway"];
 	if(highway != nullptr && str_eq(highway, "cycleway"))
-		return 3;
+		return 4;
 
 	const char*cycleway = tags["cycleway"];
 	if(cycleway != nullptr){
 		if(str_eq(cycleway, "track"))
-			return 2;
+			return 3;
 		else
-			return 1;
+			return 2;
 	} 
 
-	return 0;
+	if(highway != nullptr && (str_eq(highway, "primary") || str_eq(highway, "primary_link")))
+		return 0;
+
+	const char*bicycle = tags["bicycle"];
+	if(bicycle != nullptr && str_eq(bicycle, "dismount"))
+		return 0;
+
+	return 1;
 }
 
 } // RoutingKit
