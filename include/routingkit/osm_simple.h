@@ -56,6 +56,36 @@ SimpleOSMPedestrianRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pb
 	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
 );
 
+struct SimpleOSMBicycleRoutingGraph{
+	std::vector<uint32_t>first_out;
+	std::vector<uint32_t>head;
+	std::vector<uint32_t>geo_distance;
+	std::vector<float>latitude;
+	std::vector<float>longitude;
+	std::vector<unsigned char>arc_comfort_level;
+
+	unsigned node_count() const {
+		return first_out.size()-1;
+	}
+
+	unsigned arc_count() const{
+		return head.size();
+	}
+
+};
+
+SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
+	const std::string&pbf_file,
+	const std::function<void(const std::string&)>&log_message = [](const std::string&){},
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
+);
+
+// These functions are declared in osm_profile.h
+// We redeclare them here to avoid having to include osm_profile.h in every 
+// file that uses the bicycle routing graph.
+unsigned char get_min_arc_bicycle_comfort_level();
+unsigned char get_max_arc_bicycle_comfort_level();
+
 } // RoutingKit
 
 #endif

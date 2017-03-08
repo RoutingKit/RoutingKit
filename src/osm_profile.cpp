@@ -426,7 +426,7 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 			return 5;
 	}
 
-	/* TODO: a ferry may have a duration tag */
+	// TODO: a ferry may have a duration tag
 	auto route = tags["route"];
 	if(route && str_eq(route, "ferry")) {
 		return 5;
@@ -461,6 +461,195 @@ std::string get_osm_way_name(uint64_t osm_way_id, const TagMap&tags, std::functi
 		return std::string(ref);
 	else
 		return std::string();
+}
+
+
+
+bool is_osm_way_used_by_bicycles(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
+	const char* junction = tags["junction"];
+	if(junction != nullptr)
+		return true;
+
+	const char* route = tags["route"];
+	if(route != nullptr && str_eq(route, "ferry"))
+		return true;
+
+	const char* ferry = tags["ferry"];
+	if(ferry != nullptr && str_eq(ferry, "ferry"))
+		return true;
+
+	const char* highway = tags["highway"];
+	if(highway == nullptr) 
+		return false;
+	
+
+	if(str_eq(highway, "proposed"))
+		return false;
+
+	const char*access = tags["access"];
+	if(access){
+		if(
+			!str_eq(access, "yes") &&
+			!str_eq(access, "permissive") &&
+			!str_eq(access, "delivery") &&
+			!str_eq(access, "designated") &&
+			!str_eq(access, "destination") &&
+			!str_eq(access, "agricultural") &&
+			!str_eq(access, "forestry") &&
+			!str_eq(access, "public")
+		){
+			return false;
+		}
+	}
+
+	const char*bicycle = tags["bicycle"];
+	if(bicycle && (str_eq(bicycle, "no") || str_eq(bicycle, "use_sidepath")))
+		return false;
+
+	// if a cycleway is specified we can be sure
+	// that the highway will be used in a direction
+	const char* cycleway = tags["cycleway"];
+	if(cycleway != nullptr)
+		return true;
+	const char* cycleway_left = tags["cycleway:left"];
+	if(cycleway_left != nullptr)
+		return true;
+	const char* cycleway_right = tags["cycleway:right"];
+	if(cycleway_right != nullptr)
+		return true;
+	const char* cycleway_both = tags["cycleway:both"];
+	if(cycleway_both != nullptr)
+		return true;
+	
+	// TODO: Do we want this?
+	const char* crossing = tags["crossing"];
+	if(crossing != nullptr && str_eq(crossing, "no"))
+		return false;
+
+	if(
+		str_eq(highway, "secondary") ||
+		str_eq(highway, "tertiary") ||
+		str_eq(highway, "unclassified") ||
+		str_eq(highway, "residential") ||
+		str_eq(highway, "service") ||
+		str_eq(highway, "secondary_link") ||
+		str_eq(highway, "tertiary_link") ||
+		str_eq(highway, "living_street") ||
+		str_eq(highway, "residential") ||
+		str_eq(highway, "track") ||
+		str_eq(highway, "bicycle_road") ||
+		str_eq(highway, "path") ||
+		str_eq(highway, "footway") ||
+		str_eq(highway, "cycleway") ||
+		str_eq(highway, "bridleway") ||
+		str_eq(highway, "pedestrian") ||
+		str_eq(highway, "crossing") ||
+		str_eq(highway, "escape") ||
+		str_eq(highway, "steps") ||
+		str_eq(highway, "ferry")
+	)
+		return true;
+
+	if(
+		str_eq(highway, "motorway") ||
+		str_eq(highway, "motorway_link") ||
+		str_eq(highway, "motorway_junction") ||
+		str_eq(highway, "trunk") ||
+		str_eq(highway, "trunk_link") ||
+		str_eq(highway, "primary") ||
+		str_eq(highway, "primary_link") ||
+		str_eq(highway, "construction") ||
+		str_eq(highway, "bus_guideway") ||
+		str_eq(highway, "raceway") ||
+		str_eq(highway, "conveying")
+	)
+		return false;
+
+	return false;
+}
+
+OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
+	const char*oneway_bicycle = tags["oneway:bicycle"];
+	if(oneway_bicycle != nullptr){
+		if(str_eq(oneway_bicycle, "-1") || str_eq(oneway_bicycle, "opposite"))
+			return OSMWayDirectionCategory::only_open_backwards;
+
+		if(str_eq(oneway_bicycle, "1") || str_eq(oneway_bicycle, "yes") || str_eq(oneway_bicycle, "true") || str_eq(oneway_bicycle, "no_planned"))
+			return OSMWayDirectionCategory::only_open_forwards;
+	
+		if(str_eq(oneway_bicycle, "0") || str_eq(oneway_bicycle, "no") || str_eq(oneway_bicycle, "false") || str_eq(oneway_bicycle, "tolerated") || str_eq(oneway_bicycle, "permissive"))
+			return OSMWayDirectionCategory::open_in_both;
+			
+		log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has unknown oneway tag value \""+oneway_bicycle+"\" for \"oneway:bicycle\". Way is closed.");
+		return OSMWayDirectionCategory::closed;
+	}
+
+	const char*oneway = tags["oneway"];
+	if(oneway == nullptr){
+		return OSMWayDirectionCategory::open_in_both;
+	}else{
+		if(str_eq(oneway, "no") || str_eq(oneway, "false") || str_eq(oneway, "0")) {
+			return OSMWayDirectionCategory::open_in_both;
+		}
+
+		const char*cycleway = tags["cycleway"];
+		if(cycleway != nullptr){
+			// "opposite" is interpreted as the other direction than cars are allowed. 
+			// This is not necessarily opposite to the direction of the OSM way.
+			// 
+			// A consequence is that "cycleway=opposite" combined "oneway=-1" does not imply that bicycles are only allowed to drive backwards
+			//
+			// (Yes, people actually do combine those two tags https://www.openstreetmap.org/way/88925376 )
+			if(str_eq(cycleway, "opposite") || str_eq(cycleway, "opposite_track") || str_eq(cycleway, "opposite_lane") || str_eq(cycleway, "opposite_share_busway")){
+				return OSMWayDirectionCategory::open_in_both;
+			}
+		}
+
+		const char*cycleway_both = tags["cycleway:both"];
+		if(cycleway_both != nullptr)
+			return OSMWayDirectionCategory::open_in_both;
+
+		const char*cycleway_left = tags["cycleway:left"];
+		const char*cycleway_right = tags["cycleway:right"];
+		if(cycleway_left != nullptr && cycleway_right != nullptr)
+			return OSMWayDirectionCategory::open_in_both;
+
+
+		if(str_eq(oneway, "-1") || str_eq(oneway, "reverse") || str_eq(oneway, "backward")) {
+			return OSMWayDirectionCategory::only_open_backwards;
+		} else if(str_eq(oneway, "yes") || str_eq(oneway, "true") || str_eq(oneway, "1")) {
+			return OSMWayDirectionCategory::only_open_forwards;
+		} else if(str_eq(oneway, "reversible") || str_eq(oneway, "alternating")) {
+			return OSMWayDirectionCategory::closed;
+		} else {
+			log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has unknown oneway tag value \""+oneway+"\" for \"oneway\". Way is closed.");
+			return OSMWayDirectionCategory::closed;
+		}
+	}
+}
+
+unsigned char get_min_arc_bicycle_comfort_level(){
+	return 0;
+}
+
+unsigned char get_max_arc_bicycle_comfort_level(){
+	return 3;
+}
+
+unsigned char get_osm_way_bicycle_comfort_level(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
+	const char*highway = tags["highway"];
+	if(highway != nullptr && str_eq(highway, "cycleway"))
+		return 3;
+
+	const char*cycleway = tags["cycleway"];
+	if(cycleway != nullptr){
+		if(str_eq(cycleway, "track"))
+			return 2;
+		else
+			return 1;
+	} 
+
+	return 0;
 }
 
 } // RoutingKit
