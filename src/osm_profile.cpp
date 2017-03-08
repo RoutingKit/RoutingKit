@@ -181,7 +181,7 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 		return true;
 
 	const char* ferry = tags["ferry"];
-	if(ferry && str_eq(ferry, "ferry"))
+	if(ferry && str_eq(ferry, "yes"))
 		return true;
 
 	const char* highway = tags["highway"];
