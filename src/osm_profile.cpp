@@ -442,7 +442,7 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 	if(!maxspeed && highway)
 		log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has no \"maxspeed\" and an unrecognized \"highway\" tag of \""+highway+"\" and an no junction tag -> assuming 50km/h.");
 	if(!maxspeed && !highway)
-		log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has no \"maxspeed\" and no \"highway\" tag of \""+highway+"\" and an no junction tag -> assuming 50km/h.");
+		log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has no \"maxspeed\" and no \"highway\" tag and an no junction tag -> assuming 50km/h.");
 	if(maxspeed && !highway)
 		log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has an unrecognized \"maxspeed\" tag of \""+maxspeed+"\" and no \"highway\" tag and an no junction tag -> assuming 50km/h.");
 	return 50;
