@@ -628,11 +628,11 @@ OSMWayDirectionCategory get_osm_bicycle_direction_category(uint64_t osm_way_id, 
 	}
 }
 
-unsigned char get_min_arc_bicycle_comfort_level(){
+unsigned char get_min_bicycle_comfort_level(){
 	return 0;
 }
 
-unsigned char get_max_arc_bicycle_comfort_level(){
+unsigned char get_max_bicycle_comfort_level(){
 	return 3;
 }
 

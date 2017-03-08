@@ -83,8 +83,8 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
 // These functions are declared in osm_profile.h
 // We redeclare them here to avoid having to include osm_profile.h in every 
 // file that uses the bicycle routing graph.
-unsigned char get_min_arc_bicycle_comfort_level();
-unsigned char get_max_arc_bicycle_comfort_level();
+unsigned char get_min_bicycle_comfort_level();
+unsigned char get_max_bicycle_comfort_level();
 
 } // RoutingKit
 

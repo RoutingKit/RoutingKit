@@ -19,8 +19,8 @@ std::string get_osm_way_name(uint64_t osm_way_id, const TagMap&tags, std::functi
 
 unsigned char get_osm_way_bicycle_comfort_level(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message = [](const std::string&){});
 
-unsigned char get_min_arc_bicycle_comfort_level();
-unsigned char get_max_arc_bicycle_comfort_level();
+unsigned char get_min_bicycle_comfort_level();
+unsigned char get_max_bicycle_comfort_level();
 
 } // RoutingKit
 
