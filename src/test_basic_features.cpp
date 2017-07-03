@@ -18,15 +18,20 @@ int main(int argc, char*argv[]){
 
 	string pbf_file;
 
-	if(argc != 2){
+	unsigned test_count = 100;
+
+	if(argc == 2){
+		pbf_file = argv[1];
+	} else if(argc == 3) {
+		pbf_file = argv[1];
+		test_count = atoi(argv[2]);
+	} else {
 		cout
-			<< "Usage: "<< argv[0] << " test.pbf\n"
+			<< "Usage: "<< argv[0] << " test.pbf [test_count]\n"
 			<< "Example: \n"
 			<< "wget https://download.geofabrik.de/europe/germany/baden-wuerttemberg-latest.osm.pbf\n"
 			<< argv[0] << " baden-wuerttemberg-latest.osm.pbf" << endl;
 		return 1;
-	}else{
-		pbf_file = argv[1];
 	}
 
 	auto log_message = [](const string&msg){
@@ -82,8 +87,6 @@ int main(int argc, char*argv[]){
 
 	unsigned node_count = first_out.size()-1;
 	unsigned arc_count = head.size();
-
-	unsigned test_count = 100;
 
 	vector<unsigned>source1(test_count);
 	vector<unsigned>source2(test_count);
@@ -546,6 +549,80 @@ int main(int argc, char*argv[]){
 		}
 	}
 
+
+	{
+		ContractionHierarchyQuery ch_query(ch);
+		ContractionHierarchyQuery ref_query(ch);
+
+		CustomizableContractionHierarchy cch(cch_order, tail, head);
+		CustomizableContractionHierarchyMetric m(cch, travel_time);
+		m.customize();
+		CustomizableContractionHierarchyQuery cch_query(m);
+		CustomizableContractionHierarchyQuery cch_ref_query(m);
+		
+		long long ch_pin_time = -get_micro_time();
+		ch_query
+			.reset()
+			.pin_targets(target1);
+		ch_pin_time += get_micro_time();
+
+		long long cch_pin_time = -get_micro_time();
+		cch_query
+			.reset()
+			.pin_targets(target1);
+		cch_pin_time += get_micro_time();
+
+		log_message("CH pin targets running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
+		log_message("CCH pin targets running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
+
+		long long ch_one_to_many_time = 0, cch_one_to_many_time = 0, ch_naive_one_to_many = 0, cch_naive_one_to_many = 0;
+		for(unsigned i=0; i<test_count; ++i){
+			ch_one_to_many_time -= get_micro_time();
+			ch_query
+				.reset_source()
+				.add_source(source1[i], source1_offset[i])
+				.run_to_pinned_targets();
+			ch_one_to_many_time += get_micro_time();
+			cch_one_to_many_time -= get_micro_time();
+			cch_query
+				.reset_source()
+				.add_source(source1[i], source1_offset[i])
+				.run_to_pinned_targets();
+			cch_one_to_many_time += get_micro_time();
+			
+			auto d = ch_query.get_distances_to_targets();
+			for(unsigned j=0; j<test_count; ++j){
+				ch_naive_one_to_many -= get_micro_time();
+				EXPECT_CMP(
+					ref_query
+						.reset()
+						.add_source(source1[i], source1_offset[i])
+						.add_target(target1[j])
+						.run()
+						.get_distance(), ==, d[j]);
+				ch_naive_one_to_many += get_micro_time();
+				cch_naive_one_to_many -= get_micro_time();
+				EXPECT_CMP(
+					cch_ref_query
+						.reset()
+						.add_source(source1[i], source1_offset[i])
+						.add_target(target1[j])
+						.run()
+						.get_distance(), ==, d[j]);
+				cch_naive_one_to_many += get_micro_time();
+			}
+
+			EXPECT(d == cch_query.get_distances_to_targets());
+
+		}
+
+		log_message("Naive CH pinned 1-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(ch_naive_one_to_many/test_count)+"musec");
+		log_message("Naive CCH pinned 1-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(cch_naive_one_to_many/test_count)+"musec");
+		log_message("CH pinned 1-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(ch_one_to_many_time/test_count)+"musec");
+		log_message("CCH pinned 1-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(cch_one_to_many_time/test_count)+"musec");
+		
+	}
+
 	{
 		ContractionHierarchyQuery ch_query(ch);
 		ContractionHierarchyQuery ref_query(ch);
@@ -567,10 +644,10 @@ int main(int argc, char*argv[]){
 			.pin_targets(target1);
 		cch_pin_time += get_micro_time();
 
-		log_message("CH pin running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
-		log_message("CCH pin running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
+		log_message("CH pin targets running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
+		log_message("CCH pin targets running time with "+to_string(target1.size())+" targets : "+to_string(ch_pin_time)+"musec");
 
-		long long ch_one_to_many_time = 0, cch_one_to_many_time = 0;
+		long long ch_one_to_many_time = 0, cch_one_to_many_time = 0, ch_naive_one_to_many = 0;
 		for(unsigned i=0; i<test_count; ++i){
 			ch_one_to_many_time -= get_micro_time();
 			ch_query
@@ -591,6 +668,7 @@ int main(int argc, char*argv[]){
 			
 			auto d = ch_query.get_distances_to_targets();
 			for(unsigned j=0; j<test_count; ++j){
+				ch_naive_one_to_many -= get_micro_time();
 				EXPECT_CMP(
 					ref_query
 						.reset()
@@ -600,14 +678,16 @@ int main(int argc, char*argv[]){
 						.add_target(target1[j])
 						.run()
 						.get_distance(), ==, d[j]);
+				ch_naive_one_to_many += get_micro_time();
 			}
 
 			EXPECT(d == cch_query.get_distances_to_targets());
 
 		}
 
-		log_message("CH 3-to-pinned target query running time averaged over "+to_string(test_count)+" runs : "+to_string(ch_one_to_many_time)+"musec");
-		log_message("CCH 3-to-pinned target query running time averaged over "+to_string(test_count)+" runs : "+to_string(cch_one_to_many_time)+"musec");
+		log_message("Naive CH pinned 3-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(ch_naive_one_to_many/test_count)+"musec");
+		log_message("CH 3-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(ch_one_to_many_time/test_count)+"musec");
+		log_message("CCH 3-to-target-query running time averaged over "+to_string(test_count)+" runs : "+to_string(cch_one_to_many_time/test_count)+"musec");
 		
 	}
 
