@@ -40,8 +40,45 @@ namespace{
 			);
 
 			construct_tree(d, begin, mid);
-			for(auto i=mid; i!=end; ++i)
-				d[i].distance_to_pivot = compute_distance(d[mid].position, d[i].position);
+
+			// Slower but simpler code			
+			// for(auto i=mid; i!=end; ++i)
+			//	d[i].distance_to_pivot = compute_distance(d[mid].position, d[i].position);
+
+			// Faster more complex code
+			// compile with -ffast-math
+			{
+				const float pi = 3.14159265359;
+				const float R = 6371000.0; // earth radius in meter
+				const float inv_180 = 1.0 / 180;
+
+				float a_lat = d[mid].position.latitude;
+				float a_lon = d[mid].position.longitude;
+
+				a_lat *= inv_180;
+				a_lat *= pi;
+				a_lon *= inv_180;
+				a_lon *= pi;
+				
+				for(unsigned i=mid; i<end; ++i){
+					float b_lat = d[i].position.latitude;
+					float b_lon = d[i].position.longitude;
+
+					b_lat *= inv_180;
+					b_lat *= pi;
+					b_lon *= inv_180;
+					b_lon *= pi;
+
+					float dlat = b_lat - a_lat;
+					float dlon = b_lon - a_lon;
+
+					float a_ = sinf(dlat*0.5) * sinf(dlat*0.5) + sinf(dlon*0.5) * sinf(dlon*0.5) * cosf(a_lat) * cosf(b_lat);
+					float c = 2 * atan2f(sqrt(a_), sqrtf(1-a_));
+
+					d[i].distance_to_pivot = R * c;
+				}
+			}
+	
 			construct_tree(d, mid, end);
 		}
 	}
