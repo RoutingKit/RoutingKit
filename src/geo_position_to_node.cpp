@@ -45,7 +45,7 @@ namespace{
 			// for(auto i=mid; i!=end; ++i)
 			//	d[i].distance_to_pivot = compute_distance(d[mid].position, d[i].position);
 
-			// Faster more complex code
+			// Faster more complex vectorized code
 			// compile with -ffast-math
 			{
 				const float pi = 3.14159265359;
@@ -59,24 +59,51 @@ namespace{
 				a_lat *= pi;
 				a_lon *= inv_180;
 				a_lon *= pi;
-				
-				for(unsigned i=mid; i<end; ++i){
-					float b_lat = d[i].position.latitude;
-					float b_lon = d[i].position.longitude;
 
-					b_lat *= inv_180;
-					b_lat *= pi;
-					b_lon *= inv_180;
-					b_lon *= pi;
+				const unsigned vector_width = 16;
+				for(unsigned i=mid; i<end; i+=vector_width){
 
-					float dlat = b_lat - a_lat;
-					float dlon = b_lon - a_lon;
+					float b_lat[vector_width];
+					float b_lon[vector_width];
+					float a_[vector_width];
 
-					float a_ = sinf(dlat*0.5) * sinf(dlat*0.5) + sinf(dlon*0.5) * sinf(dlon*0.5) * cosf(a_lat) * cosf(b_lat);
-					float c = 2 * atan2f(sqrt(a_), sqrtf(1-a_));
+					unsigned element_count = vector_width;
+					if(end - i < element_count)
+						element_count = end - i;
 
-					d[i].distance_to_pivot = R * c;
+					for(unsigned j=0; j<element_count; ++j){
+						b_lat[j] = d[i+j].position.latitude;
+						b_lon[j] = d[i+j].position.longitude;
+					}
+
+					for(unsigned j=element_count; j<vector_width; ++j){
+						b_lat[j] = 0;
+						b_lon[j] = 0;
+					}
+
+					// GCC5's auto vectorizer is clever enough to vectorize this loop 
+					// OpenMP does not harm but is not needed
+					// #pragma omp simd
+					for(unsigned j=0; j<vector_width; ++j){
+						b_lat[j] *= inv_180;
+						b_lat[j] *= pi;
+						b_lon[j] *= inv_180;
+						b_lon[j] *= pi;
+
+						float dlat = b_lat[j] - a_lat;
+						float dlon = b_lon[j] - a_lon;
+
+						a_[j] = sinf(dlat*0.5) * sinf(dlat*0.5) + sinf(dlon*0.5) * sinf(dlon*0.5) * cosf(a_lat) * cosf(b_lat[j]);
+					}
+
+					for(unsigned j=0; j<element_count; ++j){
+						// GCC5 does not have vectorized versions of atan2f nor sqrtf
+						// we therefore call the sequential functions as they would prevent the vectorization of the previous loop
+						float c = 2 * atan2f(sqrtf(a_[j]), sqrtf(1-a_[j]));
+						d[i+j].distance_to_pivot = R * c;
+					}
 				}
+
 			}
 	
 			construct_tree(d, mid, end);
