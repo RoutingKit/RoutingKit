@@ -35,7 +35,7 @@ void decode_protobuf_message_with_callbacks(const char*begin, const char*end, co
 			case 2:
 			{
 				uint64_t len = decode_varint_as_uint64_and_advance_first_parameter(begin, end);
-				if(end - begin < len)
+				if((uint64_t)(end - begin) < len)
 					throw std::runtime_error("Protobuf message is corrupt, the end of message was reached while parsing a string or embedded message.");
 				string_callback(field_id, begin, begin+len);
 				begin += len;
