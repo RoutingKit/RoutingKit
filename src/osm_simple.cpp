@@ -107,7 +107,6 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
 	);
 
 	unsigned routing_way_count = mapping.is_routing_way.population_count();
-	std::vector<uint32_t>way_speed(routing_way_count);
 
 	std::vector<unsigned char> comfort_level(routing_way_count, false);
 
