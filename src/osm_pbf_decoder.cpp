@@ -296,7 +296,7 @@ namespace {
 
 			auto decode_sparse_node = [&](const char*begin, const char*end){
 				uint64_t osm_node_id = (uint64_t)-1;
-				double latitude, longitude;
+				double latitude = 0.0, longitude = 0.0;
 
 				const char
 					*key_begin = nullptr, *key_end = nullptr,
