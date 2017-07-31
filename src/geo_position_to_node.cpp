@@ -49,7 +49,7 @@ namespace{
 			// compile with -ffast-math
 			{
 				const float pi = 3.14159265359;
-				const float R = 6371000.0; // earth radius in meter
+				const float R = 6371000.785; // earth radius in meter
 				const float inv_180 = 1.0 / 180;
 
 				float a_lat = d[mid].position.latitude;
