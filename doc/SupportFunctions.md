@@ -1,6 +1,6 @@
 # How Graphs are represented
 
-Graphs in RoutingKit are always directed and are represented either as arc-list or as adjacency-array. An arc list has the following structure:
+Graphs in RoutingKit are always directed and are represented either as arc-list or as adjacency-array. An arc-list has the following structure:
 
 ```cpp
 unsigned node_count;
@@ -8,7 +8,7 @@ std::vector<unsigned>tail;
 std::vector<unsigned>head;
 ```
 
-`node_count` stores, as the name suggest, the number of nodes in the graph. `tail` and `head` are two vectors of equal size. They should contain for every arc its tail, i.e., the node from which the arc departs, respectively, its head, i.e., the node where the arc arrives. IDs in OpenNavi are always unsigned 32-bit integers. They range from 0 to number of objects minus one. In this case this means that all values in `tail` and `head` are in the range `0` to `node_count-1`. The position of the arc in the array is its arc ID. Besides `tail` and `head` an arc can have further properties. Common ones are:
+`node_count` stores, as the name suggest, the number of nodes in the graph. `tail` and `head` are two vectors of equal size. They should contain for every arc its tail, i.e., the node from which the arc departs, respectively, its head, i.e., the node where the arc arrives. IDs in RoutingKit are always unsigned 32-bit integers. They range from 0 to number of objects minus one. In this case this means that all values in `tail` and `head` are in the range `0` to `node_count-1`. The position of the arc in the array is its arc ID. Besides `tail` and `head` an arc can have further properties. Common ones are:
 
 ```cpp
 std::vector<unsigned>geo_distance;
@@ -18,16 +18,16 @@ std::vector<unsigned>speed;
 
 These represent the geographic distance, the travel_time, and the speed respectively. Unless stated otherwise, geographical distances are always in meter, travel times in seconds, and speeds in km/h.
  
-RoutingKit supports any graph representable under this form. This includes border cases such as multi-arc, loops, disconnected graphs, zero-weights. If a component does not properly behave given these inputs then we consider it a bug.
+RoutingKit supports any graph representable under this form. This includes border cases such as graphs with multi-arc, loops, disconnected graphs, or zero-weights. If a RoutingKit function does not properly behave given these inputs then we consider it a bug.
 
-Arc-lists are simple and easy to use and excel at most tasks except graph travelsal. For this cases we use an adjacency-array. It has the following form:
+Arc-lists are simple and easy to use and excel at most tasks except graph traversal. For this cases we use an adjacency-array. It has the following form:
 
 ```cpp
 std::vector<unsigned>first_out;
 std::vector<unsigned>head;
 ```
 
-Before specifying the details we'd like to show the most frequent usage pattern. It illustrates the structure very well.
+Before specifying the details we'd like to show the most frequent usage pattern. It illustrates the structure very well. The most frequent usage of an adjacency-array is iterating over the outgoing arcs of a node, as follows:
 
 ```cpp
 for(unsigned xy=first_out[x]; xy<first_out[x+1]; ++xy){
@@ -36,14 +36,14 @@ for(unsigned xy=first_out[x]; xy<first_out[x+1]; ++xy){
 }
 ```
 
-`first_out` is a vector with `node_count+1` elements. The first one must be zero and the last one is the number of arcs. Converting an adjacency array to an arc list can be done using functions from the header `<routingkit/inverse_vector.h>` as following:
+`first_out` is a vector with `node_count+1` elements. The first element must be zero. The last element is the number of arcs. Converting an adjacency array to an arc list can be done using functions from the header `<routingkit/inverse_vector.h>` as following:
 
 ```cpp
 unsigned node_count = first_out.size()-1;
 auto tail = invert_inverse_vector(first_out);
 ```
 
-The conversion from an arc list to an adjacency array is less simple. It requires the arcs to be sorted by tails, which they often are not. Sorting can be sone as following:
+The conversion from an arc-list to an adjacency-array is less simple. It requires the arcs to be sorted by tails, which they often are not. Sorting can be done as follows:
 
 ```cpp
 auto input_arc_id = compute_sort_permutation_using_less(tail);
@@ -58,11 +58,11 @@ Once the arcs appear in the correct order you can compute the adjacency array as
 auto first_out = invert_vector(tail, node_count);
 ```
 
-The core of an adjacency array consists of a special way to store a sorted vector of IDs. This concept is applicable in a significantly broader set of cases than only representing graphs. We refer to this structure as inverse vector.
+The core of an adjacency-array consists of a special way to store a sorted vector of IDs. This concept is applicable in a significantly broader set of cases than only representing graphs. We refer to this structure as inverse vector.
 
 # Permutations
 
-Permutations are used over and over in RoutingKit and therefore a number of auxiliary functions are provided in `<routingkit/permutation.h>`. A permutation of `n` elements is represented as `vector<unsigned>` where all number from `0` to `n-1` appear exactly once. You can permutate a set of elements using the `apply_permutation` function as following:
+Permutations are used over and over in RoutingKit and therefore a number of auxiliary functions are provided in `<routingkit/permutation.h>`. A permutation of `n` elements is represented as `vector<unsigned>` where all numbers from `0` to `n-1` appear exactly once. You can permutate a set of elements using the `apply_permutation` function as following:
 
 ```cpp
 vector<string>input_names = {"banana", "pear", "pineapple", "strawberry", "apple"};
@@ -73,7 +73,30 @@ for(unsigned i=0; i<p.size(); ++i)
 	assert(output_names[i] == input_name[p[i]]);
 ```
 
-You can check whether a vector is a valid permutation using `is_permutation` and invert permutations using `invert_permutation`. However, for most functions there is an alternative that works directly on the inverse of a permutation, which is faster than performing the permutation. For example the code above can be rewritten as:
+You can check whether a vector is a valid permutation using `is_permutation` as follows:
+
+```cpp
+vector<unsigned>p = {3,0,2,1};
+assert(is_permutation(p));
+p = {0,0,1,2};
+assert(!is_permutation(p));
+p = {1,2};
+assert(!is_permutation(p));
+```
+
+You can invert permutations using `invert_permutation` as follows:
+
+```cpp
+vector<unsigned>p = {3,0,2,1};
+vector<unsigned>inv_p = invert_permutation(p);
+
+assert(inv_p[0] == 1);
+assert(inv_p[1] == 3);
+assert(inv_p[2] == 2);
+assert(inv_p[3] == 0);
+```
+
+Calling `invert_permutation` can often be avoided. For most functions there are variants that operate directly using the inverse permutation. For example the example code above can be rewritten as:
 
 ```cpp
 vector<string>input_names = {"banana", "pear", "pineapple", "strawberry", "apple"};
@@ -84,7 +107,41 @@ for(unsigned i=0; i<p.size(); ++i)
 	assert(output_names[inv_p[i]] == input_name[i]);
 ```
 
-You can get the identity permutation on n elements using `identity_permutation(n)` and a random permutation using `random_permutation(n, rand_gen)` where `rand_gen` is a random number generator as those used by the C++ `<random>` header. You can chain permutations using `chain_permutation_first_left_then_right` and `chain_permutation_first_right_then_left`.
+You can get the identity permutation on n elements using `identity_permutation(n)` as follows:
+
+```cpp
+vector<unsigned>p = identity_permutation(42);
+
+for(unsigned i=0; i<p.size(); ++i)
+	assert(p[i] == i);
+```
+
+You can generate a random permutation using `random_permutation(n, rand_gen)` where `rand_gen` is a random number generator as those used by the C++ `<random>` header. For example:
+
+```cpp
+minstd_rand gen;
+vector<unsigned>p = random_permutation(42, gen);
+
+assert(is_permutation(p));
+```
+
+You can chain permutations using `chain_permutation_first_left_then_right` and `chain_permutation_first_right_then_left` as follows:
+
+```cpp
+minstd_rand gen;
+vector<string>input_names = {"banana", "pear", "pineapple", "strawberry", "apple"};
+vector<unsigned>p = random_permutation(input_names.size(), gen);
+vector<unsigned>q = random_permutation(input_names.size(), gen);
+
+vector<unsigned>qp = chain_permutation_first_left_then_right(p, q);
+vector<unsigned>pq = chain_permutation_first_right_then_left(p, q);
+
+for(unsigned i=0; i<p.size(); ++i)
+	assert(input_names[qp[i]] == input_names[q[p[i]]]);
+
+for(unsigned i=0; i<p.size(); ++i)
+	assert(input_names[pq[i]] == input_names[p[q[i]]]);
+```
 
 Sometimes you do not want to reorder the elements in a vector but the elements are IDs and you want to reorder these. Here you can use `apply_permutation_to_elements_of` and `inplace_apply_permutation_to_elements_of`. The most common usecase in RoutingKit consists of reordering the nodes in a graph:
 
