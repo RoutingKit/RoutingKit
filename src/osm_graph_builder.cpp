@@ -27,7 +27,7 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 	std::function<void(std::string)>log_message
 ){
 	OSMRoutingIDMapping map;
-	
+
 	log_message("Scanning OSM PBF data to determine IDs");
 	long long timer = -get_micro_time();
 
@@ -78,14 +78,14 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 	);
 	timer += get_micro_time();
 	log_message("Finished scan, needed "+std::to_string(timer)+"musec.");
-	
+
 	log_message("OSM ID range goes up to "+std::to_string(map.is_routing_node.size()) +" for routing nodes.");
 	log_message("OSM ID range goes up to "+std::to_string(map.is_modelling_node.size()) +" for modelling nodes.");
 	log_message("OSM ID range goes up to "+std::to_string(map.is_routing_way.size()) +" for routing ways.");
 	log_message("Found "+std::to_string(map.is_routing_node.population_count()) +" routing nodes.");
 	log_message("Found "+std::to_string(map.is_modelling_node.population_count()) +" modelling nodes.");
 	log_message("Found "+std::to_string(map.is_routing_way.population_count()) +" routing ways.");
-	
+
 	return map;
 }
 
@@ -114,12 +114,14 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	timer += get_micro_time();
 	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
-	auto on_new_arc = [&](unsigned x, unsigned y, unsigned dist, unsigned routing_way_id){
+
+	auto on_new_arc = [&](unsigned x, unsigned y, unsigned dist, unsigned routing_way_id, unsigned arc_path_head, unsigned arc_path_tail){
 		tail.push_back(x);
 		routing_graph.head.push_back(y);
 		routing_graph.geo_distance.push_back(dist);
 		routing_graph.way.push_back(routing_way_id);
+		routing_graph.arc_path_head.push_back(arc_path_head);
+		routing_graph.arc_path_tail.push_back(arc_path_tail);
 	};
 
 	std::vector<float>latitude(modelling_node.local_id_count());
@@ -146,8 +148,19 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 					double dist_since_last_routing_node = 0;
 
+					/* TODO: implement optional polyline simplification, like Douglas-Peucker or Wang */
+
+					std::vector<float> arc_path_latitude;
+					std::vector<float> arc_path_longitude;
+
+					arc_path_latitude.push_back(latitude[modelling_id_of_previous_modelling_node]);
+					arc_path_longitude.push_back(longitude[modelling_id_of_previous_modelling_node]);
+
 					for(unsigned i=1; i<node_list.size(); ++i){
 						unsigned modelling_id_of_current_node = modelling_node.to_local(node_list[i]);
+
+						arc_path_latitude.push_back(latitude[modelling_id_of_current_node]);
+						arc_path_longitude.push_back(longitude[modelling_id_of_current_node]);
 
 						dist_since_last_routing_node += geo_dist(
 							latitude[modelling_id_of_current_node], longitude[modelling_id_of_current_node],
@@ -155,27 +168,42 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 						);
 
 						modelling_id_of_previous_modelling_node = modelling_id_of_current_node;
-					
+
 						unsigned routing_id_of_current_node = routing_node.to_local(node_list[i], invalid_id);
 						if(routing_id_of_current_node != invalid_id){
+							unsigned arc_path_head = routing_graph.arc_path_latitude.size();
+							unsigned arc_path_tail = arc_path_head + arc_path_latitude.size();
 
 							switch(dir){
 							case OSMWayDirectionCategory::only_open_forwards:
-								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id);
+								routing_graph.arc_path_latitude.insert(std::end(routing_graph.arc_path_latitude), std::begin(arc_path_latitude), std::end(arc_path_latitude));
+								routing_graph.arc_path_longitude.insert(std::end(routing_graph.arc_path_longitude), std::begin(arc_path_longitude), std::end(arc_path_longitude));
+								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id, arc_path_head, arc_path_tail);
 								break;
 							case OSMWayDirectionCategory::open_in_both:
-								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id);
+								routing_graph.arc_path_latitude.insert(std::end(routing_graph.arc_path_latitude), std::begin(arc_path_latitude), std::end(arc_path_latitude));
+								routing_graph.arc_path_longitude.insert(std::end(routing_graph.arc_path_longitude), std::begin(arc_path_longitude), std::end(arc_path_longitude));
+								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id, arc_path_head, arc_path_tail);
 								// no break
 							case OSMWayDirectionCategory::only_open_backwards:
-								on_new_arc(routing_id_of_current_node, routing_id_of_last_routing_node, dist_since_last_routing_node, routing_way_id);
+								/* the arc path is stored once; when displaying the arc backwards the client has to reorder,
+								 * we already substract one so the client will get a valid head, but must decrease >= tail,
+								 * why not arc_path_head -1? Because it can't handle 0;
+								 */
+								on_new_arc(routing_id_of_current_node, routing_id_of_last_routing_node, dist_since_last_routing_node, routing_way_id, arc_path_tail - 1, arc_path_head);
 								break;
 							default:
 								assert(false);
 							}
 
+							arc_path_latitude.clear();
+							arc_path_longitude.clear();
 							dist_since_last_routing_node = 0;
 							routing_id_of_last_routing_node = routing_id_of_current_node;
-						}				
+
+							arc_path_latitude.push_back(latitude[modelling_id_of_previous_modelling_node]);
+							arc_path_longitude.push_back(longitude[modelling_id_of_previous_modelling_node]);
+						}
 					}
 				}
 			}
@@ -200,22 +228,24 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		routing_graph.head = apply_inverse_permutation(p, std::move(routing_graph.head));
 		routing_graph.geo_distance = apply_inverse_permutation(p, std::move(routing_graph.geo_distance));
 		routing_graph.way = apply_inverse_permutation(p, std::move(routing_graph.way));
+		routing_graph.arc_path_head = apply_inverse_permutation(p, std::move(routing_graph.arc_path_head));
+		routing_graph.arc_path_tail = apply_inverse_permutation(p, std::move(routing_graph.arc_path_tail));
 		routing_graph.first_out = invert_vector(tail, node_count);
 	}
 	timer += get_micro_time();
-	
+
 	log_message("Finished sorting, needed "+std::to_string(timer)+"musec.");
-	
+
 	log_message("Start computing modelling to routing node mapping");
 	timer = -get_micro_time();
 
 	BitVector modelling_node_is_routing_node(modelling_node.local_id_count(), false);
 	for(unsigned r=0; r < routing_node.local_id_count(); ++r)
 		modelling_node_is_routing_node.set(modelling_node.to_local(routing_node.to_global(r)));
-	
+
 	timer += get_micro_time();
 	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+
 
 	log_message("Start reducing geographic positions to routing nodes");
 	timer = -get_micro_time();
@@ -225,7 +255,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	timer += get_micro_time();
 	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+
 	return routing_graph; // NVRO
 }
 

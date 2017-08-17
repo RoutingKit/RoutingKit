@@ -36,8 +36,12 @@ struct OSMRoutingGraph{
 	std::vector<uint32_t>head;
 	std::vector<uint32_t>way;
 	std::vector<uint32_t>geo_distance;
+	std::vector<uint32_t>arc_path_head;
+	std::vector<uint32_t>arc_path_tail;
 	std::vector<float>latitude;
 	std::vector<float>longitude;
+	std::vector<float>arc_path_latitude;
+	std::vector<float>arc_path_longitude;
 
 	unsigned node_count()const{
 		return first_out.size()-1;
