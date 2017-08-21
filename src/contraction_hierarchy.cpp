@@ -71,7 +71,7 @@ namespace{
 
 		tail.erase(tail.begin()+arc_count, tail.end());
 		head.erase(head.begin()+arc_count, head.end());
-		weight.erase(head.begin()+arc_count, weight.end());
+		weight.erase(weight.begin()+arc_count, weight.end());
 		input_arc_id.erase(input_arc_id.begin()+arc_count, input_arc_id.end());
 
 		if(log_message){
