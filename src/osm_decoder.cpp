@@ -1,6 +1,6 @@
 #include <routingkit/timer.h>
+#include <routingkit/osm_decoder.h>
 
-#include "osm_pbf_decoder.h"
 #include "buffered_asynchronous_reader.h"
 #include "file_data_source.h"
 #include "protobuf.h"

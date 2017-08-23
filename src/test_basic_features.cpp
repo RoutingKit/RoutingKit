@@ -63,6 +63,7 @@ int main(int argc, char*argv[]){
 				way_speed[routing_way_id] = get_osm_way_speed(osm_way_id, way_tags, log_message);
 				return get_osm_car_direction_category(osm_way_id, way_tags, log_message);
 			},
+			nullptr,
 			log_message,
 			false
 		);

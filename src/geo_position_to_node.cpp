@@ -113,6 +113,7 @@ namespace{
 
 GeoPositionToNode::GeoPositionToNode(const std::vector<float>&latitude, const std::vector<float>&longitude):
 	point_position(latitude.size()), point_id(latitude.size()){
+	assert(latitude.size() == longitude.size());
 	unsigned point_count = latitude.size();
 
 	std::vector<PointData>data(point_count);

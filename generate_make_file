@@ -6,7 +6,7 @@ compiler_name = "g++"
 archiver_name = "ar"
 
 # "-DROUTING_KIT_NO_GCC_EXTENSIONS", "-DROUTING_KIT_NO_POSIX"
-#compiler_options = ["-Wall", "-ggdb", "-mpopcnt", "-mavx", "-std=c++11"]
+#compiler_options = ["-Wall", "-O0", "-ggdb","-march=native", "-ffast-math", "-std=c++11", "-D_GLIBCXX_DEBUG"]
 compiler_options = ["-Wall", "-O3", "-DNDEBUG", "-march=native", "-ffast-math", "-std=c++11"]
 linker_options = []
 

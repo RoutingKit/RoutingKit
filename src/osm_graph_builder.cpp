@@ -8,13 +8,11 @@
 #include <routingkit/bit_vector.h>
 #include <routingkit/filter.h>
 #include <routingkit/id_mapper.h>
-
-#include "osm_pbf_decoder.h"
+#include <routingkit/osm_decoder.h>
 
 #include <vector>
 #include <stdint.h>
 #include <string>
-#include <iostream>
 #include <stdio.h>
 #include <memory>
 
@@ -24,12 +22,21 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 	const std::string&file_name,
 	std::function<bool(uint64_t, const TagMap&)>is_routing_node,
 	std::function<bool(uint64_t, const TagMap&)>is_way_used_for_routing,
-	std::function<void(std::string)>log_message
+	std::function<void(const std::string&)>log_message,
+	bool all_modelling_nodes_are_routing_nodes
 ){
 	OSMRoutingIDMapping map;
-	
-	log_message("Scanning OSM PBF data to determine IDs");
-	long long timer = -get_micro_time();
+
+	long long timer=0;
+
+	if(log_message){
+		log_message("Scanning OSM PBF data to determine IDs");
+		if(all_modelling_nodes_are_routing_nodes)
+			log_message("All modelling nodes are routing nodes");
+		else
+			log_message("Not all modelling nodes are routing nodes");
+		timer = -get_micro_time();
+	}
 
 	std::function<void(uint64_t,double,double,const TagMap&)>node_callback;
 	if(is_routing_node){
@@ -45,11 +52,9 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 		};
 	}
 
-
-	unordered_read_osm_pbf(
-		file_name,
-		node_callback,
-		[&](uint64_t osm_way_id, const std::vector<std::uint64_t>& osm_node_id_list, const TagMap&tags) {
+	std::function<void(uint64_t,const std::vector<std::uint64_t>& osm_node_id_list,const TagMap&)>way_callback;
+	if(!all_modelling_nodes_are_routing_nodes){
+		way_callback = [&](uint64_t osm_way_id, const std::vector<std::uint64_t>& osm_node_id_list, const TagMap&tags) {
 			if(osm_node_id_list.size() >= 2 && is_way_used_for_routing(osm_way_id, tags)){
 				map.is_routing_way.make_large_enough_for(osm_way_id);
 				map.is_routing_way.set(osm_way_id);
@@ -72,49 +77,84 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 				map.is_routing_node.make_large_enough_for(osm_node_id_list.back());
 				map.is_routing_node.set(osm_node_id_list.back());
 			}
-		},
-		nullptr,
-		log_message
-	);
-	timer += get_micro_time();
-	log_message("Finished scan, needed "+std::to_string(timer)+"musec.");
-	
-	log_message("OSM ID range goes up to "+std::to_string(map.is_routing_node.size()) +" for routing nodes.");
-	log_message("OSM ID range goes up to "+std::to_string(map.is_modelling_node.size()) +" for modelling nodes.");
-	log_message("OSM ID range goes up to "+std::to_string(map.is_routing_way.size()) +" for routing ways.");
-	log_message("Found "+std::to_string(map.is_routing_node.population_count()) +" routing nodes.");
-	log_message("Found "+std::to_string(map.is_modelling_node.population_count()) +" modelling nodes.");
-	log_message("Found "+std::to_string(map.is_routing_way.population_count()) +" routing ways.");
-	
+		};
+	}else{
+		way_callback = [&](uint64_t osm_way_id, const std::vector<std::uint64_t>& osm_node_id_list, const TagMap&tags) {
+			if(osm_node_id_list.size() >= 2 && is_way_used_for_routing(osm_way_id, tags)){
+				map.is_routing_way.make_large_enough_for(osm_way_id);
+				map.is_routing_way.set(osm_way_id);
+
+				for(std::uint64_t osm_node_id : osm_node_id_list) {
+					map.is_modelling_node.make_large_enough_for(osm_node_id);
+					map.is_routing_node.make_large_enough_for(osm_node_id);
+
+					map.is_routing_node.set(osm_node_id);
+					map.is_modelling_node.set(osm_node_id);
+				}
+
+				assert(map.is_modelling_node.is_set(osm_node_id_list.front()));
+				assert(map.is_modelling_node.is_set(osm_node_id_list.back()));
+			}
+		};
+	}
+
+	unordered_read_osm_pbf(file_name, node_callback, way_callback, nullptr, log_message);
+
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished scan, needed "+std::to_string(timer)+" musec.");
+
+		log_message("OSM ID range goes up to "+std::to_string(map.is_routing_node.size()) +" for routing nodes.");
+		log_message("OSM ID range goes up to "+std::to_string(map.is_modelling_node.size()) +" for modelling nodes.");
+		log_message("OSM ID range goes up to "+std::to_string(map.is_routing_way.size()) +" for routing ways.");
+		log_message("Found "+std::to_string(map.is_routing_node.population_count()) +" routing nodes.");
+		log_message("Found "+std::to_string(map.is_modelling_node.population_count()) +" modelling nodes.");
+		log_message("Found "+std::to_string(map.is_routing_way.population_count()) +" routing ways.");
+	}
+
 	return map;
 }
 
 OSMRoutingGraph load_osm_routing_graph_from_pbf(
 	const std::string&pbf_file,
-
 	const OSMRoutingIDMapping&mapping,
 	std::function<OSMWayDirectionCategory(uint64_t, unsigned, const TagMap&)>way_callback,
-
+	std::function<
+		void(
+			uint64_t osm_relation_id,
+			const std::vector<OSMRelationMember>&member_list,
+			const TagMap&tags,
+			std::function<void(OSMTurnRestriction)>
+		)
+	>turn_restriction_decoder,
 	std::function<void(const std::string&)>log_message,
 	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
 ){
 	assert((mapping.is_modelling_node | mapping.is_routing_node) == mapping.is_modelling_node);
 
+	if(!way_callback){
+		way_callback = [](uint64_t, unsigned, const TagMap&){ return OSMWayDirectionCategory::open_in_both; };
+	}
+
 	std::vector<unsigned>tail;
 	OSMRoutingGraph routing_graph;
 
-	long long timer;
+	long long timer=0;
 
-	log_message("Start computing ID mappings");
-	timer = -get_micro_time();
+	if(log_message){
+		log_message("Start computing ID mappings");
+		timer = -get_micro_time();
+	}
 
 	IDMapper modelling_node(mapping.is_modelling_node);
 	IDMapper routing_node(mapping.is_routing_node);
 	IDMapper routing_way(mapping.is_routing_way);
 
-	timer += get_micro_time();
-	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished, needed "+std::to_string(timer)+" musec.");
+	}
+
 	auto on_new_arc = [&](unsigned x, unsigned y, unsigned dist, unsigned routing_way_id){
 		tail.push_back(x);
 		routing_graph.head.push_back(y);
@@ -122,11 +162,29 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		routing_graph.way.push_back(routing_way_id);
 	};
 
+	std::vector<OSMTurnRestriction>osm_turn_restrictions;
+	std::function<void(uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags)>relation_callback = nullptr;
+
+	if(turn_restriction_decoder){
+		relation_callback = [&](
+			uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags
+		){
+			turn_restriction_decoder(
+				osm_relation_id, member_list, tags,
+				[&](OSMTurnRestriction restriction){
+					osm_turn_restrictions.push_back(restriction);
+				}
+			);
+		};
+	}
+
 	std::vector<float>latitude(modelling_node.local_id_count());
 	std::vector<float>longitude(modelling_node.local_id_count());
 
-	log_message("Scanning OSM PBF data to load routing arcs");
-	timer = -get_micro_time();
+	if(log_message){
+		log_message("Scanning OSM PBF data to load routing arcs");
+		timer = -get_micro_time();
+	}
 	ordered_read_osm_pbf(
 		pbf_file,
 		[&](uint64_t osm_node_id, double lat, double lon, const TagMap&tags){
@@ -155,7 +213,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 						);
 
 						modelling_id_of_previous_modelling_node = modelling_id_of_current_node;
-					
+
 						unsigned routing_id_of_current_node = routing_node.to_local(node_list[i], invalid_id);
 						if(routing_id_of_current_node != invalid_id){
 
@@ -175,23 +233,23 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 							dist_since_last_routing_node = 0;
 							routing_id_of_last_routing_node = routing_id_of_current_node;
-						}				
+						}
 					}
 				}
 			}
 		},
-		nullptr,
+		relation_callback,
 		log_message,
 		file_is_ordered_even_though_file_header_says_that_it_is_unordered
 	);
-	timer += get_micro_time();
-	log_message("Finished scan, needed "+std::to_string(timer)+"musec.");
 
-	log_message("Found "+std::to_string(tail.size())+"arcs.");
-
-
-	log_message("Start sorting arcs by tail");
-	timer = -get_micro_time();
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished scan, needed "+std::to_string(timer)+" musec.");
+		log_message("Found "+std::to_string(tail.size())+" arcs.");
+		log_message("Start sorting arcs by tail");
+		timer = -get_micro_time();
+	}
 
 	{
 		unsigned node_count = routing_node.local_id_count();
@@ -202,30 +260,373 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		routing_graph.way = apply_inverse_permutation(p, std::move(routing_graph.way));
 		routing_graph.first_out = invert_vector(tail, node_count);
 	}
-	timer += get_micro_time();
-	
-	log_message("Finished sorting, needed "+std::to_string(timer)+"musec.");
-	
-	log_message("Start computing modelling to routing node mapping");
-	timer = -get_micro_time();
+
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished sorting, needed "+std::to_string(timer)+" musec.");
+		log_message("Start computing modelling to routing node mapping");
+		timer = -get_micro_time();
+	}
 
 	BitVector modelling_node_is_routing_node(modelling_node.local_id_count(), false);
 	for(unsigned r=0; r < routing_node.local_id_count(); ++r)
 		modelling_node_is_routing_node.set(modelling_node.to_local(routing_node.to_global(r)));
-	
-	timer += get_micro_time();
-	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
 
-	log_message("Start reducing geographic positions to routing nodes");
-	timer = -get_micro_time();
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished, needed "+std::to_string(timer)+" musec.");
+
+		log_message("Start reducing geographic positions to routing nodes");
+		timer = -get_micro_time();
+	}
 
 	routing_graph.latitude = keep_element_of_vector_if(modelling_node_is_routing_node, latitude);
 	routing_graph.longitude = keep_element_of_vector_if(modelling_node_is_routing_node, longitude);
 
-	timer += get_micro_time();
-	log_message("Finished, needed "+std::to_string(timer)+"musec.");
-	
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished, needed "+std::to_string(timer)+" musec.");
+		log_message("Found "+std::to_string(osm_turn_restrictions.size())+" OSM turn restrictions.");
+	}
+
+	if(!osm_turn_restrictions.empty()){
+		auto&first_out = routing_graph.first_out;
+		auto&head = routing_graph.head;
+		auto&way = routing_graph.way;
+
+		const unsigned node_count = first_out.size()-1;
+		const unsigned arc_count = head.size();
+		const unsigned way_count = routing_way.local_id_count();
+
+		{
+			if(log_message){
+				log_message("Start mapping IDs in turn restrictions");
+				timer = -get_micro_time();
+			}
+
+			auto
+				in = osm_turn_restrictions.begin(),
+				out = osm_turn_restrictions.begin(),
+				end = osm_turn_restrictions.end();
+
+			while(in != end){
+				bool has_error = false;
+
+				unsigned local_from_way = routing_way.to_local(in->from_way, invalid_id);
+				if(local_from_way == invalid_id){
+					has_error = true;
+				}
+
+				unsigned local_to_way = routing_way.to_local(in->to_way, invalid_id);
+				if(local_to_way == invalid_id){
+					has_error = true;
+				}
+
+				unsigned local_via_node = invalid_id;
+				if(in->via_node != (std::uint64_t)-1){
+					local_via_node = routing_node.to_local(in->via_node, invalid_id);
+					if(local_via_node == invalid_id){
+						has_error = true;
+					}
+				}
+
+				if(has_error){
+					++in;
+				} else {
+					out->osm_relation_id = in->osm_relation_id;
+					out->category = in->category;
+					out->from_way = local_from_way;
+					out->to_way = local_to_way;
+					out->via_node = local_via_node;
+					++in;
+					++out;
+				}
+			}
+
+			osm_turn_restrictions.erase(out, end);
+
+			if(log_message){
+				timer += get_micro_time();
+				log_message("Finished, needed "+std::to_string(timer)+" musec.");
+			}
+		}
+
+		if(log_message){
+			log_message("After removing restrictions with not exported ways or node only "+std::to_string(osm_turn_restrictions.size())+" restrictions remain.");
+		}
+
+		std::vector<unsigned>forbidden_from;
+		std::vector<unsigned>forbidden_to;
+
+		auto add_forbidden_turn = [&](unsigned from_arc, unsigned to_arc){
+			assert(from_arc < arc_count);
+			assert(to_arc < arc_count);
+
+			forbidden_from.push_back(from_arc);
+			forbidden_to.push_back(to_arc);
+		};
+
+		{
+
+			if(log_message){
+				log_message("Sorting arcs by way");
+				timer = -get_micro_time();
+			}
+
+			auto index_to_arc = compute_sort_permutation_using_key(way, way_count, [](unsigned x){return x;});
+			auto first_index_of_way = invert_vector(apply_permutation(index_to_arc, way), way_count);
+
+			if(log_message){
+				timer += get_micro_time();
+				log_message("Finished, needed "+std::to_string(timer)+" musec.");
+			}
+
+			{
+				if(log_message){
+					log_message("Start filling in missing via node IDs in turn restrictions and handling mandatory turns with from = to");
+					timer = -get_micro_time();
+				}
+
+				std::vector<bool> is_head_of_from_way(node_count, false);
+				std::vector<unsigned> incomming_arc_of_way_into_node(node_count, invalid_id);
+
+				unsigned repaired_count = 0;
+				unsigned no_via_count = 0;
+				unsigned multiple_via_count = 0;
+				unsigned go_straight_count = 0;
+
+				auto
+					in = osm_turn_restrictions.begin(),
+					out = osm_turn_restrictions.begin(),
+					end = osm_turn_restrictions.end();
+
+				while(in != end){
+					if(in->via_node != invalid_id) {
+						*out = *in;
+						++out;
+						++in;
+					} else if(in->from_way == in->to_way && in->category == OSMTurnRestrictionCategory::mandatory){
+						for(auto i=first_index_of_way[in->from_way]; i!=first_index_of_way[in->from_way+1]; ++i){
+							auto arc = index_to_arc[i];
+							incomming_arc_of_way_into_node[head[arc]] = arc;
+						}
+
+						for(auto i=first_index_of_way[in->from_way]; i!=first_index_of_way[in->from_way+1]; ++i){
+							auto out_arc = index_to_arc[i];
+							auto via_node = tail[out_arc];
+							auto in_arc = incomming_arc_of_way_into_node[via_node];
+							if(in_arc != invalid_id)
+								for(unsigned not_out_arc=first_out[via_node]; not_out_arc!=first_out[via_node+1]; ++not_out_arc)
+									if(not_out_arc != out_arc)
+										add_forbidden_turn(in_arc, not_out_arc);
+						}
+
+						for(auto i=first_index_of_way[in->from_way]; i!=first_index_of_way[in->from_way+1]; ++i){
+							auto arc = index_to_arc[i];
+							incomming_arc_of_way_into_node[head[arc]] = invalid_id;
+						}
+						++in;
+						++go_straight_count;
+					} else {
+						unsigned via_node = invalid_id;
+						unsigned second_via_node = invalid_id;
+
+						for(auto i=first_index_of_way[in->from_way]; i!=first_index_of_way[in->from_way+1]; ++i){
+							auto arc = index_to_arc[i];
+							is_head_of_from_way[head[arc]] = true;
+						}
+
+						for(auto i=first_index_of_way[in->to_way]; i!=first_index_of_way[in->to_way+1]; ++i){
+							auto arc = index_to_arc[i];
+							if(is_head_of_from_way[tail[arc]]){
+								if(via_node != invalid_id){
+									second_via_node = tail[arc];
+								} else {
+									via_node = tail[arc];
+								}
+							}
+						}
+
+						for(auto i=first_index_of_way[in->from_way]; i!=first_index_of_way[in->from_way+1]; ++i){
+							auto arc = index_to_arc[i];
+							is_head_of_from_way[head[arc]] = false;
+						}
+
+						if(via_node == invalid_id){
+							if(log_message)
+								log_message(
+									"Turn restriction with OSM-relation-ID \""+std::to_string(in->osm_relation_id)+"\" "
+									"with OSM-way-from-ID \""+std::to_string(routing_way.to_global(in->from_way))+"\" "
+									"and OSM-way to-ID \""+std::to_string(routing_way.to_global(in->to_way))+"\" "
+									"does not have a via-node "
+									"and their ways do not cross, ingoring restriction"
+								);
+							++no_via_count;
+							++in;
+						}else if(second_via_node != invalid_id){
+							if(log_message)
+								log_message(
+									"Turn restriction with OSM-relation-ID \""+std::to_string(in->osm_relation_id)+"\" "
+									"with OSM-way-from-ID \""+std::to_string(routing_way.to_global(in->from_way))+"\" "
+									"and OSM-way-to-ID \""+std::to_string(routing_way.to_global(in->to_way))+"\" "
+									"does not have a via-node "
+									"and there are multiple ambiguous candidates, namely OSM-node-IDs \""+std::to_string(routing_node.to_global(via_node))+"\" "
+									"and \""+std::to_string(routing_node.to_global(second_via_node))+"\" (and maybe more), ingoring restriction"
+								);
+							++multiple_via_count;
+							++in;
+						}else{
+							++repaired_count;
+
+							out->osm_relation_id = in->osm_relation_id;
+							out->category = in->category;
+							out->from_way = in->from_way;
+							out->to_way = in->to_way;
+							out->via_node = via_node;
+
+							++out;
+							++in;
+						}
+					}
+				}
+
+				if(log_message){
+					log_message("There were "+std::to_string(go_straight_count)+" go-straight turns that were expanded into "+std::to_string(forbidden_from.size())+" forbidden turns.");
+					log_message("There were "+std::to_string(repaired_count)+" normal turns without via-node for which a via-node could be derived.");
+					log_message("There were "+std::to_string(no_via_count)+" normal turns without via-node discarded because no potential via-node was found.");
+					log_message("There were "+std::to_string(no_via_count)+" normal turns without via-node discarded because multiple potential via-node were found.");
+				}
+
+				osm_turn_restrictions.erase(out, end);
+
+				if(log_message){
+					timer += get_micro_time();
+					log_message("Finished, needed "+std::to_string(timer)+" musec.");
+				}
+			}
+		}
+
+		{
+			if(log_message){
+				log_message("Building forbidden turns");
+				timer = -get_micro_time();
+			}
+
+			const unsigned node_count = routing_graph.first_out.size()-1;
+			const unsigned arc_count = routing_graph.head.size();
+			(void)arc_count;
+
+			auto in_arc = compute_sort_permutation_using_key(routing_graph.head, node_count, [](unsigned x){return x;});
+			auto first_in = invert_vector(apply_permutation(in_arc, routing_graph.head), node_count);
+
+			for(auto x:osm_turn_restrictions){
+				assert(x.via_node != invalid_id);
+				assert(x.from_way != invalid_id);
+				assert(x.to_way != invalid_id);
+
+				unsigned from = invalid_id;
+				for(unsigned i=first_in[x.via_node]; i!=first_in[x.via_node+1]; ++i){
+					assert(i < arc_count);
+					unsigned arc = in_arc[i];
+					assert(arc < arc_count);
+					if(routing_graph.way[arc] == x.from_way){
+						from = arc;
+						break;
+					}
+				}
+				if(from == invalid_id){
+					if(log_message){
+						log_message(
+							"Cannot find from-arc for turn restriction with OSM relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+							"and OSM from-way \""+std::to_string(routing_way.to_global(x.from_way))+"\" "
+							"and OSM to-way \""+std::to_string(routing_way.to_global(x.to_way))+"\" "
+							"and OSM via-node \""+std::to_string(routing_node.to_global(x.via_node))+"\""
+							", ignoring restriction"
+						);
+					}
+					continue;
+				}
+				assert(head[from] == x.via_node);
+
+				unsigned to = invalid_id;
+				for(unsigned arc=routing_graph.first_out[x.via_node]; arc!=routing_graph.first_out[x.via_node+1]; ++arc){
+					assert(arc < arc_count);
+					if(routing_graph.way[arc] == x.to_way){
+						to = arc;
+						break;
+					}
+				}
+				if(to == invalid_id){
+					if(log_message){
+						log_message(
+							"Cannot find to-arc for turn restriction with OSM relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+							"and OSM from-way \""+std::to_string(routing_way.to_global(x.from_way))+"\" "
+							"and OSM to-way \""+std::to_string(routing_way.to_global(x.to_way))+"\" "
+							"and OSM via-node \""+std::to_string(routing_node.to_global(x.via_node))+"\""
+							", ignoring restriction"
+						);
+					}
+					continue;
+				}
+				assert(tail[to] == x.via_node);
+
+
+				if(x.category == OSMTurnRestrictionCategory::prohibitive){
+					add_forbidden_turn(from, to);
+				} else {
+					for(unsigned i=first_out[x.via_node]; i!=first_out[x.via_node+1]; ++i){
+						if(i != to){
+							add_forbidden_turn(from, i);
+						}
+					}
+				}
+			}
+
+			if(log_message){
+				timer += get_micro_time();
+				log_message("Finished, needed "+std::to_string(timer)+" musec.");
+			}
+		}
+
+		{
+			if(log_message){
+				log_message("Sorting forbidden turns");
+				timer = -get_micro_time();
+			}
+
+			auto p = compute_inverse_sort_permutation_first_by_tail_then_by_head_and_apply_sort_to_tail(arc_count, forbidden_from, forbidden_to);
+			forbidden_to = apply_inverse_permutation(p, move(forbidden_to));
+
+			assert(is_sorted_using_less(forbidden_from));
+
+			BitVector is_duplicate = make_bit_vector(
+				forbidden_from.size(),
+				[&](unsigned x){
+					if(x == 0)
+						return false;
+					else
+						return forbidden_from[x-1] == forbidden_from[x] && forbidden_to[x-1] == forbidden_to[x];
+				}
+			);
+			inplace_remove_element_from_vector_if(is_duplicate, forbidden_from);
+			inplace_remove_element_from_vector_if(is_duplicate, forbidden_to);
+
+			assert(is_sorted_using_less(forbidden_from));
+
+			if(log_message){
+				timer += get_micro_time();
+				log_message("Finished, needed "+std::to_string(timer)+" musec.");
+			}
+		}
+
+		routing_graph.forbidden_turn_from_arc = std::move(forbidden_from);
+		routing_graph.forbidden_turn_to_arc = std::move(forbidden_to);
+	}
+
+	if(log_message){
+		log_message("Extracted "+std::to_string(routing_graph.forbidden_turn_from_arc.size())+" forbidden turns.");
+	}
+
 	return routing_graph; // NVRO
 }
 

@@ -57,7 +57,7 @@ int main(){
 		auto path = ch_query.get_node_path();
 		long long end_time = get_micro_time();
 
-		cout << "To get from "<< from << " to "<< to << " one needs " << distance << " seconds." << endl;
+		cout << "To get from "<< from << " to "<< to << " one needs " << distance << " milliseconds." << endl;
 		cout << "This query was answered in " << (end_time - start_time) << " microseconds." << endl;
 		cout << "The path is";
 		for(auto x:path)

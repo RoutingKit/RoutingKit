@@ -3,6 +3,8 @@
 #include <routingkit/vector_io.h>
 #include <routingkit/timer.h>
 #include <routingkit/tag_map.h>
+#include <routingkit/id_mapper.h>
+
 
 #include <iostream>
 #include <string>
@@ -73,15 +75,36 @@ int main(int argc, char*argv[]){
 				way_name[routing_way_id] = get_osm_way_name(osm_way_id, way_tags, log_message);
 				return get_osm_car_direction_category(osm_way_id, way_tags, log_message);
 			},
-			log_message,
-			true
+			nullptr,
+			log_message
 		);
 
+		unsigned arc_count  = routing_graph.arc_count();
+
 		std::vector<uint32_t>travel_time = routing_graph.geo_distance;
-		for(unsigned a=0; a<travel_time.size(); ++a){
-			travel_time[a] *= 18;
+		for(unsigned a=0; a<arc_count; ++a){
+			travel_time[a] *= 18000;
 			travel_time[a] /= way_speed[routing_graph.way[a]];
 			travel_time[a] /= 5;
+		}
+
+		{
+			unsigned max_arc = invalid_id;
+			unsigned max_travel_time = 0;
+			for(unsigned a=0; a<arc_count; ++a){
+				if(travel_time[a] >= max_travel_time){
+					max_arc = a;
+					max_travel_time = travel_time[a];
+				}
+			}
+
+			IDMapper way_mapper(mapping.is_routing_way);
+
+			cout << "Arc with maximum travel time : " << max_arc << endl;
+			cout << "Corresponding travel time : " << travel_time[max_arc]<< " ms" << endl;
+			cout << "Corresponding geographic length : " << routing_graph.geo_distance[max_arc]<< " m"<< endl;
+			cout << "Speed : " << way_speed[routing_graph.way[max_arc]] << " km/h"<< endl;
+			cout << "Corresponding OSM way : " << way_mapper.to_global(routing_graph.way[max_arc]) << endl;
 		}
 
 		{
