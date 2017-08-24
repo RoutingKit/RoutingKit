@@ -1,7 +1,5 @@
 #include <routingkit/vector_io.h>
 
-#include "dijkstra.h"
-
 #include <iostream>
 #include <stdexcept>
 #include <vector>
