@@ -4,7 +4,7 @@ AR=ar
 CFLAGS=-Wall -O3 -DNDEBUG -march=native -ffast-math -std=c++11 -fPIC -Iinclude
 LDFLAGS=
 
-all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
+all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_dijkstra bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
 
 build/osm_decoder.o: include/routingkit/constants.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/osm_decoder.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/tag_map.h include/routingkit/timer.h src/buffered_asynchronous_reader.h src/file_data_source.h src/osm_decoder.cpp src/protobuf.h generate_make_file
 	mkdir -p build
@@ -26,7 +26,7 @@ build/encode_vector.o: include/routingkit/bit_vector.h include/routingkit/vector
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/encode_vector.cpp -o build/encode_vector.o
 
-build/compute_geographic_distance_weights.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/geo_dist.h include/routingkit/id_queue.h include/routingkit/min_max.h include/routingkit/timer.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/compute_geographic_distance_weights.cpp src/dijkstra.h src/verify.h generate_make_file
+build/compute_geographic_distance_weights.o: include/routingkit/bit_vector.h include/routingkit/geo_dist.h include/routingkit/min_max.h include/routingkit/timer.h include/routingkit/vector_io.h src/compute_geographic_distance_weights.cpp src/verify.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/compute_geographic_distance_weights.cpp -o build/compute_geographic_distance_weights.o
 
@@ -82,7 +82,7 @@ build/graph_to_svg.o: include/routingkit/bit_vector.h include/routingkit/constan
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/graph_to_svg.cpp -o build/graph_to_svg.o
 
-build/examine_ch.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/id_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/dijkstra.h src/examine_ch.cpp src/verify.h generate_make_file
+build/examine_ch.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/id_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/examine_ch.cpp src/verify.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/examine_ch.cpp -o build/examine_ch.o
 
@@ -98,7 +98,7 @@ build/test_protobuf.o: src/expect.h src/protobuf.h src/test_protobuf.cpp generat
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/test_protobuf.cpp -o build/test_protobuf.o
 
-build/generate_random_node_list.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/id_queue.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/dijkstra.h src/generate_random_node_list.cpp generate_make_file
+build/generate_random_node_list.o: include/routingkit/bit_vector.h include/routingkit/vector_io.h src/generate_random_node_list.cpp generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/generate_random_node_list.cpp -o build/generate_random_node_list.o
 
@@ -146,7 +146,7 @@ build/randomly_permute_nodes.o: include/routingkit/bit_vector.h include/routingk
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/randomly_permute_nodes.cpp -o build/randomly_permute_nodes.o
 
-build/generate_dijkstra_rank_test_queries.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/id_queue.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/dijkstra.h src/generate_dijkstra_rank_test_queries.cpp src/verify.h generate_make_file
+build/generate_dijkstra_rank_test_queries.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/dijkstra.h include/routingkit/id_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/generate_dijkstra_rank_test_queries.cpp src/verify.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/generate_dijkstra_rank_test_queries.cpp -o build/generate_dijkstra_rank_test_queries.o
 
@@ -158,7 +158,7 @@ build/test_nearest_neighbor.o: include/routingkit/bit_vector.h include/routingki
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/test_nearest_neighbor.cpp -o build/test_nearest_neighbor.o
 
-build/generate_constant_vector.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/id_queue.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/dijkstra.h src/generate_constant_vector.cpp generate_make_file
+build/generate_constant_vector.o: include/routingkit/bit_vector.h include/routingkit/vector_io.h src/generate_constant_vector.cpp generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/generate_constant_vector.cpp -o build/generate_constant_vector.o
 
@@ -170,7 +170,7 @@ build/graph_util.o: include/routingkit/constants.h include/routingkit/graph_util
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/graph_util.cpp -o build/graph_util.o
 
-build/run_dijkstra.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/id_queue.h include/routingkit/min_max.h include/routingkit/timer.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/dijkstra.h src/run_dijkstra.cpp generate_make_file
+build/run_dijkstra.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/dijkstra.h include/routingkit/id_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/run_dijkstra.cpp src/verify.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/run_dijkstra.cpp -o build/run_dijkstra.o
 
@@ -193,6 +193,10 @@ build/bit_vector.o: include/routingkit/bit_vector.h src/bit_vector.cpp src/emula
 build/verify.o: src/verify.cpp src/verify.h generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/verify.cpp -o build/verify.o
+
+build/test_dijkstra.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/dijkstra.h include/routingkit/id_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/expect.h src/test_dijkstra.cpp src/verify.h generate_make_file
+	mkdir -p build
+	$(CC) $(CFLAGS)  -c src/test_dijkstra.cpp -o build/test_dijkstra.o
 
 build/osm_profile.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/osm_decoder.h include/routingkit/osm_graph_builder.h include/routingkit/osm_profile.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/tag_map.h src/osm_profile.cpp generate_make_file
 	mkdir -p build
@@ -222,7 +226,7 @@ build/compute_contraction_hierarchy.o: include/routingkit/bit_vector.h include/r
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/compute_contraction_hierarchy.cpp -o build/compute_contraction_hierarchy.o
 
-build/generate_random_source_times.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/id_queue.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/dijkstra.h src/generate_random_source_times.cpp generate_make_file
+build/generate_random_source_times.o: include/routingkit/bit_vector.h include/routingkit/vector_io.h src/generate_random_source_times.cpp generate_make_file
 	mkdir -p build
 	$(CC) $(CFLAGS)  -c src/generate_random_source_times.cpp -o build/generate_random_source_times.o
 
@@ -362,13 +366,17 @@ bin/graph_to_dot: build/bit_vector.o build/contraction_hierarchy.o build/graph_t
 	mkdir -p bin
 	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_to_dot.o build/graph_util.o build/timer.o build/vector_io.o -pthread  -o bin/graph_to_dot
 
-bin/run_dijkstra: build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o
+bin/run_dijkstra: build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o build/verify.o
 	mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o -pthread  -o bin/run_dijkstra
+	$(CC) $(LDFLAGS) build/bit_vector.o build/run_dijkstra.o build/timer.o build/vector_io.o build/verify.o -pthread  -o bin/run_dijkstra
 
 bin/test_tag_map: build/test_tag_map.o
 	mkdir -p bin
 	$(CC) $(LDFLAGS) build/test_tag_map.o  -o bin/test_tag_map
+
+bin/test_dijkstra: build/bit_vector.o build/test_dijkstra.o build/vector_io.o build/verify.o
+	mkdir -p bin
+	$(CC) $(LDFLAGS) build/bit_vector.o build/test_dijkstra.o build/vector_io.o build/verify.o -pthread  -o bin/test_dijkstra
 
 bin/test_id_set_queue: build/test_id_set_queue.o
 	mkdir -p bin

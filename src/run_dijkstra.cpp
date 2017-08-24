@@ -1,8 +1,10 @@
 #include <routingkit/vector_io.h>
 #include <routingkit/timer.h>
 #include <routingkit/min_max.h>
+#include <routingkit/dijkstra.h>
+#include <routingkit/inverse_vector.h>
 
-#include "dijkstra.h"
+#include "verify.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -38,8 +40,14 @@ int main(int argc, char*argv[]){
 		vector<unsigned>first_out = load_vector<unsigned>(first_out_file);
 		vector<unsigned>head = load_vector<unsigned>(head_file);
 		vector<unsigned>weight = load_vector<unsigned>(weight_file);
-
+		
 		cout << "done" << endl;
+
+		cout << "Validity tests ... " << flush;
+		check_if_graph_is_valid(first_out, head);
+		cout << "done" << endl;
+
+		auto tail = invert_inverse_vector(first_out);
 
 		const unsigned node_count = first_out.size()-1;
 		const unsigned arc_count = head.size();
@@ -53,7 +61,7 @@ int main(int argc, char*argv[]){
 		if(weight.size() != arc_count)
 			throw runtime_error("The weight vector must be as long as the number of arcs");
 
-		auto dij = make_dijkstra(first_out, head, [&](unsigned arc, unsigned dep_time){ return weight[arc]; });
+		Dijkstra dij(first_out, tail, head);
 
 		cout << "Loading test queries ... " << flush;
 
@@ -81,14 +89,13 @@ int main(int argc, char*argv[]){
 
 			long long time = -get_micro_time();
 
-			dij.clear();
-			dij.add_source_node(source[i]);
+			dij.reset().add_source(source[i]);
 			while(!dij.is_finished()){
-				auto x = dij.settle().id;
+				auto x = dij.settle(ScalarGetWeight(weight)).node;
 				if(x == target[i])
 					break;
 			}
-			distance[i] = dij.distance_to(target[i]);
+			distance[i] = dij.get_distance_to(target[i]);
 
 			time += get_micro_time();
 

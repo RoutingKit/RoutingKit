@@ -1,6 +1,7 @@
 #include <routingkit/vector_io.h>
+#include <routingkit/dijkstra.h>
+#include <routingkit/inverse_vector.h>
 
-#include "dijkstra.h"
 #include "verify.h"
 
 #include <iostream>
@@ -50,6 +51,7 @@ int main(int argc, char*argv[]){
 		check_if_graph_is_valid(first_out, head);
 		cout << "done" << endl;
 
+		auto tail = invert_inverse_vector(first_out);
 
 		unsigned node_count = first_out.size()-1;
 
@@ -57,13 +59,14 @@ int main(int argc, char*argv[]){
 		vector<unsigned>target;
 		vector<unsigned>rank;
 		vector<unsigned>distance;
+
 		
 		cout << "Generating test queries ... " << flush;
 
 		std::default_random_engine gen(random_seed);
 		std::uniform_int_distribution<int> dist(0, node_count-1);
 
-		auto dij = make_dijkstra(first_out, head, weight);
+		Dijkstra dij(first_out, tail, head);
 
 		for(unsigned i=0; i<source_node_count; ++i){
 			
@@ -71,19 +74,18 @@ int main(int argc, char*argv[]){
 			unsigned r = 0;
 			unsigned n = 0;
 
-			dij.clear();
-			dij.add_source_node(source_node);
+			dij.reset().add_source(source_node);
 			
 			while(!dij.is_finished()){
-				auto x = dij.settle();
+				auto x = dij.settle(ScalarGetWeight(weight));
 				++n;
 				if(n == (1u << r)){
 
 					if(r > 5){
 						source.push_back(source_node);
-						target.push_back(x.id);
+						target.push_back(x.node);
 						rank.push_back(r);
-						distance.push_back(x.key);
+						distance.push_back(x.distance);
 					}
 					
 					++r;
