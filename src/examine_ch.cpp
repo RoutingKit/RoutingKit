@@ -5,7 +5,6 @@
 #include <routingkit/inverse_vector.h>
 #include <routingkit/contraction_hierarchy.h>
 
-#include "dijkstra.h"
 #include "verify.h"
 
 #include <iostream>
