@@ -3,7 +3,6 @@
 #include <routingkit/min_max.h>
 #include <routingkit/geo_dist.h>
 
-#include "dijkstra.h"
 #include "verify.h"
 
 #include <iostream>
