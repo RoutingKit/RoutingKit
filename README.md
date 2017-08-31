@@ -71,6 +71,8 @@ You can get OSM PBF exports from various sources. A popular one is [Geofabrik](h
 
 ## Documentation
 
+The functions of RoutingKit are made available using different headers. This allows for a fine-grained control over what is made available and what not. The exact headers are available from the documentation. For cases where this fine-grained control is not necessary, RoutingKit provides the `<routingkit/all.h>` header, which includes everything. All functionality is in the `RoutingKit` namespace.
+
 * [Setup and Installation](doc/Setup.md)
 * [Support Functionality](doc/SupportFunctions.md)
 * [Contraction Hierarchy](doc/ContractionHierarchy.md)
