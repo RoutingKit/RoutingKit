@@ -7,7 +7,7 @@ archiver_name = "ar"
 
 # "-DROUTING_KIT_NO_GCC_EXTENSIONS", "-DROUTING_KIT_NO_POSIX"
 #compiler_options = ["-Wall", "-O0", "-ggdb","-march=native", "-ffast-math", "-std=c++11", "-D_GLIBCXX_DEBUG"]
-compiler_options = ["-Wall", "-O3", "-DNDEBUG", "-march=native", "-ffast-math", "-std=c++11"]
+compiler_options = ["-Wall", "-DNDEBUG", "-march=native", "-ffast-math", "-std=c++11", "-O3"]
 linker_options = []
 
 build_static_library = True
@@ -274,7 +274,7 @@ with open("Makefile", "w") as f:
 			depends_on.append("generate_make_file")
 
 		print(object_file + ": " + " ".join(depends_on), file=f)
-		print("\tmkdir -p build", file=f)
+		print("\t@mkdir -p build", file=f)
 		print("\t$(CC) $(CFLAGS) " + " ".join(extra_compiler_options) + " -c " + cpp_file + " -o "+object_file, file=f)
 		print("", file=f)
 
@@ -298,15 +298,15 @@ with open("Makefile", "w") as f:
 			depends_on_object_files = [os.path.join("build", os.path.basename(os.path.splitext(x)[0]) + ".o") for x in depends_on_cpp_files]
 			print(bin_file + ": " + " ".join(depends_on_object_files), file=f)
 			if os.path.splitext(bin_file)[1]==".so":
-				print("\tmkdir -p lib", file=f)
+				print("\t@mkdir -p lib", file=f)
 				print("\t$(CC) -shared $(LDFLAGS) "+" ".join(depends_on_object_files+extra_linker_options)+" -o "+bin_file, file=f)
 			elif os.path.splitext(bin_file)[1]==".a":
-				print("\tmkdir -p lib", file=f)
+				print("\t@mkdir -p lib", file=f)
 				print("\t$(AR) rcs "+bin_file + " " + " ".join(depends_on_object_files), file=f)
 				if len(extra_linker_options) != 0:
 					print("When linking against \""+bin_file+"\" you need to add \""+" ".join(extra_linker_options)+"\" to the linker as the last commandline options.")
 			else:	
-				print("\tmkdir -p bin", file=f)
+				print("\t@mkdir -p bin", file=f)
 				print("\t$(CC) $(LDFLAGS) "+" ".join(depends_on_object_files+extra_linker_options)+" "+" -o "+bin_file, file=f)
 			print("", file=f)
 
