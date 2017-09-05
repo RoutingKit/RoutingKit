@@ -58,7 +58,7 @@ public:
 	}
 
 	Dijkstra&add_source(unsigned id, unsigned departure_time = 0){
-		assert(id < first_out.size()-1);
+		assert(id < first_out->size()-1);
 		tentative_distance[id] = departure_time;
 		predecessor_arc[id] = invalid_id;
 		queue.push({id, departure_time});
@@ -70,7 +70,7 @@ public:
 	}
 
 	bool was_node_reached(unsigned x)const{
-		assert(x < first_out.size()-1);
+		assert(x < first_out->size()-1);
 		return was_popped.is_set(x);
 	}
 
@@ -106,7 +106,7 @@ public:
 	}
 
 	unsigned get_distance_to(unsigned x) const {
-		assert(x < first_out.size()-1);
+		assert(x < first_out->size()-1);
 		if(was_popped.is_set(x))
 			return tentative_distance[x];
 		else
@@ -114,7 +114,7 @@ public:
 	}
 
 	std::vector<unsigned>get_node_path_to(unsigned x) const {
-		assert(x < first_out.size()-1);
+		assert(x < first_out->size()-1);
 		std::vector<unsigned>path;
 		if(was_node_reached(x)){
 			assert(was_node_reached(x));
@@ -131,7 +131,7 @@ public:
 	}
 
 	std::vector<unsigned>get_arc_path_to(unsigned x) const {
-		assert(x < first_out.size()-1);
+		assert(x < first_out->size()-1);
 		std::vector<unsigned>path;
 		if(was_node_reached(x)){
 			unsigned p;
