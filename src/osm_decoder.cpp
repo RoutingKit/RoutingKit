@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <sstream>
 #include <algorithm>
+#include <atomic>
 #include <string.h>
 
 // The following includes are only there to get access to ntohl. Nothing else is 
@@ -653,6 +654,7 @@ void ordered_read_osm_pbf(
 
 	if(!file_is_ordered_even_though_file_header_says_that_it_is_unordered){
 		while((decompressor.get_status() & is_header_info_available_bit) == 0){
+			std::atomic_thread_fence(std::memory_order::memory_order_seq_cst);
 			std::this_thread::yield();
 		}
 	}
