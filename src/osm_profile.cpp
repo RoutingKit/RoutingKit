@@ -365,7 +365,7 @@ namespace{
 
 unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
 	auto maxspeed = tags["maxspeed"];
-	if(maxspeed != nullptr){
+	if(maxspeed != nullptr && !str_eq(maxspeed, "unposted")){
 		char lower_case_maxspeed[1024];
 		copy_str_and_make_lower_case(maxspeed, lower_case_maxspeed, sizeof(lower_case_maxspeed)-1);
 
