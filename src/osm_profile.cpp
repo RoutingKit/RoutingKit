@@ -283,7 +283,8 @@ OSMWayDirectionCategory get_osm_car_direction_category(uint64_t osm_way_id, cons
 		} else if(str_eq(oneway, "reversible") || str_eq(oneway, "alternating")) {
 			return OSMWayDirectionCategory::closed;
 		} else {
-			log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has unknown oneway tag value \""+oneway+"\" for \"oneway\". Way is closed.");
+			if(log_message)
+				log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has unknown oneway tag value \""+oneway+"\" for \"oneway\". Way is closed.");
 		}
 	} else if(junction != nullptr && str_eq(junction, "roundabout")) {
 		return OSMWayDirectionCategory::only_open_forwards;
@@ -349,11 +350,13 @@ namespace{
 			}else if(str_eq(maxspeed, "knots")){
 				return speed * 1852 / 1000;
 			}else{
-				log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has an unknown unit \""+maxspeed+"\" for its \"maxspeed\" tag -> assuming \"km/h\".");
+				if(log_message)
+					log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has an unknown unit \""+maxspeed+"\" for its \"maxspeed\" tag -> assuming \"km/h\".");
 				return speed;
 			}
 		}else{
-			log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has an unrecognized value of \""+maxspeed+"\" for its \"maxspeed\" tag.");
+			if(log_message)
+				log_message("Warning: OSM way "+std::to_string(osm_way_id) +" has an unrecognized value of \""+maxspeed+"\" for its \"maxspeed\" tag.");
 		}
 
 		return inf_weight;
@@ -362,7 +365,7 @@ namespace{
 
 unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
 	auto maxspeed = tags["maxspeed"];
-	if(maxspeed != nullptr){
+	if(maxspeed != nullptr && !str_eq(maxspeed, "unposted")){
 		char lower_case_maxspeed[1024];
 		copy_str_and_make_lower_case(maxspeed, lower_case_maxspeed, sizeof(lower_case_maxspeed)-1);
 
@@ -377,7 +380,8 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 
 		if(speed == 0){
 			speed = 1;
-			log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has speed 0 km/h, setting it to 1 km/h");
+			if(log_message)
+				log_message("Warning: OSM way "+std::to_string(osm_way_id)+" has speed 0 km/h, setting it to 1 km/h");
 		}
 
 		if(speed != inf_weight)
