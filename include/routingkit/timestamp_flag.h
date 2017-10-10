@@ -19,6 +19,10 @@ public:
 		last_seen[id] = current_timestamp;
 	}
 
+	void reset_one(unsigned id){
+		last_seen[id] = current_timestamp-1;
+	}
+
 	void reset_all(){
 		++current_timestamp;
 		if(current_timestamp == 0){

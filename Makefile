@@ -4,7 +4,7 @@ AR=ar
 CFLAGS=-Wall -DNDEBUG -march=native -ffast-math -std=c++11 -O3 -fPIC -Iinclude
 LDFLAGS=
 
-all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_dijkstra bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
+all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_dijkstra bin/test_contraction_hierarchy_extra_weight bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
 
 build/osm_decoder.o: include/routingkit/constants.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/osm_decoder.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/tag_map.h include/routingkit/timer.h src/buffered_asynchronous_reader.h src/file_data_source.h src/osm_decoder.cpp src/protobuf.h generate_make_file
 	@mkdir -p build
@@ -202,6 +202,10 @@ build/osm_profile.o: include/routingkit/bit_vector.h include/routingkit/constant
 	@mkdir -p build
 	$(CC) $(CFLAGS)  -c src/osm_profile.cpp -o build/osm_profile.o
 
+build/test_contraction_hierarchy_extra_weight.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/id_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h include/routingkit/vector_io.h src/expect.h src/test_contraction_hierarchy_extra_weight.cpp generate_make_file
+	@mkdir -p build
+	$(CC) $(CFLAGS)  -c src/test_contraction_hierarchy_extra_weight.cpp -o build/test_contraction_hierarchy_extra_weight.o
+
 build/customizable_contraction_hierarchy.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/customizable_contraction_hierarchy.h include/routingkit/filter.h include/routingkit/graph_util.h include/routingkit/id_mapper.h include/routingkit/id_queue.h include/routingkit/id_set_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h src/customizable_contraction_hierarchy.cpp src/emulate_gcc_builtin.h generate_make_file
 	@mkdir -p build
 	$(CC) $(CFLAGS) -fopenmp -c src/customizable_contraction_hierarchy.cpp -o build/customizable_contraction_hierarchy.o
@@ -377,6 +381,10 @@ bin/test_tag_map: build/test_tag_map.o
 bin/test_dijkstra: build/bit_vector.o build/test_dijkstra.o build/vector_io.o build/verify.o
 	@mkdir -p bin
 	$(CC) $(LDFLAGS) build/bit_vector.o build/test_dijkstra.o build/vector_io.o build/verify.o -pthread  -o bin/test_dijkstra
+
+bin/test_contraction_hierarchy_extra_weight: build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_extra_weight.o build/timer.o build/vector_io.o
+	@mkdir -p bin
+	$(CC) $(LDFLAGS) build/bit_vector.o build/contraction_hierarchy.o build/graph_util.o build/test_contraction_hierarchy_extra_weight.o build/timer.o build/vector_io.o -pthread  -o bin/test_contraction_hierarchy_extra_weight
 
 bin/test_id_set_queue: build/test_id_set_queue.o
 	@mkdir -p bin

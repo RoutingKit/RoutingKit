@@ -279,6 +279,147 @@ std::vector<unsigned> d = query
 
 `d[i]` then contains the minimum of `dist(a, target_list[i])+dist_to_a` and `dist(b, target_list[i])+dist_to_b` and `dist(c, target_list[i])` where `dist(x,y)` is the the shortest path distance from node `x` to node `y`.
 
+# Experimental Query Extensions
+
+The functions documented in this section are experimental. Contrary to other query object functionality, they are currently exclusive to `ContractionHierarchyQuery` and not replicated in `CustomizableContractionHierarchyQuery`. The following pseudo-code snippet provides an overview of the functionality:
+
+```cpp
+struct SaturatedWeightAddition{
+	unsigned operator()(unsigned l, unsigned r)const;
+	int operator()(int l, int r)const;
+};
+
+template<class Weight>
+struct ContractionHierarchyExtraWeight{
+	ContractionHierarchyExtraWeight();
+	ContractionHierarchyExtraWeight(const ContractionHierarchy&ch, const InputWeightContainer&extra_weight, const LinkFunction&link);
+	ContractionHierarchyExtraWeight& reset(const ContractionHierarchy&ch, const InputWeightContainer&extra_weight, const LinkFunction&link);
+};
+
+struct ContractionHierarchyQuery{
+	ContractionHierarchyQuery& get_used_[sources|targets]_to_[targets|sources](unsigned*dist);		
+	std::vector<unsigned> get_used_[sources|targets]_to_[targets|sources]();
+	Weight get_extra_weight_distance(const ExtraWeight&extra_weight, const LinkFunction&link);
+	std::vector<Weight> get_extra_weight_distances_to_[targets|sources](const ExtraWeight&extra_weight, const LinkFunction&link, [TmpContainer&tmp, [DistContainer&dist]]);
+};
+```
+
+`get_used_sources_to_targets` and `get_used_targets_to_sources` are a many-to-many version of `get_used_source` and `get_used_target`. If targets are pinned and multiple sources were added using `add_source`, `get_used_sources_to_targets` returns for every target the source node used to get to it. There are two versions of the method. One takes a pointer to an array as parameter and writes its output to it. The other returns the result as newly allocated vector. The parameter variant is guaranteed to not throw an exception. The following code snippet provides an example of how to use the functions.
+
+```cpp
+std::vector<unsigned>
+	tail = {0, 1},
+	head = {2, 3},
+	weight = {1, 1},
+	target_list = {3, 2};
+unsigned node_count = 4;
+auto ch = ContractionHierarchy::build(node_count, tail, head, weight);
+ContractionHierarchyQuery q(ch);
+std::vector<unsigned> 
+	used_sources = q.reset()
+	.pin_targets(target_list)
+	.add_source(0)
+	.add_source(1)
+	.run_to_pinned_targets()
+	.get_used_sources_to_targets();
+assert(used_sources[0] == 1);
+assert(used_sources[1] == 0);
+```
+
+The remaining functions are related to extra weights. The query object has a primary weight that is optimized. However, several secondary extra weights can exist. These extra weights are not optimized. However, it is possible to compute the length of computed path according to an extra weight. The `get_extra_weight_distance` is the simplest of these functions. The following code snippet illustrates how it can be used:
+
+```cpp
+unsigned node_count = 4;
+std::vector<unsigned>
+	tail = {0, 0, 1, 2},
+	head = {1, 2, 3, 3},
+	weight = {1, 10, 1, 10},
+	extra_weight1 = {10, 1, 10, 1};
+std::vector<int>
+	extra_weight2 = {-10, -1, -10, -1};
+std::vector<std::string>
+	extra_weight3 = {"foo", "bla", "bar", "hoo"};
+auto ch = ContractionHierarchy::build(node_count, tail, head, weight);
+ContractionHierarchyQuery q(ch);
+
+q.add_source(0).add_target(3).run();
+
+assert(q.get_distance() == 2);
+assert(q.get_extra_weight_distance(extra_weight1, SaturatedWeightAddition()) == 20);
+assert(q.get_extra_weight_distance(extra_weight2, SaturatedWeightAddition()) == -20);
+assert(q.get_extra_weight_distance(extra_weight3, [](std::string l, std::string r){return l+r;}) == "foobar");
+
+ContractionHierarchyExtraWeight<int>extra_weight4(ch, extra_weight2, SaturatedWeightAddition());
+
+assert(q.get_extra_weight_distance(extra_weight4, SaturatedWeightAddition()) == -20);
+```
+
+The code first defines a graph with two paths from node 0 to node 3. There is a shortest path via node 1 with length 2 with respect to `weight`. The same path has length 20 with respect to `extra_weight1`. It is not a shortest path according to `extra_weight1`. The query object optimizes the primary weight and therefore picks this path. `get_extra_weight_distance` can be used to compute the length according to `extra_weight1` without computing the sequence of arcs. The first parameter of `get_extra_weight_distance` is the weight according to which the length should be computed. As the function is a template, a lot of types of arrays are supported and not just `std::vector`. Indeed, everything with an operator[] works. This includes pointers. The second parameter is the link function. It is explained in the next paragraph.
+
+`extra_weight2` demonstrates that extra weights do not have to be positive integers. Negative integers work. More complex constructions are possible as illustrated with `extra_weight3`. To support this flexibility, a link function must be provided. It has the signature `Weight link(Weight first, Weight second)`. It should compute the "length" of the path when first traversing `first` and then `second`. For the usually weights this is the addition. However, more complex operations such as string concatenation are needed. 
+
+`SaturatedWeightAddition` addition does not just perform an addition. It also handles overflows and underflows correctly. If for example, any edge along the path has weight `inf_weight`, the path length is `inf_weight`. Similarly, if the addition of two signed integers was smaller than `INT_MIN`, the result is capped at `INT_MIN`. Using `SaturatedWeightAddition` in combination with `std::vector` further has the advantage that the templates are explicitly instantiated. This reduces compilation times and if RoutingKit is build as shared object, the code is placed into the shared object.
+
+`ContractionHierarchyExtraWeight` allows to accelerate `get_extra_weight_distance` at the expense of a higher index construction time. It can be used as a drop-in replacement for the extra weight as follows:
+
+```cpp
+ContractionHierarchyExtraWeight<unsigned>extra_weight4(ch, extra_weight1, SaturatedWeightAddition());
+assert(q.get_extra_weight_distance(extra_weight4, SaturatedWeightAddition()) == 20);
+```
+
+*Warning:* It is undefined, what path is chosen when shortest paths are not unique. Consider the following code snippet:
+
+```cpp
+unsigned node_count = 4;
+std::vector<unsigned>
+	tail = {0, 0, 1, 2},
+	head = {1, 2, 3, 3},
+	weight = {1, 1, 1, 1},
+	extra_weight = {10, 2, 10, 2};
+auto ch = ContractionHierarchy::build(node_count, tail, head, weight);
+ContractionHierarchyQuery q(ch);
+
+q.add_source(0).add_target(3).run();
+
+assert(q.get_distance() == 2);
+// assert(q.get_extra_weight_distance(extra_weight, SaturatedWeightAddition()) == 20) ???
+// assert(q.get_extra_weight_distance(extra_weight, SaturatedWeightAddition()) == 4) ???
+```
+
+Both the paths via nodes 1 and 2 have length 2. However, they differ with respect to the extra weight. The algorithm is free to pick any of these paths. You can only assume that it picks one of both choices.
+
+Finally, `get_extra_weight_distances_to_targets` and `get_extra_weight_distances_to_sources` are provided. These are the many-to-many versions of `get_extra_weight_distance` that can be used as follows:
+
+```cpp
+unsigned node_count = 4;
+std::vector<unsigned>
+	tail = {0, 0, 1, 2},
+	head = {1, 2, 3, 3},
+	weight = {1, 10, 1, 10},
+	target_list = {3, 1};
+std::vector<std::string>
+	extra_weight = {"foo", "bla", "bar", "hoo"};
+
+auto ch = ContractionHierarchy::build(node_count, tail, head, weight);
+ContractionHierarchyQuery q(ch);
+
+vector<string>d = q
+	.pin_targets(target_list).add_source(0)
+	.run_to_pinned_targets()
+	.get_extra_weight_distances_to_targets(
+		extra_weight, 
+		[](std::string l, std::string r){return l+r;}
+	)
+;
+assert(d.size() == target_list.size());
+assert(d[0] == "foobar");
+assert(d[1] == "foo");
+``
+
+`get_extra_weight_distances_to_targets` has two optional parameters, namely `tmp` and `dist`. Both are arrays. As the function is a template they can be anything with array-semantics, i.e., an operator[]. `tmp` is used to store temporary data. It must have size `node_count` and elements must have the same type as the weights. Providing `tmp` has the advantage, that it avoids a memory allocation in `get_extra_weight_distances_to_targets`. This can be beneficial if `get_extra_weight_distances_to_targets` is run in a tight loop. `dist` is an output parameter. If it is present the function does not return a `std::vector` but writes its result to `dist`.
+
+If both `tmp` and `dist` are present and the link function allocates no memory, then `get_extra_weight_distances_to_targets` is also guaranteed to not allocate any memory. Further, if both `tmp` and `dist` are present and the link function does not throw, then `get_extra_weight_distances_to_targets` is guaranteed to not throw.
+
 ## Publications
 
 Contraction Hierarchies are described in:

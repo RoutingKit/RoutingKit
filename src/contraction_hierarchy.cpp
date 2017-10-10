@@ -1423,16 +1423,6 @@ void ContractionHierarchy::write(std::function<void(const char*, unsigned long l
 	write_vector(out, backward.shortcut_second_arc);
 }
 
-
-namespace{
-	const unsigned query_state_initialized = 0;
-	const unsigned query_state_run = 1;
-	const unsigned query_state_source_pinned = 2;
-	const unsigned query_state_source_run = 3;
-	const unsigned query_state_target_pinned = 4;
-	const unsigned query_state_target_run = 5;
-}
-
 ContractionHierarchyQuery::ContractionHierarchyQuery(const ContractionHierarchy&ch):
 	ch(&ch),
 	was_forward_pushed(ch.node_count()), was_backward_pushed(ch.node_count()),
@@ -1441,7 +1431,7 @@ ContractionHierarchyQuery::ContractionHierarchyQuery(const ContractionHierarchy&
 	forward_predecessor_node(ch.node_count()), backward_predecessor_node(ch.node_count()),
 	forward_predecessor_arc(ch.node_count()), backward_predecessor_arc(ch.node_count()),
 	shortest_path_meeting_node(invalid_id),
-	state(query_state_initialized)
+	state(ContractionHierarchyQuery::InternalState::initialized)
 
 {}
 
@@ -1455,7 +1445,7 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::reset(){
 
 	shortest_path_meeting_node = invalid_id;
 
-	state = query_state_initialized;
+	state = ContractionHierarchyQuery::InternalState::initialized;
 	return *this;
 }
 
@@ -1472,7 +1462,7 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::reset(const ContractionHier
 ContractionHierarchyQuery&ContractionHierarchyQuery::add_source(unsigned external_s, unsigned dist_to_s){
 	assert(ch && "query object must have an attached CH");
 	assert(external_s < ch->node_count() && "node out of bounds");
-	assert(state == query_state_initialized || state == query_state_target_pinned);
+	assert(state == ContractionHierarchyQuery::InternalState::initialized || state == ContractionHierarchyQuery::InternalState::target_pinned);
 
 	unsigned s = ch->rank[external_s];
 
@@ -1494,7 +1484,7 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::add_source(unsigned externa
 ContractionHierarchyQuery&ContractionHierarchyQuery::add_target(unsigned external_t, unsigned dist_to_t){
 	assert(ch && "query object must have an attached CH");
 	assert(external_t < ch->node_count() && "node out of bounds");
-	assert(state == query_state_initialized || state == query_state_source_pinned);
+	assert(state == ContractionHierarchyQuery::InternalState::initialized || state == ContractionHierarchyQuery::InternalState::source_pinned);
 
 	unsigned t = ch->rank[external_t];
 	if(!backward_queue.contains_id(t)){
@@ -1637,7 +1627,7 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run(){
 	assert(ch && "query object must have an attached CH");
 	assert(!forward_queue.empty() && "must add at least one source before calling run");
 	assert(!backward_queue.empty() && "must add at least one target before calling run");
-	assert(state == query_state_initialized);
+	assert(state == ContractionHierarchyQuery::InternalState::initialized);
 
 	unsigned shortest_path_length = inf_weight;
 	shortest_path_meeting_node = invalid_id;
@@ -1690,13 +1680,13 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run(){
 		}
 	}
 
-	state = query_state_run;
+	state = ContractionHierarchyQuery::InternalState::run;
 	return *this;
 }
 
 unsigned ContractionHierarchyQuery::get_used_source(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == query_state_run);
+	assert(state == ContractionHierarchyQuery::InternalState::run);
 
 	if(shortest_path_meeting_node == invalid_id)
 		return invalid_id;
@@ -1709,7 +1699,7 @@ unsigned ContractionHierarchyQuery::get_used_source(){
 
 unsigned ContractionHierarchyQuery::get_used_target(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == query_state_run);
+	assert(state == ContractionHierarchyQuery::InternalState::run);
 
 	if(shortest_path_meeting_node == invalid_id)
 		return invalid_id;
@@ -1758,7 +1748,7 @@ namespace{
 }
 
 unsigned ContractionHierarchyQuery::get_distance() {
-	assert(state == query_state_run);
+	assert(state == ContractionHierarchyQuery::InternalState::run);
 
 	if(shortest_path_meeting_node == invalid_id)
 		return inf_weight;
@@ -1769,7 +1759,7 @@ unsigned ContractionHierarchyQuery::get_distance() {
 
 std::vector<unsigned>ContractionHierarchyQuery::get_arc_path(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == query_state_run);
+	assert(state == ContractionHierarchyQuery::InternalState::run);
 
 	std::vector<unsigned>path;
 	if(shortest_path_meeting_node != invalid_id)
@@ -1803,7 +1793,7 @@ std::vector<unsigned>ContractionHierarchyQuery::get_arc_path(){
 
 std::vector<unsigned>ContractionHierarchyQuery::get_node_path(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == query_state_run);
+	assert(state == ContractionHierarchyQuery::InternalState::run);
 
 	std::vector<unsigned>path;
 	if(shortest_path_meeting_node != invalid_id)
@@ -1835,27 +1825,37 @@ std::vector<unsigned>ContractionHierarchyQuery::get_node_path(){
 
 ContractionHierarchyQuery&ContractionHierarchyQuery::reset_source(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == query_state_target_pinned || state == query_state_target_run);	
+	assert(state == ContractionHierarchyQuery::InternalState::target_pinned || state == ContractionHierarchyQuery::InternalState::target_run);	
 	
 	was_forward_pushed.reset_all();
 	forward_queue.clear();
 
-	state = query_state_target_pinned;
+	state = ContractionHierarchyQuery::InternalState::target_pinned;
 	return *this;
 }
 
 ContractionHierarchyQuery&ContractionHierarchyQuery::reset_target(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == query_state_source_pinned || state == query_state_source_run);	
+	assert(state == ContractionHierarchyQuery::InternalState::source_pinned || state == ContractionHierarchyQuery::InternalState::source_run);	
 	
 	was_backward_pushed.reset_all();
 	backward_queue.clear();
 	
-	state = query_state_source_pinned;
+	state = ContractionHierarchyQuery::InternalState::source_pinned;
 	return *this;
 }
 
 namespace{
+
+	// target_list[0] ... target_list[target_count-1] are the target nodes.
+	// The IDs are with repect to the CH and not with respect to the input.
+	// The nodes are ordered the same way as in the input.
+
+	// select_list[0] ... select_list[select_count-1] are the nodes reachable from a target node in the CH.
+	// For a forward search, the nodes in select_list are the ones reachable in the backward CH.
+	// For a backward search, the nodes in select_list are the ones reachable in the forward CH.
+	// The IDs are with repect to the CH and not with respect to the input.
+	// select_list is ordered decreasing by rank.
 
 	void pin(
 		const std::vector<unsigned>&external_target_list,
@@ -1895,18 +1895,27 @@ namespace{
 		std::reverse(select_list.begin(), select_list.begin() + select_count);
 	}
 
+	//
+	// After pinned_run is finished, there are three types of nodes:
+	//  1) a source node
+	//  2) a node that was reached in the forward CH
+	//  3) a node that was reached in the backward CH
+	// A node x is categorizes as follows:
+	//  1) forward_predecessor_node[x] == invalid_id && has_forward_predecessor.is_set(x)
+	//  2) forward_predecessor_node[x] != invalid_id && has_forward_predecessor.is_set(x)
+	//  2) !has_forward_predecessor.is_set(x)
+	//
 
 	void pinned_run(
-		std::vector<unsigned>&target_list,
-		unsigned&target_count,
 		std::vector<unsigned>&select_list,
 		unsigned&select_count,
 	
-		TimestampFlags&was_forward_pushed,
+		TimestampFlags&has_forward_predecessor,
 		MinIDQueue&forward_queue,
-		std::vector<unsigned>&forward_tentative_distance,
+		std::vector<unsigned>&tentative_distance,
 
-		std::vector<unsigned>&forward_predecessor_node, std::vector<unsigned>&forward_predecessor_arc,
+		std::vector<unsigned>&forward_predecessor_node, 
+		std::vector<unsigned>&predecessor_arc, 
 	
 		const std::vector<unsigned>&forward_first_out,
 		const std::vector<unsigned>&forward_head,
@@ -1918,32 +1927,38 @@ namespace{
 	){
 		full_forward_search(
 			forward_first_out, forward_head, forward_weight,
-			was_forward_pushed,
+			has_forward_predecessor,
 			forward_queue,
-			forward_tentative_distance,
-			forward_predecessor_node, forward_predecessor_arc
+			tentative_distance,
+			forward_predecessor_node, predecessor_arc
 		);
 
 		for(unsigned i=0; i<select_count; ++i){
-			unsigned x = select_list[i];
+			unsigned 
+				x = select_list[i],
+				dist = inf_weight, 
+				pred = invalid_id;
+			if(has_forward_predecessor.is_set(x))
+				dist = tentative_distance[x];
 
-			unsigned d;
-			if(was_forward_pushed.is_set(x))
-				d = forward_tentative_distance[x];
-			else
-				d = inf_weight;
 			for(unsigned xy = backward_first_out[x]; xy < backward_first_out[x+1]; ++xy){
 				unsigned y = backward_head[xy];
-				assert(was_forward_pushed.is_set(y));
 
-				if(was_forward_pushed.is_set(y)){
-					unsigned w = backward_weight[xy];
-					min_to(d, forward_tentative_distance[y]+w);
+				unsigned new_dist = tentative_distance[y]+backward_weight[xy];
+				if(new_dist < dist){
+					dist = new_dist;
+					pred = xy;
 				}
 			}
-			forward_tentative_distance[x] = d;
-
-			was_forward_pushed.set(x);
+			
+			if(pred != invalid_id){
+				tentative_distance[x] = dist;
+				predecessor_arc[x] = pred;
+				has_forward_predecessor.reset_one(x);
+			}else if(dist == inf_weight){
+				tentative_distance[x] = inf_weight;
+				predecessor_arc[x] = invalid_id;
+			}
 		}
 	}
 
@@ -1971,7 +1986,7 @@ namespace{
 ContractionHierarchyQuery&ContractionHierarchyQuery::pin_targets(const std::vector<unsigned>&external_target_list){
 	assert(ch && "query object must have an attached CH");
 	assert((external_target_list.empty() || max_element_of(external_target_list) < ch->node_count()) && "node id out of bounds");
-	assert(state == query_state_initialized);	
+	assert(state == ContractionHierarchyQuery::InternalState::initialized);	
 
 	pin(
 		external_target_list,
@@ -1980,7 +1995,7 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::pin_targets(const std::vect
 		// the following 4 variables happen to be unused and of the
 		// required size -> use them to avoid allocating unnecessary
 		// memory. Warning: Usage must be consistent over all pinning functions
-		backward_predecessor_node, needed_for_one_to_many, backward_predecessor_arc, shortest_path_meeting_node,
+		backward_predecessor_node, many_to_many_source_or_target_count, backward_tentative_distance, shortest_path_meeting_node,
 
 		backward_queue,
 		
@@ -1989,20 +2004,20 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::pin_targets(const std::vect
 		ch->backward.weight
 	);
 
-	state = query_state_target_pinned;
+	state = ContractionHierarchyQuery::InternalState::target_pinned;
 	return *this;
 }
 
 ContractionHierarchyQuery& ContractionHierarchyQuery::pin_sources(const std::vector<unsigned>&external_source_list){
 	assert(ch && "query object must have an attached CH");
 	assert((external_source_list.empty() || max_element_of(external_source_list) < ch->node_count()) && "node id out of bounds");
-	assert(state == query_state_initialized);	
+	assert(state == ContractionHierarchyQuery::InternalState::initialized);	
 
 	pin(
 		external_source_list,
 		ch->rank,
 
-		forward_predecessor_node, needed_for_one_to_many, forward_predecessor_arc, shortest_path_meeting_node,
+		forward_predecessor_node, many_to_many_source_or_target_count, forward_tentative_distance, shortest_path_meeting_node,
 
 		forward_queue,
 		ch->forward.first_out,
@@ -2010,7 +2025,7 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::pin_sources(const std::vec
 		ch->forward.weight
 	);
 
-	state = query_state_source_pinned;
+	state = ContractionHierarchyQuery::InternalState::source_pinned;
 	return *this;
 }
 
@@ -2020,14 +2035,10 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::pin_sources(const std::vec
 ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_targets(){
 	assert(ch && "query object must have an attached CH");
 	assert(!forward_queue.empty() && "must add at least one source before calling run");
-	assert(state == query_state_target_pinned);	
-
-	//assert(!backward_queue.empty() && "must add at least one target before calling run");
-	//assert(max_element_of(external_target_list) < ch->node_count() && "node id out of bounds");
-
+	assert(state == ContractionHierarchyQuery::InternalState::target_pinned);	
 
 	pinned_run(
-		backward_predecessor_node, needed_for_one_to_many, backward_predecessor_arc, shortest_path_meeting_node,
+		backward_tentative_distance, shortest_path_meeting_node,
 
 		was_forward_pushed,
 		forward_queue,
@@ -2044,7 +2055,7 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_targets(){
 		ch->backward.weight
 	);
 
-	state = query_state_target_run;
+	state = ContractionHierarchyQuery::InternalState::target_run;
 	return *this;
 }
 
@@ -2052,10 +2063,10 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_targets(){
 ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_sources(){
 	assert(ch && "query object must have an attached CH");
 	assert(!backward_queue.empty() && "must add at least one target before calling run");
-	assert(state == query_state_source_pinned);	
+	assert(state == ContractionHierarchyQuery::InternalState::source_pinned);	
 	
 	pinned_run(
-		forward_predecessor_node, needed_for_one_to_many, forward_predecessor_arc, shortest_path_meeting_node,
+		forward_tentative_distance, shortest_path_meeting_node,
 
 		was_backward_pushed,
 		backward_queue,
@@ -2071,33 +2082,137 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_sources(){
 		ch->forward.head,
 		ch->forward.weight
 	);
-	state = query_state_source_run;
+	state = ContractionHierarchyQuery::InternalState::source_run;
 	return *this;
 }
 
 
 ContractionHierarchyQuery& ContractionHierarchyQuery::get_distances_to_targets(unsigned*dist){
-	assert(state == query_state_target_run);
-	extract_distances_to_targets(backward_predecessor_node, needed_for_one_to_many, forward_tentative_distance, dist);
+	assert(state == ContractionHierarchyQuery::InternalState::target_run);
+	extract_distances_to_targets(backward_predecessor_node, many_to_many_source_or_target_count, forward_tentative_distance, dist);
 	return *this;
 }
 
 std::vector<unsigned> ContractionHierarchyQuery::get_distances_to_targets(){
-	assert(state == query_state_target_run);
-	return extract_distances_to_targets(backward_predecessor_node, needed_for_one_to_many, forward_tentative_distance);
+	assert(state == ContractionHierarchyQuery::InternalState::target_run);
+	return extract_distances_to_targets(backward_predecessor_node, many_to_many_source_or_target_count, forward_tentative_distance);
 }
 
 
 ContractionHierarchyQuery& ContractionHierarchyQuery::get_distances_to_sources(unsigned*dist){
-	assert(state == query_state_source_run);
-	extract_distances_to_targets(forward_predecessor_node, needed_for_one_to_many, backward_tentative_distance, dist);
+	assert(state == ContractionHierarchyQuery::InternalState::source_run);
+	extract_distances_to_targets(forward_predecessor_node, many_to_many_source_or_target_count, backward_tentative_distance, dist);
 	return *this;
 }
 
 std::vector<unsigned> ContractionHierarchyQuery::get_distances_to_sources(){
-	assert(state == query_state_source_run);
-	return extract_distances_to_targets(forward_predecessor_node, needed_for_one_to_many, backward_tentative_distance);
+	assert(state == ContractionHierarchyQuery::InternalState::source_run);
+	return extract_distances_to_targets(forward_predecessor_node, many_to_many_source_or_target_count, backward_tentative_distance);
 }
+
+namespace{
+	void internal_get_used_sources_to_targets(
+		const std::vector<unsigned>&target_list,
+		unsigned target_count,
+
+		const TimestampFlags&has_forward_predecessor,
+		const std::vector<unsigned>&forward_predecessor_node,
+		const std::vector<unsigned>&predecessor_arc,
+
+		const std::vector<unsigned>&backward_head,
+
+		const std::vector<unsigned>&ch_order,
+
+		unsigned*output
+	){
+		for(unsigned i=0; i<target_count; ++i){
+			unsigned x = target_list[i];
+			if(!has_forward_predecessor.is_set(x) && predecessor_arc[x] == invalid_id){
+				output[i] = invalid_id;
+			}else{
+				while(!has_forward_predecessor.is_set(x)){
+					unsigned y = backward_head[predecessor_arc[x]];
+					assert(y > x);
+					x = y;
+				}
+				while(forward_predecessor_node[x] != invalid_id){
+					assert(has_forward_predecessor.is_set(x));
+					unsigned y = forward_predecessor_node[x];
+					assert(y < x);
+					x = y;
+				}
+				output[i] = ch_order[x];
+			}
+		}
+	}
+}
+
+ContractionHierarchyQuery& ContractionHierarchyQuery::get_used_sources_to_targets(unsigned*output){
+	assert(state == ContractionHierarchyQuery::InternalState::target_run);
+
+	internal_get_used_sources_to_targets(
+		backward_predecessor_node, many_to_many_source_or_target_count,
+
+		was_forward_pushed,
+		forward_predecessor_node, forward_predecessor_arc,
+
+		ch->backward.head,
+		ch->order,
+
+		output
+	);
+
+	return *this;
+}
+
+std::vector<unsigned> ContractionHierarchyQuery::get_used_sources_to_targets(){
+	assert(state == ContractionHierarchyQuery::InternalState::target_run);
+	std::vector<unsigned>ret(many_to_many_source_or_target_count);
+	get_used_sources_to_targets(&ret[0]);
+	return ret; // NVRO
+}
+
+ContractionHierarchyQuery& ContractionHierarchyQuery::get_used_targets_to_sources(unsigned*output){
+	assert(state == ContractionHierarchyQuery::InternalState::source_run);
+
+	internal_get_used_sources_to_targets(
+		forward_predecessor_node, many_to_many_source_or_target_count,
+
+		was_backward_pushed,
+		backward_predecessor_node, backward_predecessor_arc,
+
+		ch->forward.head,
+		ch->order,
+
+		output
+	);
+
+	return *this;
+}
+
+std::vector<unsigned> ContractionHierarchyQuery::get_used_targets_to_sources(){
+	assert(state == ContractionHierarchyQuery::InternalState::source_run);
+	std::vector<unsigned>ret(many_to_many_source_or_target_count);
+	get_used_targets_to_sources(&ret[0]);
+	return ret; // NVRO
+}
+
+template struct ContractionHierarchyExtraWeight<unsigned>;
+template struct ContractionHierarchyExtraWeight<int>;
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_targets<std::vector<int>, SaturatedWeightAddition, std::vector<int>, std::vector<int>>(const std::vector<int>&, const SaturatedWeightAddition&, std::vector<int>&, std::vector<int>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_sources<std::vector<int>, SaturatedWeightAddition, std::vector<int>, std::vector<int>>(const std::vector<int>&, const SaturatedWeightAddition&, std::vector<int>&, std::vector<int>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_targets<std::vector<unsigned>, SaturatedWeightAddition, std::vector<unsigned>, std::vector<unsigned>>(const std::vector<unsigned>&, const SaturatedWeightAddition&, std::vector<unsigned>&, std::vector<unsigned>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_sources<std::vector<unsigned>, SaturatedWeightAddition, std::vector<unsigned>, std::vector<unsigned>>(const std::vector<unsigned>&, const SaturatedWeightAddition&, std::vector<unsigned>&, std::vector<unsigned>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_targets<ContractionHierarchyExtraWeight<int>, SaturatedWeightAddition, std::vector<int>, std::vector<int>>(const ContractionHierarchyExtraWeight<int>&, const SaturatedWeightAddition&, std::vector<int>&, std::vector<int>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_sources<ContractionHierarchyExtraWeight<int>, SaturatedWeightAddition, std::vector<int>, std::vector<int>>(const ContractionHierarchyExtraWeight<int>&, const SaturatedWeightAddition&, std::vector<int>&, std::vector<int>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_targets<ContractionHierarchyExtraWeight<unsigned>, SaturatedWeightAddition, std::vector<unsigned>, std::vector<unsigned>>(const ContractionHierarchyExtraWeight<unsigned>&, const SaturatedWeightAddition&, std::vector<unsigned>&, std::vector<unsigned>&);
+template ContractionHierarchyQuery& ContractionHierarchyQuery::get_extra_weight_distances_to_sources<ContractionHierarchyExtraWeight<unsigned>, SaturatedWeightAddition, std::vector<unsigned>, std::vector<unsigned>>(const ContractionHierarchyExtraWeight<unsigned>&, const SaturatedWeightAddition&, std::vector<unsigned>&, std::vector<unsigned>&);
+template ContractionHierarchyExtraWeight<unsigned>& ContractionHierarchyExtraWeight<unsigned>::reset<std::vector<unsigned>, SaturatedWeightAddition>(const ContractionHierarchy&ch, const std::vector<unsigned>&, const SaturatedWeightAddition&);
+template ContractionHierarchyExtraWeight<int>& ContractionHierarchyExtraWeight<int>::reset<std::vector<int>, SaturatedWeightAddition>(const ContractionHierarchy&ch, const std::vector<int>&, const SaturatedWeightAddition&);
+template unsigned ContractionHierarchyQuery::get_extra_weight_distance<std::vector<unsigned>,SaturatedWeightAddition>(const std::vector<unsigned>&, const SaturatedWeightAddition&);
+template int ContractionHierarchyQuery::get_extra_weight_distance<std::vector<int>,SaturatedWeightAddition>(const std::vector<int>&, const SaturatedWeightAddition&);
+template unsigned ContractionHierarchyQuery::get_extra_weight_distance<ContractionHierarchyExtraWeight<unsigned>,SaturatedWeightAddition>(const ContractionHierarchyExtraWeight<unsigned>&, const SaturatedWeightAddition&);
+template int ContractionHierarchyQuery::get_extra_weight_distance<ContractionHierarchyExtraWeight<int>,SaturatedWeightAddition>(const ContractionHierarchyExtraWeight<int>&, const SaturatedWeightAddition&);
 
 } // namespace RoutingKit
 
