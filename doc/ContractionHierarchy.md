@@ -414,7 +414,7 @@ vector<string>d = q
 assert(d.size() == target_list.size());
 assert(d[0] == "foobar");
 assert(d[1] == "foo");
-``
+```
 
 `get_extra_weight_distances_to_targets` has two optional parameters, namely `tmp` and `dist`. Both are arrays. As the function is a template they can be anything with array-semantics, i.e., an operator[]. `tmp` is used to store temporary data. It must have size `node_count` and elements must have the same type as the weights. Providing `tmp` has the advantage, that it avoids a memory allocation in `get_extra_weight_distances_to_targets`. This can be beneficial if `get_extra_weight_distances_to_targets` is run in a tight loop. `dist` is an output parameter. If it is present the function does not return a `std::vector` but writes its result to `dist`.
 
