@@ -44,7 +44,14 @@ namespace {
 	typedef uint64_t v8_uint64_t ROUTINGKIT__attribute__((vector_size(64)));
 	#else
 	struct v8_uint64_t{
-		uint64_t v[8] = {0};
+		v8_uint64_t(){}
+		
+		v8_uint64_t(unsigned x){
+			for(unsigned i=0; i<8; ++i)
+				v[i] = x;
+		}
+
+		uint64_t v[8];
 		void operator^=(v8_uint64_t o){
 			for(unsigned i=0; i<8; ++i)
 				v[i] ^= o.v[i];
