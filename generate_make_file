@@ -212,14 +212,14 @@ def uncached_extract_direct_compiler_and_linker_options(file_name):
 				if m.group(1) in ["thread", "mutex", "condition_variable", "atomic", "future"]:
 					linker_options.append("-pthread")
 				if m.group(1) in ["omp.h"]:
-					compiler_options.append("-fopenmp")
-					linker_options.append("-fopenmp")
+					compiler_options.append("$(OMP_CFLAGS)")
+					linker_options.append("$(OMP_LDFLAGS)")
 				if m.group(1) in ["math.h", "cmath"]:
 					linker_options.append("-lm")
 
 			if re.search(r"^\s*#\s*pragma\s+omp", line):
-				compiler_options.append("-fopenmp")
-				linker_options.append("-fopenmp")
+				compiler_options.append("$(OMP_CFLAGS)")
+				linker_options.append("$(OMP_LDFLAGS)")
 	compiler_options = uniquify(compiler_options)
 	linker_options = uniquify(linker_options)
 
@@ -251,6 +251,8 @@ with open("Makefile", "w") as f:
 
 	print("CFLAGS="+" ".join(compiler_options), file=f)
 	print("LDFLAGS="+" ".join(linker_options), file=f)
+	print("OMP_CFLAGS=-fopenmp", file=f)
+	print("OMP_LDFLAGS=-fopenmp", file=f)
 	print("", file=f)
 
 	print("all: " + " ".join(bin_files + lib_files), file=f)

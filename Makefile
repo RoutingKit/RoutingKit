@@ -3,6 +3,8 @@ CC=g++
 AR=ar
 CFLAGS=-Wall -DNDEBUG -march=native -ffast-math -std=c++11 -O3 -fPIC -Iinclude
 LDFLAGS=
+OMP_CFLAGS=-fopenmp
+OMP_LDFLAGS=-fopenmp
 
 all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_dijkstra bin/test_contraction_hierarchy_extra_weight bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
 
@@ -212,7 +214,7 @@ build/test_contraction_hierarchy_extra_weight.o: include/routingkit/bit_vector.h
 
 build/customizable_contraction_hierarchy.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/contraction_hierarchy.h include/routingkit/customizable_contraction_hierarchy.h include/routingkit/filter.h include/routingkit/graph_util.h include/routingkit/id_mapper.h include/routingkit/id_queue.h include/routingkit/id_set_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/timestamp_flag.h src/customizable_contraction_hierarchy.cpp src/emulate_gcc_builtin.h generate_make_file
 	@mkdir -p build
-	$(CC) $(CFLAGS) -fopenmp -c src/customizable_contraction_hierarchy.cpp -o build/customizable_contraction_hierarchy.o
+	$(CC) $(CFLAGS) $(OMP_CFLAGS) -c src/customizable_contraction_hierarchy.cpp -o build/customizable_contraction_hierarchy.o
 
 build/test_id_set_queue.o: include/routingkit/constants.h include/routingkit/id_set_queue.h include/routingkit/min_max.h src/expect.h src/test_id_set_queue.cpp generate_make_file
 	@mkdir -p build
@@ -264,11 +266,11 @@ bin/test_contraction_hierarchy_path_query: build/bit_vector.o build/contraction_
 
 bin/test_customizable_contraction_hierarchy_customization: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_customization.o build/timer.o build/vector_io.o
 	@mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_customization.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -pthread  -o bin/test_customizable_contraction_hierarchy_customization
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_customization.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy_customization
 
 bin/test_customizable_contraction_hierarchy: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy.o build/timer.o build/vector_io.o
 	@mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -pthread  -o bin/test_customizable_contraction_hierarchy
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy
 
 bin/encode_vector: build/bit_vector.o build/encode_vector.o build/vector_io.o
 	@mkdir -p bin
@@ -284,7 +286,7 @@ bin/convert_road_dimacs_graph: build/bit_vector.o build/convert_road_dimacs_grap
 
 bin/test_customizable_contraction_hierarchy_pinned_query: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o
 	@mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -pthread  -o bin/test_customizable_contraction_hierarchy_pinned_query
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_pinned_query.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy_pinned_query
 
 bin/test_inverse_vector: build/expect.o build/test_inverse_vector.o
 	@mkdir -p bin
@@ -328,7 +330,7 @@ bin/test_buffered_asynchronous_reader: build/buffered_asynchronous_reader.o buil
 
 bin/test_customizable_contraction_hierarchy_path_query: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o
 	@mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -pthread  -o bin/test_customizable_contraction_hierarchy_path_query
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_path_query.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy_path_query
 
 bin/test_nested_dissection: build/bit_select.o build/bit_vector.o build/expect.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/test_nested_dissection.o build/timer.o
 	@mkdir -p bin
@@ -340,7 +342,7 @@ bin/test_sort: build/expect.o build/test_sort.o build/timer.o
 
 bin/test_basic_features: build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/expect.o build/file_data_source.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/protobuf.o build/test_basic_features.o build/timer.o build/vector_io.o
 	@mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/expect.o build/file_data_source.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/protobuf.o build/test_basic_features.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -lm -lz -pthread  -o bin/test_basic_features
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/expect.o build/file_data_source.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/protobuf.o build/test_basic_features.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -lm -lz -pthread  -o bin/test_basic_features
 
 bin/osm_extract: build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/file_data_source.o build/graph_util.o build/id_mapper.o build/osm_decoder.o build/osm_extract.o build/osm_graph_builder.o build/osm_profile.o build/protobuf.o build/timer.o build/vector_io.o
 	@mkdir -p bin
@@ -420,7 +422,7 @@ bin/test_id_mapper: build/bit_select.o build/bit_vector.o build/expect.o build/i
 
 bin/test_customizable_contraction_hierarchy_perfect_customization: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o
 	@mkdir -p bin
-	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -pthread  -o bin/test_customizable_contraction_hierarchy_perfect_customization
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy_perfect_customization
 
 bin/test_geo_dist: build/expect.o build/test_geo_dist.o build/timer.o
 	@mkdir -p bin
@@ -440,5 +442,5 @@ lib/libroutingkit.a: build/bit_select.o build/bit_vector.o build/buffered_asynch
 
 lib/libroutingkit.so: build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/file_data_source.o build/geo_position_to_node.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/osm_simple.o build/protobuf.o build/timer.o build/vector_io.o
 	@mkdir -p lib
-	$(CC) -shared $(LDFLAGS) build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/file_data_source.o build/geo_position_to_node.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/osm_simple.o build/protobuf.o build/timer.o build/vector_io.o -fopenmp=libiomp5 -lm -lz -pthread -o lib/libroutingkit.so
+	$(CC) -shared $(LDFLAGS) build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/file_data_source.o build/geo_position_to_node.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/osm_simple.o build/protobuf.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -lm -lz -pthread -o lib/libroutingkit.so
 
