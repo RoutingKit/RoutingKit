@@ -16,9 +16,9 @@
 // We therefore use
 
 #ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
-#define ROUTINGKIT__attribute__(A) /* do nothing */
+#define ROUTING_KIT__attribute__(A) /* do nothing */
 #else
-#define ROUTINGKIT__attribute__(A) __attribute__(A)
+#define ROUTING_KIT__attribute__(A) __attribute__(A)
 #endif
 
 namespace RoutingKit{
@@ -47,32 +47,32 @@ public:
 	void make_large_enough_for(uint64_t x, Uninitialized);
 	void make_large_enough_for(uint64_t x, bool init_value = false);
 
-	bool is_set(uint64_t x)const ROUTINGKIT__attribute__((always_inline)) {
+	bool is_set(uint64_t x)const ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		return data_[x/64] & (1ull << (x%64));
 	}
 
-	void set(uint64_t x) ROUTINGKIT__attribute__((always_inline)) {
+	void set(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] |= (1ull << (x%64));
 	}
 
-	void set_if(uint64_t x, bool value) ROUTINGKIT__attribute__((always_inline)) {
+	void set_if(uint64_t x, bool value) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] |= ((uint64_t)value << (x%64));
 	}
 
-	void set(uint64_t x, bool value) ROUTINGKIT__attribute__((always_inline)) {
+	void set(uint64_t x, bool value) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] ^= (((uint64_t)(-(int64_t)value))^data_[x/64]) & (1ull<<(x%64));
 	}
 
-	void reset(uint64_t x) ROUTINGKIT__attribute__((always_inline)) {
+	void reset(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] &= ~(1ull << (x%64));
 	}
 
-	void toggle(uint64_t x) ROUTINGKIT__attribute__((always_inline)) {
+	void toggle(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] ^= (1ull << (x%64));
 	}
