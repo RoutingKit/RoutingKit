@@ -12,12 +12,12 @@ matrix:
   include:
     - os: linux
       env: MY_CXX="g++" CFLAGS="-O3"
-    - os: linux
-      env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math"
-    - os: linux
-      env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - os: linux
-      env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    # - os: linux
+    #   env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math"
+    # - os: linux
+    #   env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    # - os: linux
+    #   env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
     - os: linux
       addons: &clang5
         apt:
@@ -25,17 +25,17 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-            - libomp-dev
+            - libompl-dev
       env: MY_CXX="clang++-5.0" CFLAGS="-O3"
-    - os: linux
-      addons: *clang5
-      env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math"
-    - os: linux
-      addons: *clang5
-      env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - os: linux
-      addons: *clang5
-      env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math"
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
   - $MY_CXX --version
