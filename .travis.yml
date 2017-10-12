@@ -11,13 +11,13 @@ env:
 matrix:
   include:
     - os: linux
-      env: MY_CXX="g++" CFLAGS="-O3"
-    # - os: linux
-    #   env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math"
-    # - os: linux
-    #   env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    # - os: linux
-    #   env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+      env: MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3"
+    - os: linux
+      env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math"
+    - os: linux
+      env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - os: linux
+      env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
     - os: linux
       addons: &clang5
         apt:
@@ -27,16 +27,16 @@ matrix:
             - clang-5.0
             - libiomp-dev
             - libiomp5
-      env: MY_CXX="clang++-5.0" CFLAGS="-O3"
-    # - os: linux
-    #   addons: *clang5
-    #   env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math"
-    # - os: linux
-    #   addons: *clang5
-    #   env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    # - os: linux
-    #   addons: *clang5
-    #   env: MY_CXX="clang++-5.0" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
   - $MY_CXX --version
