@@ -479,4 +479,6 @@ int main(int argc, char*argv[]){
 		v.make_large_enough_for(1024, BitVector::uninitialized);
 		EXPECT_CMP(v.size(), >, 1024);
 	}
+
+	return expect_failed;
 }
