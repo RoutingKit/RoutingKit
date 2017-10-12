@@ -243,7 +243,7 @@ CutSide BlockingFlow::get_source_cut(){
 		}
 	}
 
-	return std::move(side);		
+	return side;		
 }
 
 CutSide BlockingFlow::get_target_cut(){
@@ -279,7 +279,7 @@ CutSide BlockingFlow::get_target_cut(){
 		}
 	}
 
-	return std::move(side);		
+	return side; // NVRO
 }
 
 CutSide BlockingFlow::get_balanced_cut(){
@@ -362,16 +362,17 @@ CutSide BlockingFlow::get_balanced_cut(){
 	add_target_nodes_to_stack();
 	enlarge_target_side();
 
+	CutSide side;
+
 	for(;;){
 		if(source_reachable_count <= target_reachable_count){
 			unsigned pierce_node = invalid_id;
 			while(pierce_node == invalid_id){
 				if(potential_source_piercing_node_end == 0){
-					CutSide side;
 					side.is_node_on_side = std::move(is_source_reachable);
 					side.cut_size = flow_intensity;
 					side.node_on_side_count = source_reachable_count;
-					return std::move(side);
+					return side; // NVRO
 				} else {
 					unsigned y = potential_source_piercing_node[--potential_source_piercing_node_end];
 					if(!is_source_reachable.is_set(y) && !is_target_reachable.is_set(y))
@@ -385,11 +386,10 @@ CutSide BlockingFlow::get_balanced_cut(){
 			unsigned pierce_node = invalid_id;
 			while(pierce_node == invalid_id){
 				if(potential_target_piercing_node_end == 0){
-					CutSide side;
 					side.is_node_on_side = std::move(is_target_reachable);
 					side.cut_size = flow_intensity;
 					side.node_on_side_count = target_reachable_count;
-					return std::move(side);
+					return side; // NVRO
 				} else {
 					unsigned y = potential_target_piercing_node[--potential_target_piercing_node_end];
 					if(!is_source_reachable.is_set(y) && !is_target_reachable.is_set(y))
@@ -402,9 +402,7 @@ CutSide BlockingFlow::get_balanced_cut(){
 		}
 	}
 
-	CutSide side;
-
-	return std::move(side);		
+	return side; // NVRO
 }
 
 void BlockingFlow::advance(){
@@ -600,13 +598,13 @@ CutSide inertial_flow(
 		static_cast<unsigned long long>(c25.cut_size) * static_cast<unsigned long long>(c33.node_on_side_count) < static_cast<unsigned long long>(c33.cut_size) * static_cast<unsigned long long>(c25.node_on_side_count) &&
 		static_cast<unsigned long long>(c25.cut_size) * static_cast<unsigned long long>(c40.node_on_side_count) < static_cast<unsigned long long>(c40.cut_size) * static_cast<unsigned long long>(c25.node_on_side_count)
 	)
-		return std::move(c25);
+		return c25; // NVRO
 	else if(
 		static_cast<unsigned long long>(c33.cut_size) * static_cast<unsigned long long>(c40.node_on_side_count) < static_cast<unsigned long long>(c40.cut_size) * static_cast<unsigned long long>(c33.node_on_side_count)
 	)
-		return std::move(c33);
+		return c33; // NVRO
 	else
-		return std::move(c40);
+		return c40; // NVRO
 
 }
 
