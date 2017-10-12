@@ -7,7 +7,7 @@ env:
   global:
     # limit parallel threads (default is 32!)
     - OMP_NUM_THREADS=4
-    - GLOBAL_CFLAGS="-std=c++11 -Iinclude"
+    - GLOBAL_CFLAGS="-std=c++11 -Iinclude -fPIC"
   matrix:
     - CFLAGS="-O3"
     - CFLAGS="-O3 -march=native -ffast-math"
