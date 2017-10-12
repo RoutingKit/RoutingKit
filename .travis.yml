@@ -25,7 +25,8 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-            - libompl-dev
+            - libiomp-dev
+            - libiomp5
       env: MY_CXX="clang++-5.0" CFLAGS="-O3"
     # - os: linux
     #   addons: *clang5
