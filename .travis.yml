@@ -8,18 +8,18 @@ env:
     - OMP_NUM_THREADS=4
     - GLOBAL_CFLAGS="-std=c++11 -Iinclude -fPIC"
   matrix:
-    - CC="g++"     CFLAGS="-O3"
-    - CC="g++"     CFLAGS="-O3 -march=native -ffast-math"
-    - CC="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - CC="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
-    - CC="clang++" CFLAGS="-O3"
-    - CC="clang++" CFLAGS="-O3 -march=native -ffast-math"
-    - CC="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - CC="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - MY_CXX="g++"     CFLAGS="-O3"
+#    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math"
+#    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+#    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - MY_CXX="clang++" CFLAGS="-O3"
+#    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math"
+#    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+#    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
-  - $CC --version
-  - make CC="$CC" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4
+  - $MY_CXX --version
+  - make CC="$MY_CXX" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4
 
 script:
   - bin/test_bit_vector
