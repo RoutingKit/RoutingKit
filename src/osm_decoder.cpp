@@ -26,10 +26,18 @@
 // recent architecture that uses big-endian. Maybe this will happen sometime in
 // the future.
 #ifdef ROUTING_KIT_NO_POSIX
-// Currently, we assume that everything that is not POSIX is Windows. 
-// If you have an architecture for which this logic is not good enough, please 
-// open an issue. 
+#ifdef _WIN32 // _WIN64 being defined implies _WIN32
 #include <winsock2.h> 
+#else
+// Currently, we assume that everything that is neither POSIX nor Windows, is little endian.
+static uint32_t ntohl(uint32_t netlong){
+	return
+		(netlong << 24) |
+		((netlong << 16) >> 8) |
+		((netlong << 8) >> 16) |
+		(netlong >> 24);
+}
+#endif
 #else
 #include <netinet/in.h>
 #endif
