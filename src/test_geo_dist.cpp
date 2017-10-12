@@ -134,4 +134,5 @@ int main(){
 	cout << "running time of old geo distance for "<<test_count << " tests : " << old_timer << " musec" << endl;
 	cout << "running time of new geo distance for "<<test_count << " tests : " << new_timer << " musec" << endl;
 
+	return expect_failed;
 }
