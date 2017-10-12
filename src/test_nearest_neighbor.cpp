@@ -12,7 +12,7 @@
 using namespace RoutingKit;
 using namespace std;
 
-int main(int argc, char*argv[]){
+int main(){
 
 	const unsigned point_cloud_size = 500000;
 	const unsigned query_count = 10000;
