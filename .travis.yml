@@ -15,7 +15,7 @@ env:
     - CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
-  - make CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4 bin/test_*
+  - make CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4
 
 script:
   - bin/test_bit_vector
