@@ -7,20 +7,40 @@ env:
   global:
     - OMP_NUM_THREADS=4
     - GLOBAL_CFLAGS="-std=c++11 -Iinclude -fPIC"
-  matrix:
-    - MY_CXX="g++"     CFLAGS="-O3"
-    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math"
-    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
-    - MY_CXX="clang++" CFLAGS="-O3"
-    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math"
-    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+
+matrix:
+  include:
+    - os: linux
+      env: MY_CXX="g++" CFLAGS="-O3"
+    - os: linux
+      env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math"
+    - os: linux
+      env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - os: linux
+      env:  MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - os: linux
+      addons: &clang5
+        apt:
+          sources:
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+      env: MY_CXX="clang++-5.0" CFLAGS="-O3"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="g++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
   - $MY_CXX --version
-  - make CC="$MY_CXX" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4
+  - make CC="$MY_CXX" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j2
   - wget http://download.geofabrik.de/europe/luxembourg-latest.osm.pbf
+  - bin/osm_extract luxembourg-latest.osm.pbf first_out head geo_distance travel_time latitude longitude
 
 script:
   - bin/test_bit_vector
