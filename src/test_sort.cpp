@@ -290,7 +290,7 @@ int main(){
 
 	{
 		std::default_random_engine rng(42);
-		unsigned node_count = 10000000, arc_count = node_count*10;
+		unsigned node_count = 1000000, arc_count = node_count*10;
 		std::uniform_int_distribution<int> uniform_dist(0, node_count-1);	
 
 		vector<unsigned>tail(arc_count), head(arc_count);
