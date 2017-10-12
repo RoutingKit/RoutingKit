@@ -51,8 +51,10 @@ int main(){
 
 		EXPECT(q.empty());
 	
-		cout << "All passed" << endl;
+		cout << "All finished" << endl;
 	}catch(std::exception&err){
 		cout << "exception" << ":" << err.what() << endl;
+		return 1;
 	}
+	return expect_failed;
 }

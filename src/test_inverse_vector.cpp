@@ -38,4 +38,5 @@ void run(std::vector<unsigned>v){
 int main(){
 	run({0,0,0,2,2,2,3,5,6,6,7,8,8,8,8,9});
 	run({0,0,0,2,2,2,3,5,6,6,7,8,8,8,8,9,12});
+	return expect_failed;
 }

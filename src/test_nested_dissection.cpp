@@ -417,5 +417,5 @@ int main(){
 		EXPECT_CMP(p.size(), ==, 2);
 		EXPECT((p[0].global_node_id.size() == 3 && p[1].global_node_id.size() == 1) || (p[0].global_node_id.size() == 1 && p[1].global_node_id.size() == 3));
 	}
-
+	return expect_failed;
 }

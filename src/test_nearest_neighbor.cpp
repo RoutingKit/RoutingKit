@@ -163,4 +163,5 @@ int main(int argc, char*argv[]){
 		cout << "fully verified the first "<< verify_query_count << " queries" << endl;
 
 	}
+	return expect_failed;
 }

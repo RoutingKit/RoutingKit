@@ -69,4 +69,5 @@ int main(){
 
 		EXPECT(apply_permutation(q, apply_permutation(p, elements)) == apply_permutation(chain_permutation_first_left_then_right(p, q), elements));		
 	}
+	return expect_failed;
 }

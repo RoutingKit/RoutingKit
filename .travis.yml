@@ -9,13 +9,13 @@ env:
     - GLOBAL_CFLAGS="-std=c++11 -Iinclude -fPIC"
   matrix:
     - MY_CXX="g++"     CFLAGS="-O3"
-#    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math"
-#    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-#    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math"
+    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - MY_CXX="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
     - MY_CXX="clang++" CFLAGS="-O3"
-#    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math"
-#    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-#    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math"
+    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - MY_CXX="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
   - $MY_CXX --version
@@ -24,4 +24,12 @@ before_script:
 script:
   - bin/test_bit_vector
   - bin/test_buffered_asynchronous_reader
-
+  - bin/test_geo_dist
+  - bin/test_id_mapper
+  - bin/test_id_set_queue
+  - bin/test_inverse_vector
+  - bin/test_nested_dissection
+  - bin/test_permutation
+  - bin/test_protobuf
+  - bin/test_sort
+  - bin/test_tag_map

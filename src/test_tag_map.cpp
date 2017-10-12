@@ -44,4 +44,6 @@ int main(){
 		EXPECT_CMP(map["azbzc"], ==, value[4]);
 
 	}
+
+	return expect_failed;
 }

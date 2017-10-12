@@ -113,5 +113,5 @@ int main(){
 		first = false;
 	}
 
-
+	return expect_failed;
 }

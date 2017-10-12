@@ -328,6 +328,8 @@ int main(){
 
 	}catch(std::exception&err){
 		cout << "exception" << ":" << err.what() << endl;
+		return 1;
 	}
+	return expect_failed;
 }
 

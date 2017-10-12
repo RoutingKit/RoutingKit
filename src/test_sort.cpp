@@ -370,4 +370,5 @@ int main(){
 		EXPECT(sorted1_head == sorted3_head);
 	
 	}
+	return expect_failed;
 }
