@@ -124,17 +124,17 @@ inline BitVector make_bit_vector(uint64_t size, const F&f){
 inline BitVector operator|(BitVector&&l, BitVector&&r) { l |= r; return std::move(l); }
 inline BitVector operator|(BitVector&&l, const BitVector&r) { l |= r; return std::move(l); }
 inline BitVector operator|(const BitVector&l, BitVector&&r) { r |= l; return std::move(r); }
-inline BitVector operator|(const BitVector&l, const BitVector&r) { BitVector x = l; x |= r; return std::move(x); }
+inline BitVector operator|(const BitVector&l, const BitVector&r) { BitVector x = l; x |= r; return x; }
 
 inline BitVector operator&(BitVector&&l, BitVector&&r) { l &= r; return std::move(l); }
 inline BitVector operator&(BitVector&&l, const BitVector&r) { l &= r; return std::move(l); }
 inline BitVector operator&(const BitVector&l, BitVector&&r) { r &= l; return std::move(r); }
-inline BitVector operator&(const BitVector&l, const BitVector&r) { BitVector x = l; x &= r; return std::move(x); }
+inline BitVector operator&(const BitVector&l, const BitVector&r) { BitVector x = l; x &= r; return x; }
 
 inline BitVector operator^(BitVector&&l, BitVector&&r) { l ^= r; return std::move(l); }
 inline BitVector operator^(BitVector&&l, const BitVector&r) { l ^= r; return std::move(l); }
 inline BitVector operator^(const BitVector&l, BitVector&&r) { r ^= l; return std::move(r); }
-inline BitVector operator^(const BitVector&l, const BitVector&r) { BitVector x = l; x ^= r; return std::move(x); }
+inline BitVector operator^(const BitVector&l, const BitVector&r) { BitVector x = l; x ^= r; return x; }
 
 inline bool operator!=(const BitVector&l, const BitVector&r){ return !(l == r); }
 inline bool operator>(const BitVector&l, const BitVector&r){ return r < l; }
