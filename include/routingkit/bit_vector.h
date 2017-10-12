@@ -5,10 +5,20 @@
 #include <assert.h>
 #include <utility>
 
+// This code conflicts with GCC and include<random> on some platforms
+//
+// #ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
+// #ifndef __attribute__
+// #define __attribute__(A) /* do nothing */
+// #endif
+// #endif
+//
+// We therefore use
+
 #ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
-#ifndef __attribute__
-#define __attribute__(A) /* do nothing */
-#endif
+#define ROUTINGKIT__attribute__(A) /* do nothing */
+#else
+#define ROUTINGKIT__attribute__(A) __attribute__(A)
 #endif
 
 namespace RoutingKit{
@@ -37,32 +47,32 @@ public:
 	void make_large_enough_for(uint64_t x, Uninitialized);
 	void make_large_enough_for(uint64_t x, bool init_value = false);
 
-	bool is_set(uint64_t x)const __attribute__((always_inline)) {
+	bool is_set(uint64_t x)const ROUTINGKIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		return data_[x/64] & (1ull << (x%64));
 	}
 
-	void set(uint64_t x) __attribute__((always_inline)) {
+	void set(uint64_t x) ROUTINGKIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] |= (1ull << (x%64));
 	}
 
-	void set_if(uint64_t x, bool value) __attribute__((always_inline)) {
+	void set_if(uint64_t x, bool value) ROUTINGKIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] |= ((uint64_t)value << (x%64));
 	}
 
-	void set(uint64_t x, bool value) __attribute__((always_inline)) {
+	void set(uint64_t x, bool value) ROUTINGKIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] ^= (((uint64_t)(-(int64_t)value))^data_[x/64]) & (1ull<<(x%64));
 	}
 
-	void reset(uint64_t x) __attribute__((always_inline)) {
+	void reset(uint64_t x) ROUTINGKIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] &= ~(1ull << (x%64));
 	}
 
-	void toggle(uint64_t x) __attribute__((always_inline)) {
+	void toggle(uint64_t x) ROUTINGKIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
 		data_[x/64] ^= (1ull << (x%64));
 	}
