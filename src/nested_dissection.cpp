@@ -243,7 +243,7 @@ CutSide BlockingFlow::get_source_cut(){
 		}
 	}
 
-	return side;		
+	return side; // NVRO
 }
 
 CutSide BlockingFlow::get_target_cut(){
