@@ -5,17 +5,21 @@ dist: trusty
 
 env:
   global:
-    # limit parallel threads (default is 32!)
     - OMP_NUM_THREADS=4
     - GLOBAL_CFLAGS="-std=c++11 -Iinclude -fPIC"
   matrix:
-    - CFLAGS="-O3"
-    - CFLAGS="-O3 -march=native -ffast-math"
-    - CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - CC="g++"     CFLAGS="-O3"
+    - CC="g++"     CFLAGS="-O3 -march=native -ffast-math"
+    - CC="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - CC="g++"     CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    - CC="clang++" CFLAGS="-O3"
+    - CC="clang++" CFLAGS="-O3 -march=native -ffast-math"
+    - CC="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    - CC="clang++" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
 
 before_script:
-  - make CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4
+  - $CC --version
+  - make CC="$CC" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" -j4
 
 script:
   - bin/test_bit_vector
