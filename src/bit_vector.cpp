@@ -399,7 +399,7 @@ uint64_t BitVector::population_count() const{
 }
 
 void BitVector::set_all(){
-	v8_uint64_t x = {};
+	v8_uint64_t x = {0};
 	x = ~x;
 	for(v8_uint64_t*i = (v8_uint64_t*)data_; i<((v8_uint64_t*)data_)+get_v8_uint64_count(size_); ++i)
 		*i = x;
@@ -407,14 +407,14 @@ void BitVector::set_all(){
 }
 
 void BitVector::reset_all(){
-	v8_uint64_t x = {};	
+	v8_uint64_t x = {0};	
 	for(v8_uint64_t*i = (v8_uint64_t*)data_; i<((v8_uint64_t*)data_)+get_v8_uint64_count(size_); ++i)
 		*i = x;
 	assert(are_all_padding_bits_zero(*this));
 }
 
 void BitVector::set_all(bool value){
-	v8_uint64_t x = {};
+	v8_uint64_t x = {0};
 	if(value)
 		x = ~x;
 		
