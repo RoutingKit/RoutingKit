@@ -36,7 +36,7 @@ build/convert_road_dimacs_graph.o: include/routingkit/bit_vector.h include/routi
 
 build/geo_position_to_node.o: include/routingkit/constants.h include/routingkit/geo_dist.h include/routingkit/geo_position_to_node.h src/geo_position_to_node.cpp generate_make_file
 	@mkdir -p build
-	$(CC) $(CFLAGS) -ffast-math -c src/geo_position_to_node.cpp -o build/geo_position_to_node.o
+	$(CC) $(CFLAGS)  -c src/geo_position_to_node.cpp -o build/geo_position_to_node.o
 
 build/protobuf.o: src/protobuf.cpp src/protobuf.h generate_make_file
 	@mkdir -p build

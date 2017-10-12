@@ -46,7 +46,6 @@ namespace{
 			//	d[i].distance_to_pivot = compute_distance(d[mid].position, d[i].position);
 
 			// Faster more complex vectorized code
-			// compile with -ffast-math
 			{
 				const float pi = 3.14159265359;
 				const float R = 6371000.785; // earth radius in meter
