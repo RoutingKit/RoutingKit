@@ -148,6 +148,7 @@ namespace {
 		return u[0] == ~0ull;
 	}
 
+	#ifndef NDEBUG
 	bool are_all_padding_bits_zero(const BitVector&v){
 		if(v.size() % 512 == 0){
 			return true;
@@ -157,6 +158,7 @@ namespace {
 			return !is_any_bit_set(&x);
 		}
 	}
+	#endif
 }
 
 BitVector::BitVector():
@@ -337,8 +339,7 @@ void BitVector::resize(uint64_t new_size, bool value){
 				*(j-1) &= get_padding_mask(o.size_);
 				assert(are_all_padding_bits_zero(o));
 			}else{
-				v8_uint64_t all_zero;
-				all_zero ^= all_zero;
+				v8_uint64_t all_zero = {0};
 
 				while(j < (v8_uint64_t*)o.data_ + get_v8_uint64_count(o.size_)){
 					*j = all_zero;
