@@ -5,22 +5,6 @@
 #include <assert.h>
 #include <utility>
 
-// This code conflicts with GCC and include<random> on some platforms
-//
-// #ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
-// #ifndef __attribute__
-// #define __attribute__(A) /* do nothing */
-// #endif
-// #endif
-//
-// We therefore use
-
-#ifdef ROUTING_KIT_NO_GCC_EXTENSIONS
-#define ROUTING_KIT__attribute__(A) /* do nothing */
-#else
-#define ROUTING_KIT__attribute__(A) __attribute__(A)
-#endif
-
 namespace RoutingKit{
 
 class BitVector{
@@ -47,7 +31,7 @@ public:
 	void make_large_enough_for(uint64_t x, Uninitialized);
 	void make_large_enough_for(uint64_t x, bool init_value = false);
 
-	bool is_set(uint64_t x)const ROUTING_KIT__attribute__((always_inline)) {
+	bool is_set(uint64_t x)const{
 		assert(x < size_ && "argument out of bounds");
 		uint64_t a = x/64;
 	    uint64_t b = x%64;
@@ -55,7 +39,7 @@ public:
 		return d & (1ull << b);
 	}
 
-	void set(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
+	void set(uint64_t x){
 		assert(x < size_ && "argument out of bounds");
 		uint64_t a = x/64;
 	    uint64_t b = x%64;
@@ -64,7 +48,7 @@ public:
 		data_[a] = d;
 	}
 
-	void set_if(uint64_t x, bool value) ROUTING_KIT__attribute__((always_inline)) {
+	void set_if(uint64_t x, bool value){
 		assert(x < size_ && "argument out of bounds");
 		uint64_t a = x/64;
 	    uint64_t b = x%64;
@@ -83,7 +67,7 @@ public:
 		data_[a] = d;
 	}
 
-	void reset(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
+	void reset(uint64_t x){
 		assert(x < size_ && "argument out of bounds");
 		uint64_t a = x/64;
 	    uint64_t b = x%64;
@@ -92,7 +76,7 @@ public:
 		data_[a] = d;
 	}
 
-	void toggle(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
+	void toggle(uint64_t x){
 		assert(x < size_ && "argument out of bounds");
 		uint64_t a = x/64;
 	    uint64_t b = x%64;

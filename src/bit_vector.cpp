@@ -41,7 +41,7 @@ namespace RoutingKit{
 
 namespace {
 	#ifndef ROUTING_KIT_NO_GCC_EXTENSIONS
-	typedef uint64_t v8_uint64_t ROUTING_KIT__attribute__((vector_size(64)));
+	typedef uint64_t v8_uint64_t __attribute__((vector_size(64)));
 	#else
 	struct v8_uint64_t{
 		v8_uint64_t(){}
