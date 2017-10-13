@@ -49,32 +49,56 @@ public:
 
 	bool is_set(uint64_t x)const ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
-		return data_[x/64] & (1ull << (x%64));
+		uint64_t a = x/64;
+	    uint64_t b = x%64;
+		uint64_t d = data_[a];
+		return d & (1ull << b);
 	}
 
 	void set(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
-		data_[x/64] |= (1ull << (x%64));
+		uint64_t a = x/64;
+	    uint64_t b = x%64;
+		uint64_t d = data_[a];
+		d |= (1ull << b);
+		data_[a] = d;
 	}
 
 	void set_if(uint64_t x, bool value) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
-		data_[x/64] |= ((uint64_t)value << (x%64));
+		uint64_t a = x/64;
+	    uint64_t b = x%64;
+		uint64_t d = data_[a];
+		d |= ((uint64_t)value << b);
+		data_[a] = d;
 	}
 
-	void set(uint64_t x, bool value) ROUTING_KIT__attribute__((always_inline)) {
+	void set(uint64_t x, bool value){
 		assert(x < size_ && "argument out of bounds");
-		data_[x/64] ^= (((uint64_t)(-(int64_t)value))^data_[x/64]) & (1ull<<(x%64));
+		uint64_t a = x/64;
+	    uint64_t b = x%64;
+		uint64_t d = data_[a];
+		d &= ~(1ull << b);
+		d |= ((uint64_t)value << b);
+		data_[a] = d;
 	}
 
 	void reset(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
-		data_[x/64] &= ~(1ull << (x%64));
+		uint64_t a = x/64;
+	    uint64_t b = x%64;
+		uint64_t d = data_[a];
+		d &= ~(1ull << b);
+		data_[a] = d;
 	}
 
 	void toggle(uint64_t x) ROUTING_KIT__attribute__((always_inline)) {
 		assert(x < size_ && "argument out of bounds");
-		data_[x/64] ^= (1ull << (x%64));
+		uint64_t a = x/64;
+	    uint64_t b = x%64;
+		uint64_t d = data_[a];
+		d ^= (1ull << b);
+		data_[a] = d;
 	}
 
 	void set_all();
