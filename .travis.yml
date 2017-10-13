@@ -10,14 +10,14 @@ env:
 
 matrix:
   include:
-    - os: linux
-      env: MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3"
-    - os: linux
-      env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math"
-    - os: linux
-      env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - os: linux
-      env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+    # - os: linux
+    #   env: MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3"
+    # - os: linux
+    #   env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math"
+    # - os: linux
+    #   env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    # - os: linux
+    #   env:  MY_CXX="g++" OMP_LDFLAGS="-fopenmp" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
     - os: linux
       addons: &clang5
         apt:
@@ -28,23 +28,27 @@ matrix:
             - libiomp-dev
             - libiomp5
       env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3"
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math"
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
     - os: linux
       addons: *clang5
-      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math"
-    - os: linux
-      addons: *clang5
-      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG"
-    - os: linux
-      addons: *clang5
-      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -DROUTING_KIT_NO_GCC_EXTENSIONS -DROUTING_KIT_NO_POSIX"
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=address -fno-omit-frame-pointer" LDFLAGS="-fsanitize=address"
 
 before_script:
   - echo MY_CXX=$MY_CXX
   - echo GLOBAL_CFLAGS=$GLOBAL_CFLAGS
   - echo CFLAGS=CFLAGS
+  - echo LDFLAGS=LDFLAGS
   - echo OMP_LDFLAGS=OMP_LDFLAGS
   - $MY_CXX --version
-  - make CC="$MY_CXX" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" OMP_LDFLAGS="$OMP_LDFLAGS" -j2
+  - make CC="$MY_CXX" CFLAGS="$GLOBAL_CFLAGS $CFLAGS" LDFLAGS="$LDFLAGS" OMP_LDFLAGS="$OMP_LDFLAGS" -j2
   - git clone https://github.com/RoutingKit/DataForAutomaticTests.git data
 
 script:
