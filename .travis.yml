@@ -40,6 +40,12 @@ matrix:
     - os: linux
       addons: *clang5
       env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=address -fno-omit-frame-pointer" LDFLAGS="-fsanitize=address"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=memory -fno-omit-frame-pointer" LDFLAGS="-fsanitize=memory"
+    - os: linux
+      addons: *clang5
+      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=undefined -fno-omit-frame-pointer" LDFLAGS="-fsanitize=undefined"
 
 before_script:
   - echo MY_CXX=$MY_CXX
