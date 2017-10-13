@@ -779,5 +779,5 @@ int main(int argc, char*argv[]){
 		EXPECT(metric3.backward == metric4.backward);
 	}
 
-	return 0;
+	return expect_failed;
 }

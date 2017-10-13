@@ -158,6 +158,8 @@ int main(int argc, char*argv[]){
 
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
+		return 1;
 	}
+	return 0;
 }
 

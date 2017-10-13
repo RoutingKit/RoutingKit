@@ -165,6 +165,8 @@ int main(int argc, char*argv[]){
 		cout << "avg node path running time : " << node_path_time_sum/query_count << "musec" << endl;
 	}catch(exception&err){
 		cerr << "Stopped on exception : " << err.what() << endl;
+		return 1;
 	}
+	return 0;
 }
 
