@@ -14,8 +14,8 @@ using namespace std;
 
 int main(){
 
-	const unsigned point_cloud_size = 500000;
-	const unsigned query_count = 10000;
+	const unsigned point_cloud_size = 250000;
+	const unsigned query_count = 1000;
 	const unsigned verify_query_count = 100;
 	const double tolerance = 0.01; // 1 cm tolerance
 
