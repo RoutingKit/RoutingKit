@@ -89,7 +89,7 @@ int main(int argc, char*argv[]){
 				dist_time_sum += time;
 
 				if(ch_query.get_distance() != ref_distance[i])
-					throw runtime_error("Distance query is wrong");
+					throw runtime_error("Distance query "+std::to_string(i)+" is wrong; reference = "+std::to_string(ref_distance[i])+" computed = "+std::to_string(ch_query.get_distance()));
 
 				time = -get_micro_time();
 				auto arc_path = ch_query.get_arc_path();
@@ -129,7 +129,7 @@ int main(int argc, char*argv[]){
 						for(auto a:arc_path)
 							distance += weight[a];
 						if(distance != ref_distance[i])
-							throw runtime_error("path has the wrong length");
+							throw runtime_error("path has wrong length; reference = "+std::to_string(ref_distance[i])+" computed = "+std::to_string(distance));
 
 						if(arc_path.size()+1 != node_path.size())
 							throw runtime_error("get_node_path path has wrong number of nodes");
