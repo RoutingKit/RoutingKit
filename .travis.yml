@@ -40,9 +40,27 @@ matrix:
     - os: linux
       addons: *clang5
       env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=address -fno-omit-frame-pointer" LDFLAGS="-fsanitize=address"
-    - os: linux
-      addons: *clang5
-      env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=memory -fno-omit-frame-pointer" LDFLAGS="-fsanitize=memory"
+    # Memory Sanitizer is deactivated because it is broken in the used Clang version.
+    # The current version finds a use-of-uninitialized-value in the following simple code: 
+    #
+    # #include <exception>
+    # #include <iostream>
+    # using namespace std;
+    # 
+    # int main(){
+    #   std::exception_ptr p;
+    #   p = nullptr;
+    #   if(p){
+    #     cout << "???" << endl;
+    #   }
+    # }
+    #
+    # It is compiled using:
+    # clang++-5.0 -std=c++11 -fsanitize=memory foo.cpp -o foo && ./foo
+    #
+    # - os: linux
+    #   addons: *clang5
+    #   env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=memory -fno-omit-frame-pointer" LDFLAGS="-fsanitize=memory"
     - os: linux
       addons: *clang5
       env: MY_CXX="clang++-5.0" OMP_LDFLAGS="-fopenmp=libiomp5" CFLAGS="-O3 -march=native -ffast-math -DNDEBUG -fsanitize=undefined -fno-omit-frame-pointer" LDFLAGS="-fsanitize=undefined"
