@@ -20,13 +20,13 @@ struct BufferedAsynchronousReader::Impl{
 	bool was_end_of_file_reached;
 	bool was_termination_requested;
 
-        std::thread worker;
+	std::thread worker;
 
-        std::exception_ptr read_exception;
+	std::exception_ptr read_exception;
 
-        std::mutex lock;
-        std::condition_variable main_thread_has_done_something;
-        std::condition_variable worker_thread_has_done_something;
+	std::mutex lock;
+	std::condition_variable main_thread_has_done_something;
+	std::condition_variable worker_thread_has_done_something;
 
 	~Impl(){
 		{
@@ -36,7 +36,7 @@ struct BufferedAsynchronousReader::Impl{
 		main_thread_has_done_something.notify_one();
 		worker.join();
 
-        	delete[]buffer;
+		delete[]buffer;
 	}
 
 	unsigned how_many_bytes_are_in_the_buffer() const {
@@ -144,15 +144,15 @@ char* BufferedAsynchronousReader::read(unsigned size) {
 
 	std::unique_lock<std::mutex>guard(impl->lock);
 
-        impl->worker_thread_has_done_something.wait(
-                guard,
-                [&]{
-                        return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() >= size || impl->read_exception;
-                }
-        );
+	impl->worker_thread_has_done_something.wait(
+		guard,
+		[&]{
+			return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() >= size || impl->read_exception;
+		}
+	);
 
 	if(impl->read_exception){
-        	impl->was_end_of_file_reached = true;
+		impl->was_end_of_file_reached = true;
 		std::rethrow_exception(impl->read_exception);
 	}
 
@@ -199,11 +199,11 @@ bool BufferedAsynchronousReader::is_finished() const{
 void BufferedAsynchronousReader::wait_until_buffer_is_non_empty_or_all_bytes_were_read() const{
 	std::unique_lock<std::mutex>guard(impl->lock);
 	impl->worker_thread_has_done_something.wait(
-                guard,
-                [&]{
-                        return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() > 0 || impl->read_exception;
-                }
-        );
+	guard,
+		[&]{
+			return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() > 0 || impl->read_exception;
+		}
+	);
 }
 
 } // namespace RoutingKit
