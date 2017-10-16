@@ -48,6 +48,25 @@ namespace RoutingKit{
 
 namespace{
 
+	// formally
+	//
+	// char*p = ...;
+	// uint32_t x = *((uint32_t*)p);
+	//
+	// is undefined behavior. We therefore use memcpy.
+
+	template<class T>
+	void unaligned_store(char*dest, const T&val){
+		memcpy(dest, (const char*)&val, sizeof(T));
+	}
+
+	template<class T>
+	T unaligned_load(const char*src){
+		T ret;
+		memcpy((char*)&ret, src, sizeof(T));
+		return ret; // NVRO
+	}
+
 	const uint64_t is_header_info_available_bit = 1;
 	const uint64_t is_ordered_bit = 2;
 	const uint64_t was_blob_read_bit = 4;
@@ -84,7 +103,7 @@ namespace{
 						return 0;
 					
 
-					uint32_t header_size = ntohl(*((uint32_t*)p));
+					uint32_t header_size = ntohl(unaligned_load<uint32_t>(p));
 
 					uint32_t data_size = (uint32_t)-1;
 
@@ -187,7 +206,7 @@ namespace{
 						throw std::runtime_error("PBF error: Blob is too large. It is "+std::to_string(uncompressed_data_size) + " but may be at most "+std::to_string(how_much_to_read-4));
 					if(uncompressed_data_size != (std::uint64_t)(uncompressed_end - uncompressed_begin))
 						throw std::runtime_error("PBF error: claimed uncompressed blob size does not correspond to actual blob size");
-					*(uint32_t*)buffer = uncompressed_data_size;
+					unaligned_store<uint32_t>(buffer, uncompressed_data_size);
 					buffer += 4;
 					memcpy(buffer, uncompressed_begin, uncompressed_data_size);
 					return uncompressed_data_size + 4;
@@ -196,7 +215,7 @@ namespace{
 					if(uncompressed_data_size > how_much_to_read-4)
 						throw std::runtime_error("PBF error: Blob is too large. It is "+std::to_string(uncompressed_data_size) + " but may be at most "+std::to_string(how_much_to_read-4));
 
-					*(uint32_t*)buffer = uncompressed_data_size;
+					unaligned_store<uint32_t>(buffer, uncompressed_data_size);
 					buffer += 4;
 
 					z_stream z;
@@ -251,7 +270,7 @@ namespace {
 		while(!reader.is_finished()){
 			char*primblock_begin, *primblock_end;
 			{
-				uint32_t s = reader.read_or_throw<uint32_t>();
+				uint32_t s = unaligned_load<uint32_t>(reader.read_or_throw(4));
 				primblock_begin = reader.read_or_throw(s);
 				primblock_end = primblock_begin + s;
 			}

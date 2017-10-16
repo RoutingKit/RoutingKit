@@ -29,11 +29,6 @@ public:
 
 	char* read(unsigned size);
 	char* read_or_throw(unsigned size);
-
-	template<class T>
-	T read_or_throw(){
-		return *(T*)read_or_throw(sizeof(T));
-	}
 	
 private:
 	struct Impl;
