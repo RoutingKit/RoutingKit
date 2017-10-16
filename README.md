@@ -1,5 +1,7 @@
 # RoutingKit
 
+[![Build Status](https://travis-ci.org/RoutingKit/RoutingKit.svg?branch=master)](https://travis-ci.org/RoutingKit/RoutingKit)
+
 RoutingKit is a C++ library that provides advanced route planning functionality. 
 It was developed at [KIT](https://www.kit.edu) in the [group of Prof. Dorothea Wagner](https://i11www.iti.kit.edu/).
 The most prominent component is an index-based data structure called (Customizable) Contraction Hierarchy, that allows to answer shortest path queries within milliseconds or even less on data sets of continental size while keeping the arc weights flexible.
