@@ -21,10 +21,90 @@ bool operator==(Point l, Point r){
 }
 
 int main(){
-	srand(42);
+
 	{
 		std::default_random_engine rng(42);
-		std::uniform_int_distribution<int> uniform_dist(0, 99);	
+
+		unsigned range_list[] = {100, 1000000000};
+
+		for(unsigned range:range_list){
+			std::uniform_int_distribution<int> dist(0, range-1);
+
+			vector<unsigned>v(10000);
+			for(auto&x:v)
+				x = dist(rng);
+
+			auto q = compute_stable_sort_permutation_using_key(v, range, [](unsigned x){return x;});
+			EXPECT(is_sorted_using_less(apply_permutation(q, v)));
+			EXPECT(q == compute_stable_sort_permutation_using_less(v));
+			EXPECT(q == compute_stable_sort_permutation_using_comparator(v, [](unsigned l, unsigned r){return l<r;}));
+		}
+	}
+
+	{
+		std::default_random_engine rng(42);
+
+		unsigned range_list[] = {100, 1000000000};
+
+		for(unsigned range:range_list){
+			std::uniform_int_distribution<int> dist(0, range-1);
+
+			vector<unsigned>v(10000);
+			for(auto&x:v)
+				x = dist(rng);
+
+			auto q = compute_inverse_stable_sort_permutation_using_key(v, range, [](unsigned x){return x;});
+			EXPECT(is_sorted_using_less(apply_inverse_permutation(q, v)));
+			EXPECT(q == compute_inverse_stable_sort_permutation_using_less(v));
+			EXPECT(q == compute_inverse_stable_sort_permutation_using_comparator(v, [](unsigned l, unsigned r){return l<r;}));
+		}
+	}
+
+
+	{
+		std::default_random_engine rng(42);
+
+		unsigned range_list[] = {100, 1000000000};
+
+		for(unsigned range:range_list){
+			std::uniform_int_distribution<int> dist(0, range-1);
+
+			vector<unsigned>v(10000);
+			for(auto&x:v)
+				x = dist(rng);
+
+			EXPECT(is_sorted_using_less(apply_permutation(compute_sort_permutation_using_key(v, range, [](unsigned x){return x;}), v)));
+			EXPECT(is_sorted_using_less(apply_permutation(compute_sort_permutation_using_less(v), v)));
+			EXPECT(is_sorted_using_less(apply_permutation(compute_sort_permutation_using_comparator(v, [](unsigned l, unsigned r){return l<r;}), v)));
+		}
+	}
+
+	{
+		std::default_random_engine rng(42);
+
+		unsigned range_list[] = {100, 1000000000};
+
+		for(unsigned range:range_list){
+			std::uniform_int_distribution<int> dist(0, range-1);
+
+			vector<unsigned>v(10000);
+			for(auto&x:v)
+				x = dist(rng);
+
+			EXPECT(is_sorted_using_less(apply_inverse_permutation(compute_inverse_sort_permutation_using_key(v, range, [](unsigned x){return x;}), v)));
+			EXPECT(is_sorted_using_less(apply_inverse_permutation(compute_inverse_sort_permutation_using_less(v), v)));
+			EXPECT(is_sorted_using_less(apply_inverse_permutation(compute_inverse_sort_permutation_using_comparator(v, [](unsigned l, unsigned r){return l<r;}), v)));
+		}
+	}
+
+
+
+
+
+
+	{
+		std::default_random_engine rng(42);
+		std::uniform_int_distribution<int> uniform_dist(0, 99);
 
 		vector<double>v(10000);
 		for(auto&x:v)
@@ -146,11 +226,11 @@ int main(){
 		);
 
 	}
-	
+
 	{
 		std::default_random_engine rng(42);
 
-		std::vector<unsigned>v = random_permutation(100, rng);	
+		std::vector<unsigned>v = random_permutation(100, rng);
 
 		auto p1 = compute_stable_sort_permutation_using_key(v, 100, [&](unsigned x){return x;});
 		auto p2 = compute_stable_sort_permutation_using_key(identity_permutation(100), 100, [&](unsigned x){return v[x];});
@@ -158,7 +238,7 @@ int main(){
 		auto r = random_permutation(100, rng);
 		auto s = compute_stable_sort_permutation_using_key(r, 100, [&](unsigned x){return v[x];});
 		auto p3 = chain_permutation_first_left_then_right(r, s);
-		
+
 		EXPECT(is_sorted_using_less(apply_permutation(p1, v)));
 		EXPECT(is_sorted_using_less(apply_permutation(p2, v)));
 		EXPECT(is_sorted_using_less(apply_permutation(p3, v)));
@@ -167,11 +247,10 @@ int main(){
 		EXPECT(p1 == p3);
 	}
 
-
 	{
 		std::default_random_engine rng(42);
 		unsigned coord_count = 100;
-		std::uniform_int_distribution<int> uniform_dist(0, coord_count-1);	
+		std::uniform_int_distribution<int> uniform_dist(0, coord_count-1);
 
 		vector<Point>v(10000);
 
@@ -183,10 +262,10 @@ int main(){
 		unsigned key_count = coord_count;
 		auto x_less_comparator = [](Point l, Point r){return l.x < r.x;};
 
-		
+
 		vector<Point>sorted_v = v;
 		std::stable_sort(sorted_v.begin(), sorted_v.end(), x_less_comparator);
-		
+
 		EXPECT(
 			sorted_v ==
 			apply_permutation(
@@ -223,7 +302,7 @@ int main(){
 		std::default_random_engine rng(42);
 		unsigned element_count = 100000000;
 		unsigned key_count = 100;
-		std::uniform_int_distribution<int> uniform_dist(0, key_count-1);	
+		std::uniform_int_distribution<int> uniform_dist(0, key_count-1);
 
 		vector<unsigned>elements(element_count);
 		for(unsigned i=0; i<element_count; ++i)
@@ -285,13 +364,13 @@ int main(){
 		time += get_micro_time();
 		print_something_to_prevent_optimizer_from_removing_everything(foo);
 		cout << "sort_using_less " << time << "musec" << endl;
-		
+
 	}
 
 	{
 		std::default_random_engine rng(42);
 		unsigned node_count = 100000, arc_count = node_count*10;
-		std::uniform_int_distribution<int> uniform_dist(0, node_count-1);	
+		std::uniform_int_distribution<int> uniform_dist(0, node_count-1);
 
 		vector<unsigned>tail(arc_count), head(arc_count);
 		for(unsigned i=0; i<arc_count; ++i){
@@ -329,13 +408,13 @@ int main(){
 			auto p = identity_permutation(arc_count);
 			p = stable_sort_using_key(p, node_count, [&](unsigned x){return sorted2_head[x];});
 			p = stable_sort_using_key(p, node_count, [&](unsigned x){return sorted2_tail[x];});
-		
+
 			p = invert_permutation(p);
 			//inplace_apply_inverse_permutation(p, sorted2_tail);
 			sorted2_tail = apply_inverse_permutation(p, sorted2_tail);
 			//inplace_apply_inverse_permutation(p, sorted2_head);
 			sorted2_head = apply_inverse_permutation(p, sorted2_head);
-			
+
 
 			time += get_micro_time();
 
@@ -352,7 +431,7 @@ int main(){
 			auto p = identity_permutation(arc_count);
 			p = stable_sort_using_key(p, node_count, [&](unsigned x){return sorted3_head[x];});
 			p = stable_sort_using_key(p, node_count, [&](unsigned x){return sorted3_tail[x];});
-		
+
 			sorted3_tail = apply_permutation(p, sorted3_tail);
 			sorted3_head = apply_permutation(p, sorted3_head);
 
@@ -368,7 +447,7 @@ int main(){
 
 		EXPECT(sorted1_tail == sorted3_tail);
 		EXPECT(sorted1_head == sorted3_head);
-	
+
 	}
 	return expect_failed;
 }
