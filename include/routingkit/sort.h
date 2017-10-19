@@ -56,7 +56,7 @@ template<class T, class C>
 std::vector<unsigned> compute_stable_sort_permutation_using_comparator(const std::vector<T>&v, const C&is_less){
 	std::vector<unsigned>p = identity_permutation(v.size());
 	std::stable_sort(
-		p.begin(), p.end(), 
+		p.begin(), p.end(),
 		[&](unsigned l, unsigned r){
 			return is_less(v[l], v[r]);
 		}
@@ -81,7 +81,7 @@ template<class T, class C>
 std::vector<unsigned> compute_sort_permutation_using_comparator(const std::vector<T>&v, const C&is_less){
 	std::vector<unsigned>p = identity_permutation(v.size());
 	std::sort(
-		p.begin(), p.end(), 
+		p.begin(), p.end(),
 		[&](unsigned l, unsigned r){
 			return is_less(v[l], v[r]);
 		}
@@ -112,6 +112,15 @@ bool is_sorted_using_comparator(const std::vector<T>&v, const C&is_less){
 }
 
 
+template<class T, class C>
+std::vector<unsigned> compute_inverse_sort_permutation_using_comparator(const std::vector<T>&v, const C&is_less){
+	return invert_permutation(compute_sort_permutation_using_comparator(v, is_less));
+}
+
+template<class T, class C>
+std::vector<unsigned> compute_inverse_stable_sort_permutation_using_comparator(const std::vector<T>&v, const C&is_less){
+	return invert_permutation(compute_stable_sort_permutation_using_comparator(v, is_less));
+}
 
 
 
@@ -167,13 +176,13 @@ namespace detail{
 }
 
 namespace detail{
-	// Sorting by key uses bucket sort if the number of elements is 
+	// Sorting by key uses bucket sort if the number of elements is
 	// not significantly smaller than the number of keys. Otherwise
-	// we use the sort by comparator function, which (at the time 
-	// of writing this comment) forward to std::sort and 
-	// std::stable_sort. Bucket sort is always stable whereas 
+	// we use the sort by comparator function, which (at the time
+	// of writing this comment) forward to std::sort and
+	// std::stable_sort. Bucket sort is always stable whereas
 	// comparator-based sort is not. To avoid code dublication, we
-	// therefore have maybe_stable functions that take a compile time 
+	// therefore have maybe_stable functions that take a compile time
 	// boolean which inidcates whether the fallback function should
 	// be stable.
 
@@ -193,7 +202,7 @@ namespace detail{
 		}else if(is_stable){
 			p = compute_stable_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));
 		}else{
-			p = compute_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));		
+			p = compute_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));
 		}
 		return p; // NVRO
 	}
@@ -202,12 +211,12 @@ namespace detail{
 
 template<class T, class K>
 std::vector<unsigned> compute_sort_permutation_using_key(const std::vector<T>&v, unsigned key_count, const K&get_key){
-	return detail::compute_maybe_stable_sort_permutation_using_key<false>(v, key_count, get_key); 
+	return detail::compute_maybe_stable_sort_permutation_using_key<false>(v, key_count, get_key);
 }
 
 template<class T, class K>
 std::vector<unsigned> compute_stable_sort_permutation_using_key(const std::vector<T>&v, unsigned key_count, const K&get_key){
-	return detail::compute_maybe_stable_sort_permutation_using_key<true>(v, key_count, get_key); 
+	return detail::compute_maybe_stable_sort_permutation_using_key<true>(v, key_count, get_key);
 }
 
 namespace detail{
@@ -224,9 +233,9 @@ namespace detail{
 				++key_pos[k];
 			}
 		} else if(is_stable){
-			p = compute_stable_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));
+			p = compute_inverse_stable_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));
 		}else{
-			p = compute_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));
+			p = compute_inverse_sort_permutation_using_comparator(v, detail::make_compare_by_key(key_count, get_key));
 		}
 		return p; // NVRO
 	}
@@ -329,6 +338,16 @@ std::vector<unsigned> compute_sort_permutation_using_less(const std::vector<T>&v
 template<class T>
 std::vector<unsigned> compute_stable_sort_permutation_using_less(const std::vector<T>&v){
 	return compute_stable_sort_permutation_using_comparator(v, [](const T&l, const T&r){return l < r;});
+}
+
+template<class T>
+std::vector<unsigned> compute_inverse_sort_permutation_using_less(const std::vector<T>&v){
+	return invert_permutation(compute_sort_permutation_using_less(v));
+}
+
+template<class T>
+std::vector<unsigned> compute_inverse_stable_sort_permutation_using_less(const std::vector<T>&v){
+	return invert_permutation(compute_stable_sort_permutation_using_less(v));
 }
 
 template<class T>
