@@ -25,7 +25,7 @@ void inplace_keep_element_of_vector_if(const BitVector&keep_filter, std::vector<
 }
 
 template<class T>
-void inplace_remove_element_from_vector_if(const BitVector&remove_filter, std::vector<T>vec){
+void inplace_remove_element_from_vector_if(const BitVector&remove_filter, std::vector<T>&vec){
 	assert(remove_filter.size() == vec.size());
 
 	uint64_t in = 0, out = 0, s = vec.size();
