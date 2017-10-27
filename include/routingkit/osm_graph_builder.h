@@ -46,6 +46,11 @@ struct OSMTurnRestriction{
 	uint64_t to_way;
 };
 
+enum class OSMRoadGeometry{
+	none,
+	uncompressed
+};
+
 struct OSMRoutingGraph{
 	std::vector<unsigned>first_out;
 	std::vector<unsigned>head;
@@ -56,6 +61,10 @@ struct OSMRoutingGraph{
 
 	std::vector<unsigned>forbidden_turn_from_arc;
 	std::vector<unsigned>forbidden_turn_to_arc;
+
+	std::vector<unsigned>first_modelling_node;
+	std::vector<float>modelling_node_latitude;
+	std::vector<float>modelling_node_longitude;
 	
 
 	unsigned node_count()const{
@@ -91,7 +100,9 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	std::function<void(const std::string&)>log_message = nullptr,
 
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false,
+
+	OSMRoadGeometry geometry_to_be_extracted = OSMRoadGeometry::none
 );
 
 } // RoutingKit
