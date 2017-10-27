@@ -196,6 +196,8 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	std::vector<float>latitude(modelling_node.local_id_count());
 	std::vector<float>longitude(modelling_node.local_id_count());
+	std::vector<float>modelling_node_latitude;
+	std::vector<float>modelling_node_longitude;
 
 	if(log_message){
 		log_message("Scanning OSM PBF data to load routing arcs");
@@ -219,8 +221,6 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 					unsigned routing_id_of_last_routing_node = routing_node.to_local(node_list[0]);
 
 					double dist_since_last_routing_node = 0;
-					std::vector<float>modelling_node_latitude;
-					std::vector<float>modelling_node_longitude;
 
 					for(unsigned i=1; i<node_list.size(); ++i){
 						unsigned modelling_id_of_current_node = modelling_node.to_local(node_list[i]);
