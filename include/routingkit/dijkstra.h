@@ -10,6 +10,8 @@ namespace RoutingKit{
 
 class Dijkstra{
 public:
+	Dijkstra(){}
+
 	Dijkstra(const std::vector<unsigned>&first_out, const std::vector<unsigned>&tail, const std::vector<unsigned>&head):
 		tentative_distance(first_out.size()-1),
 		predecessor_arc(first_out.size()-1),
@@ -22,8 +24,8 @@ public:
 		assert(first_out.front() == 0);
 		assert(first_out.back() == tail.size());
 		assert(first_out.back() == head.size());
-			
-		
+
+
 	}
 
 	Dijkstra&reset(){
