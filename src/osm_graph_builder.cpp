@@ -128,7 +128,8 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		)
 	>turn_restriction_decoder,
 	std::function<void(const std::string&)>log_message,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered,
+	OSMRoadGeometry geometry_to_be_extracted
 ){
 	assert((mapping.is_modelling_node | mapping.is_routing_node) == mapping.is_modelling_node);
 
@@ -155,11 +156,26 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		log_message("Finished, needed "+std::to_string(timer)+" musec.");
 	}
 
-	auto on_new_arc = [&](unsigned x, unsigned y, unsigned dist, unsigned routing_way_id){
+	auto on_new_arc = [&](
+		unsigned x, unsigned y, unsigned dist, unsigned routing_way_id,
+		const std::vector<float>&modelling_node_latitude,
+		const std::vector<float>&modelling_node_longitude)
+	{
 		tail.push_back(x);
 		routing_graph.head.push_back(y);
 		routing_graph.geo_distance.push_back(dist);
 		routing_graph.way.push_back(routing_way_id);
+		if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+			routing_graph.first_modelling_node.push_back(routing_graph.modelling_node_latitude.size());
+			routing_graph.modelling_node_latitude.insert(
+				routing_graph.modelling_node_latitude.end(),
+				modelling_node_latitude.begin(), modelling_node_latitude.end()
+			);
+			routing_graph.modelling_node_longitude.insert(
+				routing_graph.modelling_node_longitude.end(),
+				modelling_node_longitude.begin(), modelling_node_longitude.end()
+			);
+		}
 	};
 
 	std::vector<OSMTurnRestriction>osm_turn_restrictions;
@@ -180,6 +196,8 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	std::vector<float>latitude(modelling_node.local_id_count());
 	std::vector<float>longitude(modelling_node.local_id_count());
+	std::vector<float>modelling_node_latitude;
+	std::vector<float>modelling_node_longitude;
 
 	if(log_message){
 		log_message("Scanning OSM PBF data to load routing arcs");
@@ -211,27 +229,40 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 							latitude[modelling_id_of_current_node], longitude[modelling_id_of_current_node],
 							latitude[modelling_id_of_previous_modelling_node], longitude[modelling_id_of_previous_modelling_node]
 						);
+						if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+							modelling_node_latitude.push_back(latitude[modelling_id_of_current_node]);
+							modelling_node_longitude.push_back(longitude[modelling_id_of_current_node]);
+						}
 
 						modelling_id_of_previous_modelling_node = modelling_id_of_current_node;
 
 						unsigned routing_id_of_current_node = routing_node.to_local(node_list[i], invalid_id);
 						if(routing_id_of_current_node != invalid_id){
 
+							if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+								modelling_node_latitude.pop_back();
+								modelling_node_longitude.pop_back();
+							}
+
 							switch(dir){
 							case OSMWayDirectionCategory::only_open_forwards:
-								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id);
+								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id, modelling_node_latitude, modelling_node_longitude);
 								break;
 							case OSMWayDirectionCategory::open_in_both:
-								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id);
+								on_new_arc(routing_id_of_last_routing_node, routing_id_of_current_node, dist_since_last_routing_node, routing_way_id, modelling_node_latitude, modelling_node_longitude);
 								// no break
 							case OSMWayDirectionCategory::only_open_backwards:
-								on_new_arc(routing_id_of_current_node, routing_id_of_last_routing_node, dist_since_last_routing_node, routing_way_id);
+								std::reverse(modelling_node_latitude.begin(), modelling_node_latitude.end());
+								std::reverse(modelling_node_longitude.begin(), modelling_node_longitude.end());
+								on_new_arc(routing_id_of_current_node, routing_id_of_last_routing_node, dist_since_last_routing_node, routing_way_id, modelling_node_latitude, modelling_node_longitude);
 								break;
 							default:
 								assert(false);
 							}
 
 							dist_since_last_routing_node = 0;
+							modelling_node_latitude.clear();
+							modelling_node_longitude.clear();
 							routing_id_of_last_routing_node = routing_id_of_current_node;
 						}
 					}
@@ -259,6 +290,43 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		routing_graph.geo_distance = apply_inverse_permutation(p, std::move(routing_graph.geo_distance));
 		routing_graph.way = apply_inverse_permutation(p, std::move(routing_graph.way));
 		routing_graph.first_out = invert_vector(tail, node_count);
+
+		if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+			routing_graph.first_modelling_node.push_back(routing_graph.modelling_node_latitude.size());
+
+			std::vector<unsigned>first_modelling_node;
+			std::vector<float>modelling_node_latitude;
+			std::vector<float>modelling_node_longitude;
+
+			first_modelling_node.reserve(routing_graph.first_modelling_node.size());
+			modelling_node_latitude.reserve(routing_graph.modelling_node_latitude.size());
+			modelling_node_longitude.reserve(routing_graph.modelling_node_longitude.size());
+
+			auto new_arc_id_to_old_arc_id = invert_permutation(p);
+			for(auto old_arc_id : new_arc_id_to_old_arc_id){
+				first_modelling_node.push_back(modelling_node_latitude.size());
+
+				int first = routing_graph.first_modelling_node[old_arc_id];
+				int last = routing_graph.first_modelling_node[old_arc_id + 1];
+
+				modelling_node_latitude.insert(
+					modelling_node_latitude.end(),
+					routing_graph.modelling_node_latitude.begin() + first,
+					routing_graph.modelling_node_latitude.begin() + last
+				);
+				modelling_node_longitude.insert(
+					modelling_node_longitude.end(),
+					routing_graph.modelling_node_longitude.begin() + first,
+					routing_graph.modelling_node_longitude.begin() + last
+				);
+			}
+
+			first_modelling_node.push_back(modelling_node_latitude.size());
+
+			routing_graph.first_modelling_node = std::move(first_modelling_node);
+			routing_graph.modelling_node_latitude = std::move(modelling_node_latitude);
+			routing_graph.modelling_node_longitude = std::move(modelling_node_longitude);
+		}
 	}
 
 	if(log_message){

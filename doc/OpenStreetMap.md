@@ -235,6 +235,9 @@ struct OSMRoutingGraph{
   std::vector<float>longitude;
   std::vector<unsigned>forbidden_turn_from_arc;
   std::vector<unsigned>forbidden_turn_to_arc;
+  std::vector<unsigned>first_modelling_node;
+  std::vector<float>modelling_node_latitude;
+  std::vector<float>modelling_node_longitude;
 
   unsigned node_count()const;
   unsigned arc_count()const;
@@ -259,11 +262,12 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
     )
   >turn_restriction_classifier,
   std::function<void(const std::string&)>log_message = nullptr,
-  bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
+  bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false,
+  OSMRoadGeometry geometry_to_be_extracted = OSMRoadGeometry::none
 );
 ```
 
-It takes the PBF file as argument and the ID mappings returned by `load_osm_id_mapping_from_pbf`. Besides the two final parameters described in the basic decoding interface documentation, there are two additional callbacks. It returns a routing graph with a few additional attributes.
+It takes the PBF file as argument and the ID mappings returned by `load_osm_id_mapping_from_pbf`. Besides the two parameters described in the basic decoding interface documentation, there are two additional callbacks and a parameter affecting the extraction of road geometry data. It returns a routing graph with a few additional attributes.
 
 `first_out` and `head` form a directed graph. The node IDs used in this graph are routing IDs. `way` maps an arc ID onto the routing way ID. `geo_distance` maps an arc onto the length of the arc in meter. `latiude` and `longitude` map routing node IDs onto their geographical positions. Latitude is a number between -90 and +90. Longitude is a number between -180 and 180.
 
@@ -278,6 +282,8 @@ auto is_forbidden = [&](unsigned from_arc_id, unsigned to_arc_id){
   return false;
 };
 ```
+
+The last three data members store road geometry data. Each arc starts at a routing node and ends at a routing node. Between its tail and head node, there can be arbitrarily many modelling nodes. The vectors `modelling_node_latitude` and `modelling_node_longitude` store the latitudes and longitudes of all modelling nodes that are no routing nodes. For each arc `a`, `first_modelling_node[a]` is the index in `modelling_node_latitude` and `modelling_node_longitude` of the first modelling node of `a`, directly following its tail node. Analogously, `first_modelling_node[a + 1] - 1` is the index of the last modelling node of `a`, directly preceding its head node. Note that all three data members are empty by default. To fill them, set the parameter `geometry_to_be_extracted` to `OSMRoadGeometry::uncompressed`.
 
 The first callback is `oneway_classifier` which determines whether a way is a one-way street. If the callback is null, all ways are open in both directions. The callback must return a value of the following enum:
 
