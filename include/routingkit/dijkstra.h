@@ -10,7 +10,7 @@ namespace RoutingKit{
 
 class Dijkstra{
 public:
-	Dijkstra(){}
+	Dijkstra():first_out(nullptr){}
 
 	Dijkstra(const std::vector<unsigned>&first_out, const std::vector<unsigned>&tail, const std::vector<unsigned>&head):
 		tentative_distance(first_out.size()-1),
@@ -40,7 +40,7 @@ public:
 		assert(first_out.back() == tail.size());
 		assert(first_out.back() == head.size());
 
-		if(first_out.size() == this->first_out->size()){
+		if(this->first_out != nullptr && first_out.size() == this->first_out->size()){
 			this->first_out = &first_out;
 			this->head = &head;
 			this->tail = &tail;
