@@ -122,7 +122,7 @@ namespace{
 							if(key_id == 1){
 								unsigned len = str_end - str_begin;
 								if(len > sizeof(block_type)-1)
-									len = sizeof(block_type);
+									len = sizeof(block_type)-1;
 								memcpy(block_type, str_begin, len);
 								block_type[len] = '\0';
 							}
