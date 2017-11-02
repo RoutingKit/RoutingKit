@@ -113,11 +113,20 @@ const FileDataSource&FileDataSource::operator=(FileDataSource&&o){
 }
 
 void FileDataSource::open(const char*file_name){
-	if(file_descriptor != nullptr)
-		close();
+	#ifndef ROUTING_KIT_NO_POSIX
+	int file_descriptor;
+	#else
+	FILE*file_descriptor;
+	#endif
+
 	file_descriptor = fopen(file_name, "rb");
 	if(file_descriptor == nullptr)
 		throw std::runtime_error(std::string("Could not open file \"")+file_name +"\" for reading.");
+
+	if(this->file_descriptor != nullptr)
+		close();
+
+	this->file_descriptor = file_descriptor;
 }
 
 void FileDataSource::close(){
