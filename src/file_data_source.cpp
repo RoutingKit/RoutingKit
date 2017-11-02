@@ -113,6 +113,8 @@ const FileDataSource&FileDataSource::operator=(FileDataSource&&o){
 }
 
 void FileDataSource::open(const char*file_name){
+	if(file_descriptor != nullptr)
+		close();
 	file_descriptor = fopen(file_name, "rb");
 	if(file_descriptor == nullptr)
 		throw std::runtime_error(std::string("Could not open file \"")+file_name +"\" for reading.");
