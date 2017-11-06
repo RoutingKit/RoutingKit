@@ -233,6 +233,7 @@ struct OSMRoutingGraph{
   std::vector<unsigned>geo_distance;
   std::vector<float>latitude;
   std::vector<float>longitude;
+  std::vector<bool>is_arc_antiparallel_to_way;
   std::vector<unsigned>forbidden_turn_from_arc;
   std::vector<unsigned>forbidden_turn_to_arc;
   std::vector<unsigned>first_modelling_node;
@@ -269,7 +270,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 It takes the PBF file as argument and the ID mappings returned by `load_osm_id_mapping_from_pbf`. Besides the two parameters described in the basic decoding interface documentation, there are two additional callbacks and a parameter affecting the extraction of road geometry data. It returns a routing graph with a few additional attributes.
 
-`first_out` and `head` form a directed graph. The node IDs used in this graph are routing IDs. `way` maps an arc ID onto the routing way ID. `geo_distance` maps an arc onto the length of the arc in meter. `latiude` and `longitude` map routing node IDs onto their geographical positions. Latitude is a number between -90 and +90. Longitude is a number between -180 and 180.
+`first_out` and `head` form a directed graph. The node IDs used in this graph are routing IDs. `way` maps an arc ID onto the routing way ID, and `is_arc_antiparallel_to_way` indicates whether the arc runs parallel or antiparallel to the way. `geo_distance` maps an arc onto the length of the arc in meter. `latiude` and `longitude` map routing node IDs onto their geographical positions. Latitude is a number between -90 and +90. Longitude is a number between -180 and 180.
 
 `forbidden_turn_from_arc` and `forbidden_turn_to_arc` encode forbidden turns. If they are empty, there are no forbidden turns. For every `i`, the pair `forbidden_turn_from_arc[i]` and `forbidden_turn_to_arc[i]` is a forbidden turn. This means that every arc path that contains both arcs consecutively is invalid. The vectors are guaranteed to be sorted first by from arc ID and second by to arc ID. It is further guaranteed that there are no duplicate entries. As they are sorted, one can employ the following pattern to determine whether a specific turn is forbidden:
 
