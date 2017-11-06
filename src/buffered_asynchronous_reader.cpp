@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <exception>
 #include <string>
+#include <atomic>
 
 namespace RoutingKit{
 
@@ -110,6 +111,7 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 
 					if(bytes_read == 0){
 						ptr->was_end_of_file_reached = true;
+						std::atomic_thread_fence(std::memory_order_release);
 						ptr->worker_thread_has_done_something.notify_one();
 						return;
 					}
@@ -127,6 +129,7 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 					}
 					ptr->data_end = new_data_end;
 
+					std::atomic_thread_fence(std::memory_order_release);
 					ptr->worker_thread_has_done_something.notify_one();
 				}
 			}catch(...){
@@ -147,6 +150,7 @@ char* BufferedAsynchronousReader::read(unsigned size) {
 	impl->worker_thread_has_done_something.wait(
 		guard,
 		[&]{
+			std::atomic_thread_fence(std::memory_order_acquire);
 			return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() >= size || impl->read_exception;
 		}
 	);
@@ -199,8 +203,9 @@ bool BufferedAsynchronousReader::is_finished() const{
 void BufferedAsynchronousReader::wait_until_buffer_is_non_empty_or_all_bytes_were_read() const{
 	std::unique_lock<std::mutex>guard(impl->lock);
 	impl->worker_thread_has_done_something.wait(
-	guard,
+		guard,
 		[&]{
+			std::atomic_thread_fence(std::memory_order_acquire);
 			return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() > 0 || impl->read_exception;
 		}
 	);
