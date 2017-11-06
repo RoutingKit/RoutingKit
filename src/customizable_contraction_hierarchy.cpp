@@ -892,7 +892,8 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch_, const unsigned*input_weight_){
-	if(!cch || cch->cch_arc_count() != forward.size()){
+	assert(input_weight_ != nullptr && "Input weight pointer must not be null");
+	if(cch_.cch_arc_count() != forward.size()){
 		*this = CustomizableContractionHierarchyMetric(cch_, input_weight_);
 	}else{
 		cch = &cch_;
@@ -902,6 +903,7 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const unsigned*input_weight_){
+	assert(input_weight_ != nullptr && "Input weight pointer must not be null");
 	input_weight = input_weight_;
 	return *this;
 }
