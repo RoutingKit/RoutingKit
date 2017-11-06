@@ -48,9 +48,9 @@ namespace{
 					{
 						unsigned arc_in_begin = out_arc_begin[current_adjacency];
 						unsigned arc_in_end = out_arc_end[current_adjacency];
-					
+
 						unsigned arc_out_begin = out_arc_begin[current_adjacency];
-					
+
 						while(arc_in_begin != arc_in_end){
 							// Compress union find path
 							{
@@ -63,7 +63,7 @@ namespace{
 									union_find_parent[y] = x;
 									y = z;
 								}
-							
+
 							}
 
 							// Replace arc head by representative from union find
@@ -84,7 +84,7 @@ namespace{
 
 						out_arc_end[current_adjacency] = arc_out_begin;
 					}
-				
+
 					// Goto next non-empty adjacency in the ring, and rewire the ring pointer to skip them in future
 					unsigned next_adjacency = next_adjacency_in_ring[current_adjacency];
 					while(out_arc_begin[next_adjacency] == out_arc_end[next_adjacency] && next_adjacency != initial_adjacency)
@@ -351,7 +351,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 	}
 
 	rank = invert_permutation(order);
-	
+
 	#ifndef NDEBUG
 	std::vector<unsigned> raw_input_tail = input_tail;
 	std::vector<unsigned> raw_input_head = input_head;
@@ -468,10 +468,10 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 	}
 
 	if(cch_arc_count == 0){
-		input_arc_to_cch_arc.resize(input_arc_count, invalid_id);	
+		input_arc_to_cch_arc.resize(input_arc_count, invalid_id);
 		is_input_arc_upward.resize(input_arc_count, false);
 	}else{
-		input_arc_to_cch_arc.resize(input_arc_count);	
+		input_arc_to_cch_arc.resize(input_arc_count);
 		is_input_arc_upward.resize(input_arc_count, false);
 
 		{
@@ -517,7 +517,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 		timer += get_micro_time();
 		log_message("Finished computing mapping, needed "+std::to_string(timer)+"musec");
 	}
-	
+
 	if(log_message){
 		log_message("Start computing elimination tree");
 		timer = -get_micro_time();
@@ -532,7 +532,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 			else
 				elimination_tree_parent[x] = invalid_id;
 		}
-		
+
 		#ifndef NDEBUG
 		for(unsigned x=0; x<node_count-1; ++x){
 			if(elimination_tree_parent[x] != invalid_id){
@@ -553,7 +553,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 		timer += get_micro_time();
 		log_message("Finished computing elimination tree, needed "+std::to_string(timer)+"musec");
 	}
-	
+
 	if(log_message){
 		std::vector<unsigned>
 			nodes_in_search_space(node_count, 0),
@@ -599,7 +599,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 		// assert that these have not yet been generated because they would be invalidated by this step
 		assert(down_head.empty());
 		assert(does_cch_arc_have_extra_input_arc.empty());
-	
+
 		BitVector
 			can_forward_weight_be_non_inf(cch_arc_count, false),
 			can_backward_weight_be_non_inf(cch_arc_count, false);
@@ -627,7 +627,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 					(void) bottom_node; (void) mid_node; (void) top_node;
 
 					// TODO: Micro-optimizing this code could decrease 1% to 10% of the whole CCH build process.
-		
+
 					if(!can_forward_weight_be_non_inf.is_set(top_arc)){
 						if(can_backward_weight_be_non_inf.is_set(bottom_arc) && can_forward_weight_be_non_inf.is_set(mid_arc))
 							can_forward_weight_be_non_inf.set(top_arc);
@@ -731,7 +731,7 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 
 						first_extra_backward_input_arc_of_cch.push_back(cch_arc);
 						extra_backward_input_arc_of_cch.push_back(input_arc);
-					}					
+					}
 				}
 			}
 		}
@@ -914,7 +914,7 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 	for(unsigned a=0; a<cch->cch_arc_count(); ++a){
 		forall_upper_triangles_of_arc(*cch, a, LowerTriangleRelaxer(*this));
 	}
-	
+
 	#ifndef NDEBUG
 	for(unsigned a=0; a<cch->cch_arc_count(); ++a)
 		forall_upper_triangles_of_arc(*cch, a, LowerTriangleInequalityVerifier(*this));
@@ -1052,7 +1052,7 @@ CustomizableContractionHierarchyParallelization& CustomizableContractionHierarch
 			}
 		}
 
-				
+
 
 		#ifndef NDEBUG
 		for(unsigned a=0; a<cch->cch_arc_count(); ++a)
@@ -1108,7 +1108,7 @@ CustomizableContractionHierarchyPartialCustomization&CustomizableContractionHier
 			*cch, xy,
 			LowerTriangleRelaxer(metric)
 		);
-	
+
 		unsigned new_forward = metric.forward[xy];
 		unsigned new_backward = metric.backward[xy];
 
@@ -1253,7 +1253,7 @@ namespace{
 		std::vector<unsigned>&source_elimination_tree_end
 	){
 		unsigned s = rank[external_s];
-		
+
 		if(forward_tentative_distance[s] == inf_weight){
 
 			source_node.push_back(s);
@@ -1298,7 +1298,7 @@ CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::ad
 	);
 	return *this;
 }
-	
+
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::add_target(unsigned external_t, unsigned dist_to_t){
 	assert(external_t < cch->node_count());
 	assert(state == query_state_initialized || state == query_state_source_pinned);
@@ -1357,7 +1357,7 @@ namespace{
 
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::run(){
 	assert(state == query_state_initialized);
-	
+
 	for(unsigned i = source_node.size()-1; i!=(unsigned)-1; --i){
 		forall_ancestors(
 			cch->elimination_tree_parent,
@@ -1535,7 +1535,7 @@ namespace{
 	){
 		if(query.shortest_path_meeting_node == invalid_id)
 			return invalid_id;
-		
+
 		{
 			std::vector<unsigned>up_path = {query.shortest_path_meeting_node};
 
@@ -1684,7 +1684,7 @@ namespace{
 	){
 		target_node.resize(target_list.size());
 		target_elimination_tree_end.resize(target_list.size());
-		
+
 		for(unsigned i=0; i<target_list.size(); ++i){
 			target_node[i] = rank[target_list[i]];
 			target_elimination_tree_end[i] = invalid_id;
@@ -1844,7 +1844,7 @@ std::vector<unsigned> CustomizableContractionHierarchyQuery::get_distances_to_ta
 	assert(state == query_state_target_run);
 	std::vector<unsigned>v(target_node.size());
 	get_distances_to_targets(&v[0]);
-	return v;	
+	return v;
 }
 
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::get_distances_to_sources(unsigned*dist){
@@ -1858,7 +1858,7 @@ std::vector<unsigned> CustomizableContractionHierarchyQuery::get_distances_to_so
 	assert(state == query_state_source_run);
 	std::vector<unsigned>v(source_node.size());
 	get_distances_to_sources(&v[0]);
-	return v;	
+	return v;
 }
 
 ContractionHierarchy CustomizableContractionHierarchyMetric::build_contraction_hierarchy_using_perfect_witness_search(){
