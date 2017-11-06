@@ -6,7 +6,7 @@ LDFLAGS=
 OMP_CFLAGS=-fopenmp
 OMP_LDFLAGS=-fopenmp
 
-all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_dijkstra bin/test_osm_simple bin/test_contraction_hierarchy_extra_weight bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
+all: bin/test_contraction_hierarchy_path_query bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy bin/encode_vector bin/compute_geographic_distance_weights bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy_pinned_query bin/test_inverse_vector bin/compute_nested_dissection_order bin/compare_vector bin/export_road_dimacs_graph bin/graph_to_svg bin/examine_ch bin/decode_vector bin/test_protobuf bin/generate_random_node_list bin/test_buffered_asynchronous_reader bin/test_customizable_contraction_hierarchy_path_query bin/test_nested_dissection bin/test_sort bin/test_basic_features bin/osm_extract bin/convert_road_dimacs_coordinates bin/randomly_permute_nodes bin/generate_dijkstra_rank_test_queries bin/run_contraction_hierarchy_query bin/test_nearest_neighbor bin/generate_constant_vector bin/graph_to_dot bin/run_dijkstra bin/test_tag_map bin/test_dijkstra bin/test_osm_simple bin/test_contraction_hierarchy_extra_weight bin/test_id_set_queue bin/test_contraction_hierarchy_pinned_query bin/test_bit_vector bin/show_path bin/compute_contraction_hierarchy bin/generate_random_source_times bin/test_id_mapper bin/test_customizable_contraction_hierarchy_perfect_customization bin/test_customizable_contraction_hierarchy_reset bin/test_geo_dist bin/generate_test_queries bin/test_permutation lib/libroutingkit.a lib/libroutingkit.so
 
 build/osm_decoder.o: include/routingkit/constants.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/osm_decoder.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/tag_map.h include/routingkit/timer.h src/buffered_asynchronous_reader.h src/file_data_source.h src/osm_decoder.cpp src/protobuf.h generate_make_file
 	@mkdir -p build
@@ -252,6 +252,10 @@ build/test_customizable_contraction_hierarchy_perfect_customization.o: include/r
 	@mkdir -p build
 	$(CC) $(CFLAGS)  -c src/test_customizable_contraction_hierarchy_perfect_customization.cpp -o build/test_customizable_contraction_hierarchy_perfect_customization.o
 
+build/test_customizable_contraction_hierarchy_reset.o: include/routingkit/bit_vector.h include/routingkit/constants.h include/routingkit/customizable_contraction_hierarchy.h include/routingkit/id_mapper.h include/routingkit/id_set_queue.h include/routingkit/inverse_vector.h include/routingkit/min_max.h include/routingkit/permutation.h include/routingkit/sort.h include/routingkit/timer.h include/routingkit/vector_io.h src/expect.h src/test_customizable_contraction_hierarchy_reset.cpp generate_make_file
+	@mkdir -p build
+	$(CC) $(CFLAGS)  -c src/test_customizable_contraction_hierarchy_reset.cpp -o build/test_customizable_contraction_hierarchy_reset.o
+
 build/test_geo_dist.o: include/routingkit/geo_dist.h include/routingkit/timer.h src/expect.h src/test_geo_dist.cpp generate_make_file
 	@mkdir -p build
 	$(CC) $(CFLAGS)  -c src/test_geo_dist.cpp -o build/test_geo_dist.o
@@ -431,6 +435,10 @@ bin/test_id_mapper: build/bit_select.o build/bit_vector.o build/expect.o build/i
 bin/test_customizable_contraction_hierarchy_perfect_customization: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o
 	@mkdir -p bin
 	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_perfect_customization.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy_perfect_customization
+
+bin/test_customizable_contraction_hierarchy_reset: build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/expect.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_reset.o build/timer.o build/vector_io.o
+	@mkdir -p bin
+	$(CC) $(LDFLAGS) build/bit_select.o build/bit_vector.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/expect.o build/graph_util.o build/id_mapper.o build/test_customizable_contraction_hierarchy_reset.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -pthread  -o bin/test_customizable_contraction_hierarchy_reset
 
 bin/test_geo_dist: build/expect.o build/test_geo_dist.o build/timer.o
 	@mkdir -p bin
