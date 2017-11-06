@@ -1212,25 +1212,6 @@ namespace{
 	}
 }
 
-CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::reset(){
-	reset_source_list(cch->elimination_tree_parent, source_node, source_elimination_tree_end, in_forward_search_space, forward_tentative_distance);
-	reset_source_list(cch->elimination_tree_parent, target_node, target_elimination_tree_end, in_backward_search_space, backward_tentative_distance);
-	state = query_state_initialized;
-	return *this;
-}
-
-CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::reset(const CustomizableContractionHierarchyMetric&metric){
-	if(this->metric == &metric){
-		reset();
-	} else if(this->cch == metric.cch) {
-		this->cch = metric.cch;
-	} else {
-		*this = CustomizableContractionHierarchyQuery(metric);
-	}
-	state = query_state_initialized;
-	return *this;
-}
-
 CustomizableContractionHierarchyQuery::CustomizableContractionHierarchyQuery(const CustomizableContractionHierarchyMetric&metric):
 	forward_tentative_distance(metric.cch->node_count(), inf_weight),
 	backward_tentative_distance(metric.cch->node_count(), inf_weight),
@@ -2028,6 +2009,31 @@ ContractionHierarchy CustomizableContractionHierarchyMetric::build_contraction_h
 
 	return ch;
 }
+
+
+CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::reset(){
+	if(state == query_state_target_pinned || state == query_state_target_run){
+		reset_target_distances(cch->elimination_tree_parent, target_node, target_elimination_tree_end, forward_tentative_distance);
+	}else if(state == query_state_source_pinned || state == query_state_source_run){
+		reset_target_distances(cch->elimination_tree_parent, source_node, source_elimination_tree_end, backward_tentative_distance);
+	}
+	reset_source_list(cch->elimination_tree_parent, source_node, source_elimination_tree_end, in_forward_search_space, forward_tentative_distance);
+	reset_source_list(cch->elimination_tree_parent, target_node, target_elimination_tree_end, in_backward_search_space, backward_tentative_distance);
+	state = query_state_initialized;
+	return *this;
+}
+
+CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::reset(const CustomizableContractionHierarchyMetric&metric){
+	if(this->cch == metric.cch) {
+		this->metric = &metric;
+		reset();
+	} else {
+		*this = CustomizableContractionHierarchyQuery(metric);
+	}
+	state = query_state_initialized;
+	return *this;
+}
+
 
 } // namespace RoutingKit
 
