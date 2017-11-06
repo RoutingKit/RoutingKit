@@ -29,7 +29,7 @@ FileDataSource::FileDataSource(const std::string&file_name):
 	file_descriptor(-1){
 	open(file_name);
 }
-	
+
 FileDataSource::FileDataSource(FileDataSource&&o):
 	file_descriptor(o.file_descriptor){
 	o.file_descriptor = -1;
@@ -43,15 +43,18 @@ const FileDataSource&FileDataSource::operator=(FileDataSource&&o){
 
 
 void FileDataSource::open(const char*file_name){
-	file_descriptor = ::open(file_name, O_RDONLY);
-	if(file_descriptor == -1){
+	int new_file_descriptor = ::open(file_name, O_RDONLY);
+	if(new_file_descriptor == -1){
 		int error = errno;
 		throw std::runtime_error(std::string("Could not open file \"")+file_name +"\" for reading. The errno is "+std::to_string(error)+". strerror(errno) says the following : "+strerror(error));
 	}
+	::close(file_descriptor);
+	file_descriptor = new_file_descriptor;
 }
 
 void FileDataSource::close(){
 	::close(file_descriptor);
+	file_descriptor = -1;
 }
 
 void FileDataSource::rewind(){
@@ -100,7 +103,7 @@ FileDataSource::FileDataSource(const std::string&file_name):
 	file_descriptor(nullptr){
 	open(file_name);
 }
-	
+
 FileDataSource::FileDataSource(FileDataSource&&o):
 	file_descriptor(o.file_descriptor){
 	o.file_descriptor = nullptr;
@@ -113,13 +116,16 @@ const FileDataSource&FileDataSource::operator=(FileDataSource&&o){
 }
 
 void FileDataSource::open(const char*file_name){
-	file_descriptor = fopen(file_name, "rb");
-	if(file_descriptor == nullptr)
+	FILE*new_file_descriptor = fopen(file_name, "rb");
+	if(new_file_descriptor == nullptr)
 		throw std::runtime_error(std::string("Could not open file \"")+file_name +"\" for reading.");
+	fclose(file_descriptor);
+	file_descriptor = new_file_descriptor;
 }
 
 void FileDataSource::close(){
 	fclose(file_descriptor);
+	file_descriptor = nullptr;
 }
 
 void FileDataSource::rewind(){
@@ -136,14 +142,14 @@ unsigned long long FileDataSource::size()const{
 			throw std::runtime_error("ftell failed on file opened for reading.");
 		if(fseek(file_descriptor, 0, SEEK_END))
 			throw std::runtime_error("fseek failed on file opened for reading.");
-			
+
 		unsigned long long size = ftell(file_descriptor);
 		if(fseek(file_descriptor, x, SEEK_SET))
 			throw std::runtime_error("fseek failed on file opened for reading, file stream could be in an unexpected state.");
 
 		if(x == -1L)
 			throw std::runtime_error("ftell failed on file opened for reading, file stream could be in an unexpected state.");
-		
+
 		return size;
 	}
 }
