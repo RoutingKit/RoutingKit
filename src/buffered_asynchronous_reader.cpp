@@ -96,7 +96,7 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 					if(ptr->was_termination_requested){
 						return;
 					}
-					
+
 					guard.unlock();
 					unsigned long long bytes_read = byte_source(ptr->buffer + ptr->data_end, block_size);
 					guard.lock();
@@ -133,7 +133,7 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 				ptr->read_exception = std::current_exception();
 				ptr->worker_thread_has_done_something.notify_one();
 			}
-			
+
 		}
 	);
 }
@@ -176,7 +176,7 @@ char* BufferedAsynchronousReader::read(unsigned size) {
 char* BufferedAsynchronousReader::read_or_throw(unsigned size){
 	char*x = read(size);
 	if(x == 0)
-		throw std::runtime_error("Wanted to read "+std::to_string(size)+" bytes but not enough are available in the data source.");
+		throw std::runtime_error("Wanted to read "+std::to_string(size)+" bytes but only "+std::to_string(impl->how_many_bytes_are_in_the_buffer())+" are available in the data source.");
 	return x;
 }
 
