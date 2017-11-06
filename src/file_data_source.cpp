@@ -48,13 +48,16 @@ void FileDataSource::open(const char*file_name){
 		int error = errno;
 		throw std::runtime_error(std::string("Could not open file \"")+file_name +"\" for reading. The errno is "+std::to_string(error)+". strerror(errno) says the following : "+strerror(error));
 	}
-	::close(file_descriptor);
+	if(file_descriptor != -1)
+		::close(file_descriptor);
 	file_descriptor = new_file_descriptor;
 }
 
 void FileDataSource::close(){
-	::close(file_descriptor);
-	file_descriptor = -1;
+	if(file_descriptor != -1){
+		::close(file_descriptor);
+		file_descriptor = -1;
+	}
 }
 
 void FileDataSource::rewind(){
@@ -119,13 +122,16 @@ void FileDataSource::open(const char*file_name){
 	FILE*new_file_descriptor = fopen(file_name, "rb");
 	if(new_file_descriptor == nullptr)
 		throw std::runtime_error(std::string("Could not open file \"")+file_name +"\" for reading.");
-	fclose(file_descriptor);
+	if(file_descriptor != nullptr)
+		fclose(file_descriptor);
 	file_descriptor = new_file_descriptor;
 }
 
 void FileDataSource::close(){
-	fclose(file_descriptor);
-	file_descriptor = nullptr;
+	if(file_descriptor != nullptr){
+		fclose(file_descriptor);
+		file_descriptor = nullptr;
+	}
 }
 
 void FileDataSource::rewind(){
