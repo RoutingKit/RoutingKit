@@ -239,6 +239,7 @@ namespace{
 
 	private:
 // Uncomment the following lines to get some very expensive but very detailed asserts
+		#ifndef NDEBUG
 		void assert_no_witness_found(unsigned len)const{
 //			for(unsigned x = 0; x<graph->node_count(); ++x){
 //				if(was_forward_pushed.is_set(x) && was_backward_pushed.is_set(x)){
@@ -292,6 +293,7 @@ namespace{
 //			}
 //			assert(false && "no witness exists but algorithm claimed that there is one");
 		}
+		#endif
 
 		template<class GetOutDeg, class GetOutArc>
 		bool forward_settle(
@@ -315,7 +317,9 @@ namespace{
 
 			if(was_backward_pushed.is_set(popped_node)){
 				if(distance_to_popped_node + backward_tentative_distance[popped_node] <= len){
+					#ifndef NDEBUG	
 					assert_witness_found(len);
+					#endif
 					return true;
 				}
 			}
@@ -337,7 +341,9 @@ namespace{
 
 						if(was_backward_pushed.is_set(next_node)){
 							if(next_node_distance + backward_tentative_distance[next_node] <= len){
+								#ifndef NDEBUG	
 								assert_witness_found(len);
+								#endif
 								witness_found = true;
 							}
 						}
@@ -349,15 +355,19 @@ namespace{
 
 					if(was_backward_pushed.is_set(next_node)){
 						if(next_node_distance + backward_tentative_distance[next_node] <= len){
+							#ifndef NDEBUG	
 							assert_witness_found(len);
+							#endif
 							witness_found = true;
 						}
 					}
 
 				}
 			}
+			#ifndef NDEBUG
 			if(!witness_found)
 				assert_no_witness_found(len);
+			#endif
 			return witness_found;
 		}
 
@@ -385,7 +395,9 @@ namespace{
 				if(forward_tentative_distance[t] <= len)
 					return true;
 
+			#ifndef NDEBUG
 			assert_no_witness_found(len);
+			#endif
 
 			while(!forward_queue.empty() && !backward_queue.empty()){
 				if(forward_queue.peek().key + backward_queue.peek().key > len){
@@ -404,10 +416,14 @@ namespace{
 							len
 						)
 					){
+						#ifndef NDEBUG
 						assert_witness_found(len);
+						#endif
 						return true;
 					} else {
+						#ifndef NDEBUG
 						assert_no_witness_found(len);
+						#endif
 					}
 				} else {
 					if(
@@ -421,10 +437,14 @@ namespace{
 							len
 						)
 					){
+						#ifndef NDEBUG
 						assert_witness_found(len);
+						#endif
 						return true;
 					} else {
+						#ifndef NDEBUG
 						assert_no_witness_found(len);
+						#endif
 					}
 				}
 
@@ -458,7 +478,9 @@ namespace{
 
 			unsigned pop_count = 0;
 
+			#ifndef NDEBUG
 			assert_no_witness_found(len);
+			#endif
 
 			while(!forward_queue.empty() && !backward_queue.empty()){
 
@@ -478,10 +500,14 @@ namespace{
 							len
 						)
 					){
+						#ifndef NDEBUG
 						assert_witness_found(len);
+						#endif
 						return true;
 					} else {
+						#ifndef NDEBUG
 						assert_no_witness_found(len);
+						#endif
 					}
 				} else {
 					if(
@@ -495,10 +521,14 @@ namespace{
 							len
 						)
 					){
+						#ifndef NDEBUG
 						assert_witness_found(len);
+						#endif
 						return true;
 					} else {
+						#ifndef NDEBUG
 						assert_no_witness_found(len);
+						#endif
 					}
 				}
 
