@@ -11,16 +11,16 @@ int main(int argc, char*argv[]){
 	try{
 		string pbf_file;
 
-		if(argc != 2){
+		if (argc != 2) {
 			cerr << argv[0] << " pbf_file" << endl;
 			return 1;
-		}else{
+		} else {
 			pbf_file = argv[1];
 		}
 
 		auto routing_graph = simple_load_osm_car_routing_graph_from_pbf(pbf_file, nullptr, false, false, OSMRoadGeometry::uncompressed);
 		
-        cout << "{\"type\":\"FeatureCollection\",\"features\":[" << endl;
+		cout << "{\"type\":\"FeatureCollection\",\"features\":[" << endl;
 
 		// for all nodes in the graph
 		for (unsigned x = 0; x < routing_graph.node_count(); x++) {
@@ -38,8 +38,8 @@ int main(int argc, char*argv[]){
 			}
 		}
 
-        cout << "{}]}" << endl;
-	}catch(exception&err){
+		cout << "{}]}" << endl;
+	} catch(exception&err) {
 		cerr << "Stopped on exception : " << err.what() << endl;
 	}
 }
