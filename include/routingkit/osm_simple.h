@@ -1,6 +1,7 @@
 #ifndef ROUTING_KIT_OSM_SIMPLE_H
 #define ROUTING_KIT_OSM_SIMPLE_H
 
+#include <routingkit/osm_graph_builder.h>
 #include <vector>
 #include <functional>
 #include <string>
@@ -14,6 +15,9 @@ struct SimpleOSMCarRoutingGraph{
 	std::vector<unsigned>geo_distance;
 	std::vector<float>latitude;
 	std::vector<float>longitude;
+	std::vector<unsigned>first_modelling_node;
+	std::vector<float>modelling_node_latitude;
+	std::vector<float>modelling_node_longitude;
 	std::vector<unsigned>forbidden_turn_from_arc;
 	std::vector<unsigned>forbidden_turn_to_arc;
 
@@ -31,13 +35,17 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message = nullptr,
 	bool all_modelling_nodes_are_routing_nodes = false,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false,
+	OSMRoadGeometry geometry_to_be_extracted = OSMRoadGeometry::none
 );
 
 struct SimpleOSMPedestrianRoutingGraph{
 	std::vector<unsigned>first_out;
 	std::vector<unsigned>head;
 	std::vector<unsigned>geo_distance;
+	std::vector<unsigned>first_modelling_node;
+	std::vector<float>modelling_node_latitude;
+	std::vector<float>modelling_node_longitude;
 	std::vector<float>latitude;
 	std::vector<float>longitude;
 
@@ -55,13 +63,17 @@ SimpleOSMPedestrianRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pb
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message = nullptr,
 	bool all_modelling_nodes_are_routing_nodes = false,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false,
+	OSMRoadGeometry geometry_to_be_extracted = OSMRoadGeometry::none
 );
 
 struct SimpleOSMBicycleRoutingGraph{
 	std::vector<unsigned>first_out;
 	std::vector<unsigned>head;
 	std::vector<unsigned>geo_distance;
+	std::vector<unsigned>first_modelling_node;
+	std::vector<float>modelling_node_latitude;
+	std::vector<float>modelling_node_longitude;
 	std::vector<float>latitude;
 	std::vector<float>longitude;
 	std::vector<unsigned char>arc_comfort_level;
@@ -80,7 +92,8 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message = nullptr,
 	bool all_modelling_nodes_are_routing_nodes = false,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered = false,
+	OSMRoadGeometry geometry_to_be_extracted = OSMRoadGeometry::none
 );
 
 // These functions are declared in osm_profile.h
