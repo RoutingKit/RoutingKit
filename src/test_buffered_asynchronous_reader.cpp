@@ -37,13 +37,16 @@ int main(){
 			};
 
 			try{
-				unsigned block_size = (1<<20) - 43;
+				unsigned long long block_size = (1<<20) - 43;
 				BufferedAsynchronousReader reader(data_source, block_size);
-				while(reader.wait_until_buffer_is_non_empty_or_all_bytes_were_read(), !reader.is_finished()){
-					unsigned to_read = min(block_size, reader.how_many_bytes_are_in_the_buffer());
-					reader.read(to_read);
-				
+				unsigned long long total_bytes_read = 0;
+				for(;;){
+					char*data = reader.read(min(block_size, file_length-total_bytes_read));
+					if(data == nullptr)
+						break;
+					total_bytes_read += block_size;
 				}
+
 			}catch(test_exception){
 				cout << "test_exception caught successfully" << endl;
 			}
@@ -74,18 +77,18 @@ int main(){
 				return amount_read;
 			};
 
-			unsigned block_size = (1<<20) - 43;
+			unsigned long long block_size = (1<<20) - 43;
 			BufferedAsynchronousReader reader(data_source, block_size);
 
 			char read_char = 0;
 			unsigned long long total_bytes_read = 0;
-			while(reader.wait_until_buffer_is_non_empty_or_all_bytes_were_read(), !reader.is_finished()){
-				unsigned to_read = min(block_size, reader.how_many_bytes_are_in_the_buffer());
 
+			for(;;){
+				unsigned to_read = min(block_size, file_length-total_bytes_read);
 				char*ret = reader.read(to_read);
-				if(ret == 0)
-					throw runtime_error("read returned 0 but bytes are left");
-		
+				if(ret == nullptr)
+					break;
+
 				for(unsigned i=0; i<to_read; ++i){
 					if(*ret != read_char)
 						throw runtime_error("read returned a wrong byte in the buffer");

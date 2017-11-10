@@ -6,7 +6,6 @@
 #include <assert.h>
 #include <exception>
 #include <string>
-#include <atomic>
 
 namespace RoutingKit{
 
@@ -111,7 +110,6 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 
 					if(bytes_read == 0){
 						ptr->was_end_of_file_reached = true;
-						std::atomic_thread_fence(std::memory_order_release);
 						ptr->worker_thread_has_done_something.notify_one();
 						return;
 					}
@@ -129,14 +127,12 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 					}
 					ptr->data_end = new_data_end;
 
-					std::atomic_thread_fence(std::memory_order_release);
 					ptr->worker_thread_has_done_something.notify_one();
 				}
 			}catch(...){
 				ptr->read_exception = std::current_exception();
 				ptr->worker_thread_has_done_something.notify_one();
 			}
-
 		}
 	);
 }
@@ -150,7 +146,6 @@ char* BufferedAsynchronousReader::read(unsigned size) {
 	impl->worker_thread_has_done_something.wait(
 		guard,
 		[&]{
-			std::atomic_thread_fence(std::memory_order_acquire);
 			return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() >= size || impl->read_exception;
 		}
 	);
@@ -173,6 +168,7 @@ char* BufferedAsynchronousReader::read(unsigned size) {
 		impl->main_thread_has_done_something.notify_one();
 		return ret;
 	} else {
+		assert(impl->was_end_of_file_reached);
 		return 0;
 	}
 }
@@ -182,33 +178,6 @@ char* BufferedAsynchronousReader::read_or_throw(unsigned size){
 	if(x == 0)
 		throw std::runtime_error("Wanted to read "+std::to_string(size)+" bytes but only "+std::to_string(impl->how_many_bytes_are_in_the_buffer())+" are available in the data source.");
 	return x;
-}
-
-
-unsigned BufferedAsynchronousReader::how_many_bytes_are_in_the_buffer() const {
-	std::unique_lock<std::mutex>guard(impl->lock);
-	return impl->how_many_bytes_are_in_the_buffer();
-}
-
-bool BufferedAsynchronousReader::were_all_bytes_read() const{
-	std::unique_lock<std::mutex>guard(impl->lock);
-	return impl->was_end_of_file_reached;
-}
-
-bool BufferedAsynchronousReader::is_finished() const{
-	std::unique_lock<std::mutex>guard(impl->lock);
-	return impl->was_end_of_file_reached && impl->how_many_bytes_are_in_the_buffer() == 0;
-}
-
-void BufferedAsynchronousReader::wait_until_buffer_is_non_empty_or_all_bytes_were_read() const{
-	std::unique_lock<std::mutex>guard(impl->lock);
-	impl->worker_thread_has_done_something.wait(
-		guard,
-		[&]{
-			std::atomic_thread_fence(std::memory_order_acquire);
-			return impl->was_end_of_file_reached || impl->how_many_bytes_are_in_the_buffer() > 0 || impl->read_exception;
-		}
-	);
 }
 
 } // namespace RoutingKit

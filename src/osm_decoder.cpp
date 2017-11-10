@@ -14,20 +14,20 @@
 #include <atomic>
 #include <string.h>
 
-// The following includes are only there to get access to ntohl. Nothing else is 
-// used from the networking headers. If someone has a good idea of how to 
-// implement ntohl in a portable way that 
+// The following includes are only there to get access to ntohl. Nothing else is
+// used from the networking headers. If someone has a good idea of how to
+// implement ntohl in a portable way that
 // (a) runs on big endian machines
 // (b) runs on a semi-recent MSVC
 // (c) does the endian check at compile time
 // then please open an issue and tell me how.
 //
-// Another option would be to drop support for big-endian hosts. I know of no 
+// Another option would be to drop support for big-endian hosts. I know of no
 // recent architecture that uses big-endian. Maybe this will happen sometime in
 // the future.
 #ifdef ROUTING_KIT_NO_POSIX
 #ifdef _WIN32 // _WIN64 being defined implies _WIN32
-#include <winsock2.h> 
+#include <winsock2.h>
 #else
 // Currently, we assume that everything that is neither POSIX nor Windows, is little endian.
 static uint32_t ntohl(uint32_t netlong){
@@ -83,7 +83,7 @@ namespace{
 		unsigned long long minimum_read_size() const {
 			return (64 << 20);
 		}
-		
+
 		uint64_t get_status() const {
 			return status;
 		}
@@ -91,9 +91,6 @@ namespace{
 		std::function<unsigned long long(char*, unsigned long long)> get_read_function_object(){
 			return [&](char*buffer, unsigned long long how_much_to_read)->unsigned long long{
 				assert(how_much_to_read >= minimum_read_size());
-				reader.wait_until_buffer_is_non_empty_or_all_bytes_were_read();
-				if(reader.is_finished())
-					return 0;
 
 				const char*blob_begin, *blob_end;
 
@@ -101,13 +98,13 @@ namespace{
 					char*p = reader.read(4);
 					if(p == nullptr)
 						return 0;
-					
+
 
 					uint32_t header_size = ntohl(unaligned_load<uint32_t>(p));
 
 					uint32_t data_size = (uint32_t)-1;
 
-					
+
 					char block_type[16] = "";
 
 					const char*buffer = reader.read_or_throw(header_size);
@@ -267,10 +264,13 @@ namespace {
 
 		std::vector<std::pair<const char*, const char*>>group_list;
 
-		while(!reader.is_finished()){
+		for(;;){
 			char*primblock_begin, *primblock_end;
 			{
-				uint32_t s = unaligned_load<uint32_t>(reader.read_or_throw(4));
+				char*s_ptr = reader.read(4);
+				if(s_ptr == nullptr)
+					break;
+				uint32_t s = unaligned_load<uint32_t>(s_ptr);
 				primblock_begin = reader.read_or_throw(s);
 				primblock_end = primblock_begin + s;
 			}
@@ -372,7 +372,7 @@ namespace {
 							throw std::runtime_error("PBF error: key string ID is out of bounds.");
 						return string_table[i];
 					},
-					[&](uint64_t i){	
+					[&](uint64_t i){
 						i = value_list[i];
 						if(i > string_table.size())
 							throw std::runtime_error("PBF error: value string ID is out of bounds.");
@@ -389,7 +389,7 @@ namespace {
 					*key_value_pairs_begin = nullptr, *key_value_pairs_end = nullptr,
 					*latitude_begin = nullptr, *latitude_end = nullptr,
 					*longitude_begin = nullptr, *longitude_end = nullptr;
-				
+
 				decode_protobuf_message_with_callbacks(
 					begin, end,
 					[&](uint64_t key_id, uint64_t num){},
@@ -445,7 +445,7 @@ namespace {
 									throw std::runtime_error("PBF error: key string ID is out of bounds.");
 								return string_table[i];
 							},
-							[&](uint64_t i){	
+							[&](uint64_t i){
 								i = value_list[i];
 								if(i > string_table.size())
 									throw std::runtime_error("PBF error: value string ID is out of bounds.");
@@ -515,7 +515,7 @@ namespace {
 							throw std::runtime_error("PBF error: key string ID is out of bounds.");
 						return string_table[i];
 					},
-					[&](uint64_t i){	
+					[&](uint64_t i){
 						i = value_list[i];
 						if(i > string_table.size())
 							throw std::runtime_error("PBF error: value string ID is out of bounds.");
@@ -595,7 +595,7 @@ namespace {
 							throw std::runtime_error("PBF error: key string ID is out of bounds.");
 						return string_table[i];
 					},
-					[&](uint64_t i){	
+					[&](uint64_t i){
 						i = value_list[i];
 						if(i > string_table.size())
 							throw std::runtime_error("PBF error: value string ID is out of bounds.");
@@ -685,8 +685,8 @@ void ordered_read_osm_pbf(
 			std::this_thread::yield();
 		}
 	}
-	
-	
+
+
 	if(file_is_ordered_even_though_file_header_says_that_it_is_unordered || (decompressor.get_status() & is_ordered_bit) != 0){
 		internal_read_osm_pbf(reader, node_callback, way_callback, relation_callback, log_message);
 	} else {
@@ -724,7 +724,7 @@ void speedtest_osm_pbf_reading(
 	std::function<void(std::string)>log_message
 ){
 	log_message("Starting scan speedtest");
-	
+
 	uint64_t node_count = 0;
 	uint64_t way_count = 0;
 	uint64_t rel_count = 0;
