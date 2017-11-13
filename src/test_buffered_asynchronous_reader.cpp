@@ -85,6 +85,8 @@ int main(){
 
 			for(;;){
 				unsigned to_read = min(block_size, file_length-total_bytes_read);
+				if(to_read == 0)
+					break;
 				char*ret = reader.read(to_read);
 				if(ret == nullptr)
 					break;
