@@ -51,9 +51,13 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 
 	ret.travel_time = ret.geo_distance;
 	for(unsigned a=0; a<ret.travel_time.size(); ++a){
-		ret.travel_time[a] *= 18000;
-		ret.travel_time[a] /= way_speed[routing_graph.way[a]];
-		ret.travel_time[a] /= 5;
+		if (ABSOLUTE_TIME & way_speed[routing_graph.way[a]]) {
+				ret.travel_time[a] = ABSOLUTE_TIME  ^ way_speed[routing_graph.way[a]];
+		} else {
+				ret.travel_time[a] *= 18000;
+				ret.travel_time[a] /= way_speed[routing_graph.way[a]];
+				ret.travel_time[a] /= 5;
+		}
 	}
 
 	ret.forbidden_turn_from_arc = std::move(routing_graph.forbidden_turn_from_arc);

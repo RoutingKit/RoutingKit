@@ -11,6 +11,11 @@
 namespace RoutingKit{
 
 bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message = nullptr);
+// Returns either
+//   - speed in km/h
+//   - absolute seconds needed to traverse way
+// If absolute seconds are returned the result is marked with ABSOLUTE_TIME flag.
+const unsigned ABSOLUTE_TIME = 0x80000000;
 unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message = nullptr);
 std::string get_osm_way_name(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message = nullptr);
 OSMWayDirectionCategory get_osm_car_direction_category(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message = nullptr);

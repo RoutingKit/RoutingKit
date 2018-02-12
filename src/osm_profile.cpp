@@ -1,4 +1,5 @@
 #include <routingkit/osm_profile.h>
+#include <routingkit/parse_duration.h>
 
 namespace RoutingKit{
 
@@ -430,9 +431,12 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 		return 20;
 	}
 
-	// TODO: a ferry may have a duration tag
 	auto route = tags["route"];
 	if(route && str_eq(route, "ferry")) {
+		auto duration = tags["duration"];
+		if (duration) {
+			return ABSOLUTE_TIME | parse_duration(duration);
+		}
 		return 5;
 	}
 
