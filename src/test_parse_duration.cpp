@@ -10,10 +10,13 @@ int main(){
 	EXPECT_CMP(parse_duration("PT71M"), ==, 71*60);
 	EXPECT_CMP(parse_duration("PT5M"), ==, 5*60);
 	// Simple times.
+	EXPECT_CMP(parse_duration("5"), ==, 5*60);
 	EXPECT_CMP(parse_duration("15"), ==, 15*60);
 	EXPECT_CMP(parse_duration("00:15"), ==, 15*60);
+	EXPECT_CMP(parse_duration("2:00"), ==, 2*60*60);
 	EXPECT_CMP(parse_duration("00:15:00"), ==, 15*60);
 	EXPECT_CMP(parse_duration("05:01"), ==, 5*60*60 + 1*60);
+	EXPECT_CMP(parse_duration("5:01"), ==, 5*60*60 + 1*60);
 	// Default 10 minutes.
 	EXPECT_CMP(parse_duration("xxx"), ==, 10 * 60);
 	return expect_failed;

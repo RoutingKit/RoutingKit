@@ -33,9 +33,9 @@ unsigned match_duration(const std::string& input, const std::regex& re, unsigned
 
 unsigned parse_duration(const char* duration) {
 	// Simple mm, hh:mm hh:mm:ss duration.
-	static const std::regex simple_a("(\\d\\d)");
-	static const std::regex simple_b("(\\d\\d):(\\d\\d)");
-	static const std::regex simple_c("(\\d\\d):(\\d\\d):(\\d\\d)");
+	static const std::regex simple_a("(\\d?\\d)");
+	static const std::regex simple_b("(\\d?\\d):(\\d\\d)");
+	static const std::regex simple_c("(\\d?\\d):(\\d\\d):(\\d\\d)");
 	// ISO 8601 duration parsing (by https://github.com/sigidagi).
 	static const std::regex has_time_component("^((?!T).)*$");
 	static const std::regex without_time("P([[:d:]]+Y)?([[:d:]]+M)?([[:d:]]+D)?");
