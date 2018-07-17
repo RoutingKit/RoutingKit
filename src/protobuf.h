@@ -1,8 +1,9 @@
 #ifndef ROUTING_KIT_PROTOBUF_H
 #define ROUTING_KIT_PROTOBUF_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <stdexcept>
+#include <string>
 
 namespace RoutingKit{
 

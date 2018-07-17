@@ -4,10 +4,11 @@
 #include <assert.h>
 
 #ifndef ROUTING_KIT_NO_POSIX
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <cerrno>
 #include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif
 
 #include <string.h>
