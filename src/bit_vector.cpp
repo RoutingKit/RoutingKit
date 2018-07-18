@@ -23,7 +23,7 @@ namespace RoutingKit{
 
 //void*aligned_alloc(uint8_t alignment, uint64_t size){
 //	uint64_t potentially_unaligned_buffer = (uint64_t)malloc(size+alignment);
-//	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment - 1)/alignment) * alignment;
+//	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment)/alignment) * alignment;
 //	uint8_t*buffer = (uint8_t*)aligned_buffer;
 //	*(buffer-1) = aligned_buffer - potentially_unaligned_buffer;
 //	return buffer;
