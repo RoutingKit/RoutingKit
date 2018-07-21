@@ -1,6 +1,7 @@
 #include "file_data_source.h"
 #include <stdexcept>
 #include <string>
+#include <cerrno>
 #include <assert.h>
 
 #ifndef ROUTING_KIT_NO_POSIX
