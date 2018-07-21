@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-RoutingKit was written for and tested on Linux with GCC 4.8. The code base uses some GCC extensions that should also be available in most other compilers such as Clang, IBM, or Intel. A notable exception to this list is VC. We further use POSIX functions. However, we also provide slower fallback functions. These are enabled by defining `ROUTING_KIT_NO_GCC_EXTENSIONS` and `ROUTING_KIT_NO_POSIX`.
+RoutingKit was written for and tested on Linux with GCC 4.8. The code base uses some GCC extensions that should also be available in most other compilers such as Clang, IBM, or Intel. A notable exception to this list is VC. We further use POSIX functions. However, we also provide slower fallback functions. These are enabled by defining `ROUTING_KIT_NO_GCC_EXTENSIONS` and `ROUTING_KIT_NO_POSIX`. If you have an operating system not supporting `aligned_alloc` (such as macOS) then define `ROUTING_KIT_NO_ALIGNED_ALLOC`.
 
 RoutingKit has requires zlib to work. Under Debian and derived distributions (such as Ubuntu) you can install them using:
 

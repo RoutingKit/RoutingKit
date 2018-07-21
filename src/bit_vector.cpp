@@ -19,24 +19,26 @@
 
 namespace RoutingKit{
 
-// Not all compilers support aligned_alloc such as GCC 4.6. If you have such a compiler then uncomment these
+// Not all compilers support aligned_alloc such as GCC 4.6. If you have such a compiler then define ROUTING_KIT_NO_ALIGNED_ALLOC
 
-//void*aligned_alloc(uint8_t alignment, uint64_t size){
-//	uint64_t potentially_unaligned_buffer = (uint64_t)malloc(size+alignment);
-//	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment)/alignment) * alignment;
-//	uint8_t*buffer = (uint8_t*)aligned_buffer;
-//	*(buffer-1) = aligned_buffer - potentially_unaligned_buffer;
-//	return buffer;
-//}
+#ifdef ROUTING_KIT_NO_ALIGNED_ALLOC
+void*aligned_alloc(uint8_t alignment, uint64_t size){
+	uint64_t potentially_unaligned_buffer = (uint64_t)malloc(size+alignment);
+	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment)/alignment) * alignment;
+	uint8_t*buffer = (uint8_t*)aligned_buffer;
+	*(buffer-1) = aligned_buffer - potentially_unaligned_buffer;
+	return buffer;
+}
 
-//void aligned_free(void* ptr){
-//	if(ptr){
-//		uint8_t*buffer = (uint8_t*)ptr;
-//		uint8_t shift = *(buffer-1);
-//		buffer -= shift;
-//		free(buffer);
-//	}
-//}
+void aligned_free(void* ptr){
+	if(ptr){
+		uint8_t*buffer = (uint8_t*)ptr;
+		uint8_t shift = *(buffer-1);
+		buffer -= shift;
+		free(buffer);
+	}
+}
+#endif
 
 
 namespace {
