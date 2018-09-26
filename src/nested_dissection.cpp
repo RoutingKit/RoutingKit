@@ -737,7 +737,7 @@ BitVector derive_separator_from_cut(const GraphFragment&fragment, const BitVecto
 	return is_separator_node; // NVRO
 }
 
-std::vector<unsigned>compute_nested_node_dissection_order(
+SeparatorDecomposition compute_separator_decomposition(
 	GraphFragment fragment, const std::function<BitVector(const GraphFragment&)>&compute_separator,
 	const std::function<void(const std::string&)>&log_message
 ){
@@ -745,13 +745,18 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 
 	long long timer = 0;
 
-	std::vector<unsigned>order(fragment.node_count());
+	SeparatorDecomposition decomp;
+	decomp.order.resize(fragment.node_count());
 	
-	if(fragment.node_count() == 2){
-		order = std::move(fragment.global_node_id);
+	if(fragment.node_count() == 1){
+		decomp.tree.push_back({0, 0, 0, 1});
+		decomp.order = std::move(fragment.global_node_id);
 	}else{
 
+		unsigned pred = 0;
 		unsigned order_begin = 0, order_end = fragment.node_count();
+
+		decomp.tree.push_back({0, 0, 0, order_end});
 
 		if(log_message){
 			timer = -get_micro_time();
@@ -767,10 +772,10 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 		for(auto&part:part_list){
 			assert(part.node_count() != 0);
 			if(part.node_count() == 1){
-				order[--order_end] = part.global_node_id[0];
+				decomp.order[--order_end] = part.global_node_id[0];
 			}else{
 				if(log_message && part.node_count() > 1000){
-					log_message("Computing order for top level component with "+std::to_string(part.node_count())+" nodes");
+					log_message("Computing decomposition for top level component with "+std::to_string(part.node_count())+" nodes");
 					timer = -get_micro_time();
 					log_message("Start computing top level separator");
 				}
@@ -804,21 +809,43 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 
 				if(log_message && part.node_count() > 1000){
 					timer = -get_micro_time();
-					log_message("Start computing remaining nested dissection order using recursion");
+					log_message("Start computing remaining separator decomposition using recursion");
 				}
-				auto sub_order = compute_nested_node_dissection_order(part, compute_separator);
+				auto sub_decomp = compute_separator_decomposition(part, compute_separator);
 				if(log_message && part.node_count() > 1000){
 					timer += get_micro_time();
 					log_message("Finished recursion, needed "+std::to_string(timer)+"musec");
 				}
 
-				std::copy(sub_order.begin(), sub_order.end(), order.begin() + order_begin);
-				order_begin += sub_order.size();
+				for(auto&node:sub_decomp.tree){
+					if(node.left_child != 0)
+						node.left_child += decomp.tree.size();
+					if(node.right_sibling != 0)
+						node.right_sibling += decomp.tree.size();
+					node.first_separator_vertex += order_begin;
+					node.last_separator_vertex += order_begin;
+				}
+				if(pred == 0)
+					decomp.tree[pred].left_child = decomp.tree.size();
+				else
+					decomp.tree[pred].right_sibling = decomp.tree.size();
+				pred = decomp.tree.size();
+				decomp.tree.insert(decomp.tree.end(), sub_decomp.tree.begin(), sub_decomp.tree.end());
+				std::copy(sub_decomp.order.begin(), sub_decomp.order.end(), decomp.order.begin() + order_begin);
+				order_begin += sub_decomp.order.size();
 			}
 		}
+		decomp.tree[0].first_separator_vertex = order_begin;
 	}
 
-	return order; // NVRO
+	return decomp; // NVRO
+}
+
+std::vector<unsigned>compute_nested_node_dissection_order(
+	GraphFragment fragment, const std::function<BitVector(const GraphFragment&)>&compute_separator,
+	const std::function<void(const std::string&)>&log_message
+){
+	return compute_separator_decomposition(fragment, compute_separator, log_message).order;
 }
 
 std::vector<unsigned>compute_nested_node_dissection_order_using_inertial_flow(

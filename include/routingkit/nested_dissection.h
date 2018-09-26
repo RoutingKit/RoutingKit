@@ -85,6 +85,24 @@ CutSide inertial_flow(
 
 BitVector derive_separator_from_cut(const GraphFragment&fragment, const BitVector&cut);
 
+struct SeparatorDecomposition{
+  struct Node{
+    unsigned left_child;
+    unsigned right_sibling;
+    unsigned first_separator_vertex;
+    unsigned last_separator_vertex;
+  };
+
+  std::vector<Node>tree;
+  std::vector<unsigned>order;
+};
+
+SeparatorDecomposition compute_separator_decomposition(
+	GraphFragment fragment,
+	const std::function<BitVector(const GraphFragment&)>&compute_separator,
+	const std::function<void(const std::string&)>&log_message = [](const std::string&){}
+);
+
 std::vector<unsigned>compute_nested_node_dissection_order(
 	GraphFragment fragment,
 	const std::function<BitVector(const GraphFragment&)>&compute_separator,
