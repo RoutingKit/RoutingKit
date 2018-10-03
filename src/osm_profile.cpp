@@ -192,10 +192,6 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 	if(motorcar && str_eq(motorcar, "no"))
 		return false;
 
-	const char*motorroad = tags["motorroad"];
-	if(motorroad && str_eq(motorroad, "no"))
-		return false;
-
 	const char*motor_vehicle = tags["motor_vehicle"];
 	if(motor_vehicle && str_eq(motor_vehicle, "no"))
 		return false;
