@@ -1524,7 +1524,7 @@ namespace{
 					forward_tentative_distance[h] = d;
 					set_predecessor(h, node, arc);
 				}
-			} else {
+			} else if(d < inf_weight){
 				forward_queue.push({h, d});
 				forward_tentative_distance[h] = d;
 				was_forward_pushed.set(h);
