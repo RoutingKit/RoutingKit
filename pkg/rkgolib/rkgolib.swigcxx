@@ -1,0 +1,10 @@
+%module rkgolib
+
+%include <typemaps.i>
+%include <std_string.i>
+
+%{
+#include <routingkit/basic_api.h>
+%}
+
+%include <routingkit/basic_api.h>

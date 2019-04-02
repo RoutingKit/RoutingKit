@@ -7,13 +7,14 @@ archiver_name = "ar"
 
 # "-DROUTING_KIT_NO_GCC_EXTENSIONS", "-DROUTING_KIT_NO_POSIX", "-DROUTING_KIT_NO_ALIGNED_ALLOC"
 #compiler_options = ["-Wall", "-O0", "-ggdb","-march=native", "-ffast-math", "-std=c++11", "-D_GLIBCXX_DEBUG"]
-compiler_options = ["-Wall", "-DNDEBUG", "-march=native", "-ffast-math", "-std=c++11", "-O3"]
+compiler_options = ["-Wall", "-DNDEBUG", "-DROUTING_KIT_NO_ALIGNED_ALLOC", "-march=native", "-ffast-math", "-std=c++11", "-O3"]
 linker_options = []
 
 build_static_library = True
 build_dynamic_library = True
 rebuild_if_makefile_changes = False
 rebuild_if_generate_makefile_changes = True
+use_openmp = False
 
 # Actual program starts here
 
@@ -211,13 +212,13 @@ def uncached_extract_direct_compiler_and_linker_options(file_name):
 			if m:
 				if m.group(1) in ["thread", "mutex", "condition_variable", "atomic", "future"]:
 					linker_options.append("-pthread")
-				if m.group(1) in ["omp.h"]:
+				if m.group(1) in ["omp.h"] and use_openmp:
 					compiler_options.append("$(OMP_CFLAGS)")
 					linker_options.append("$(OMP_LDFLAGS)")
 				if m.group(1) in ["math.h", "cmath"]:
 					linker_options.append("-lm")
 
-			if re.search(r"^\s*#\s*pragma\s+omp", line):
+			if re.search(r"^\s*#\s*pragma\s+omp", line) and use_openmp:
 				compiler_options.append("$(OMP_CFLAGS)")
 				linker_options.append("$(OMP_LDFLAGS)")
 	compiler_options = uniquify(compiler_options)

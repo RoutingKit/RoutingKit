@@ -3,6 +3,7 @@
 
 // generated using ls | sed -E "s_(.*)_#include <routingkit/\1>_"
 
+#include <routingkit/basic_api.h>
 #include <routingkit/bit_vector.h>
 #include <routingkit/constants.h>
 #include <routingkit/contraction_hierarchy.h>
