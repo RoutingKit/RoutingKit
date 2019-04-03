@@ -8,6 +8,5 @@ import "C"
 import "fmt"
 
 func main() {
-	fmt.Println("daskjhfkas")
-	_ = Init_routingkit_ch("./new-york-latest.osm.pbf")
+	fmt.Println("dummy-go")
 }

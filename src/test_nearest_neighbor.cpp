@@ -114,7 +114,7 @@ int main(){
 	}
 
 
-	vector<vector<GeoPositionToNode::NearestNeighborhoodQueryResult>>query_answer(query_count);
+	vector<vector<NearestNeighborhoodQueryResult>>query_answer(query_count);
 
 	vector<bool>in_set(point_cloud_size, false);
 

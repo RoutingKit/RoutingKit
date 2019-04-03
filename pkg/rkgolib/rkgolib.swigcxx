@@ -2,9 +2,21 @@
 
 %include <typemaps.i>
 %include <std_string.i>
+%include <std_vector.i>
 
 %{
 #include <routingkit/basic_api.h>
+#include <routingkit/geo_position_to_node.h>
 %}
 
+namespace RoutingKit {
+    extern class GeoPositionToNode;
+    extern class ContractionHierarchy;
+    extern class ContractionHierarchyQuery;
+    extern struct NearestNeighborhoodQueryResult;
+}
+
+%template(VectorUnsignedInt) std::vector<unsigned>;
+
 %include <routingkit/basic_api.h>
+%include <routingkit/geo_position_to_node.h>

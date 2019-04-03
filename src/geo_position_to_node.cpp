@@ -12,12 +12,12 @@
 namespace RoutingKit{
 
 namespace{
-	float compute_distance(GeoPositionToNode::PointPosition x, GeoPositionToNode::PointPosition y){
+	float compute_distance(PointPosition x, PointPosition y){
 		return geo_dist(x.latitude, x.longitude, y.latitude, y.longitude);
 	}
 
 	struct PointData{
-		GeoPositionToNode::PointPosition position;
+		PointPosition position;
 		unsigned id;
 		float distance_to_pivot;
 	};
@@ -133,10 +133,10 @@ namespace{
 	// I envy the day that C++ will finally support recursive lambda functions...
 
 	void nearest_neighbor_recursion(
-		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id,
+		const std::vector<PointPosition>&point_position, const std::vector<unsigned>&point_id,
 		unsigned begin, unsigned end,
-		GeoPositionToNode::PointPosition query_position,
-		GeoPositionToNode::NearestNeighborhoodQueryResult&current_result
+		PointPosition query_position,
+		NearestNeighborhoodQueryResult&current_result
 	){
 		if(end - begin <= max_points_per_leaf){
 			for(unsigned i=begin; i<end; ++i){
@@ -177,11 +177,11 @@ namespace{
 
 
 	void find_all_nodes_recursion(
-		const std::vector<GeoPositionToNode::PointPosition>&point_position, const std::vector<unsigned>&point_id,
+		const std::vector<PointPosition>&point_position, const std::vector<unsigned>&point_id,
 		unsigned begin, unsigned end,
-		GeoPositionToNode::PointPosition query_position,
+		PointPosition query_position,
 		float query_radius,
-		std::vector<GeoPositionToNode::NearestNeighborhoodQueryResult>&result
+		std::vector<NearestNeighborhoodQueryResult>&result
 	){
 		if(end - begin <= max_points_per_leaf){
 			for(unsigned i=begin; i<end; ++i){
@@ -215,14 +215,14 @@ namespace{
 	}
 }
 
-GeoPositionToNode::NearestNeighborhoodQueryResult GeoPositionToNode::find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const{
+NearestNeighborhoodQueryResult GeoPositionToNode::find_nearest_neighbor_within_radius(float query_latitude, float query_longitude, float query_radius)const{
 	assert(query_radius >= 0.0 && "radius must be positive");
 	NearestNeighborhoodQueryResult result = {invalid_id, query_radius};
 	nearest_neighbor_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, result);
 	return result;
 }
 
-std::vector<GeoPositionToNode::NearestNeighborhoodQueryResult> GeoPositionToNode::find_all_nodes_within_radius(float query_latitude, float query_longitude, float query_radius)const{
+std::vector<NearestNeighborhoodQueryResult> GeoPositionToNode::find_all_nodes_within_radius(float query_latitude, float query_longitude, float query_radius)const{
 	assert(query_radius >= 0.0 && "radius must be positive");
 	std::vector<NearestNeighborhoodQueryResult> result;
 	find_all_nodes_recursion(point_position, point_id, 0, point_count(), {query_latitude, query_longitude}, query_radius, result);
