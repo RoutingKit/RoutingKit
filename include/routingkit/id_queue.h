@@ -58,7 +58,6 @@ public:
 		using std::swap;
 		swap(l.id_pos, r.id_pos);
 		swap(l.heap, r.heap);
-		swap(l.heap, r.heap);
 		swap(l.heap_size, r.heap_size);
 	}
 
