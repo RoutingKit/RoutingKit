@@ -913,8 +913,26 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 
 	extract_initial_metric(*cch, *this);
 
-	for(unsigned a=0; a<cch->cch_arc_count(); ++a){
-		forall_upper_triangles_of_arc(*cch, a, LowerTriangleRelaxer(*this));
+	std::vector<unsigned> arc_id_cache(cch->node_count());
+
+	for(unsigned x=0; x<cch->node_count(); ++x){
+		const unsigned xz_up_end = cch->up_first_out[x+1];
+		for(unsigned xz_up = cch->up_first_out[x]; xz_up < xz_up_end; ++xz_up){
+			arc_id_cache[cch->up_head[xz_up]] = xz_up;
+		}
+
+		const unsigned xy_down_end = cch->down_first_out[x+1];
+		for(unsigned xy_down = cch->down_first_out[x]; xy_down < xy_down_end; ++xy_down){
+			const unsigned yx_up = cch->down_to_up[xy_down];
+			const unsigned y = cch->down_head[xy_down];
+			const unsigned yz_up_end_reversed = cch->up_first_out[y];
+			for(unsigned yz_up_reversed = cch->up_first_out[y+1]; yz_up_reversed > yz_up_end_reversed; --yz_up_reversed){
+				const unsigned yz_up = yz_up_reversed-1;
+				const unsigned z = cch->up_head[yz_up];
+				if (z <= x) { break; }
+				LowerTriangleRelaxer(*this)(yx_up, yz_up, arc_id_cache[z], y, x, z);
+			}
+		}
 	}
 
 	#ifndef NDEBUG
