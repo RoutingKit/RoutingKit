@@ -22,174 +22,36 @@
 namespace RoutingKit{
 
 namespace{
-	class EdgeContractionGraph{
-	public:
-		void rewire_arcs_from_second_to_first(unsigned u, unsigned v){
-			union_find_parent[v] = u;
-			std::swap(next_adjacency_in_ring[u], next_adjacency_in_ring[v]);
-		}
-
-		template<class F>
-		void forall_nodes_in_last_computed_neighborhood(const F&f){
-			for(unsigned i=0; i<neighborhood_size; ++i)
-				f(neighborhood[i]);
-		}
-
-		void compute_neighborhood_of(unsigned v){
-			for(unsigned i=0; i<neighborhood_size; ++i)
-				in_neighborhood[neighborhood[i]] = false;
-			neighborhood_size = 0;
-
-			if(union_find_parent[v] == v){
-				const unsigned initial_adjacency = v;
-				unsigned current_adjacency = v;
-				do{
-					// Iterate over the adjacency
-					{
-						unsigned arc_in_begin = out_arc_begin[current_adjacency];
-						unsigned arc_in_end = out_arc_end[current_adjacency];
-
-						unsigned arc_out_begin = out_arc_begin[current_adjacency];
-
-						while(arc_in_begin != arc_in_end){
-							// Compress union find path
-							{
-								unsigned x = arc_head[arc_in_begin];
-								while(union_find_parent[x] != x)
-									x = union_find_parent[x];
-								unsigned y = arc_head[arc_in_begin];
-								while(union_find_parent[y] != y){
-									int z = union_find_parent[y];
-									union_find_parent[y] = x;
-									y = z;
-								}
-
-							}
-
-							// Replace arc head by representative from union find
-							arc_head[arc_in_begin] = union_find_parent[arc_head[arc_in_begin]];
-
-							assert(union_find_parent[arc_head[arc_in_begin]] == arc_head[arc_in_begin]);
-
-							// Only keep the nodes that are not the heads of loops or multi arcs
-							if(!in_neighborhood[arc_head[arc_in_begin]] && arc_head[arc_in_begin] != v){
-								arc_head[arc_out_begin] = arc_head[arc_in_begin];
-								++arc_out_begin;
-								in_neighborhood[arc_head[arc_in_begin]] = true;
-								neighborhood[neighborhood_size++] = arc_head[arc_in_begin];
-							}
-
-							++arc_in_begin;
-						}
-
-						out_arc_end[current_adjacency] = arc_out_begin;
-					}
-
-					// Goto next non-empty adjacency in the ring, and rewire the ring pointer to skip them in future
-					unsigned next_adjacency = next_adjacency_in_ring[current_adjacency];
-					while(out_arc_begin[next_adjacency] == out_arc_end[next_adjacency] && next_adjacency != initial_adjacency)
-						next_adjacency = next_adjacency_in_ring[next_adjacency];
-					next_adjacency_in_ring[current_adjacency] = next_adjacency;
-					current_adjacency = next_adjacency;
-				}while(current_adjacency != initial_adjacency);
-			}
-		}
-
-		EdgeContractionGraph(unsigned node_count, const std::vector<unsigned>&tail, const std::vector<unsigned>&head):
-			next_adjacency_in_ring(node_count),
-			union_find_parent(node_count),
-			out_arc_begin(node_count),
-			out_arc_end(node_count),
-			arc_head(tail.size()),
-			in_neighborhood(node_count),
-			neighborhood(node_count),
-			neighborhood_size(0)
-		{
-			unsigned arc_count = tail.size();
-
-			for(unsigned i=0; i<node_count; ++i){
-				next_adjacency_in_ring[i] = i;
-				union_find_parent[i] = i;
-			}
-
-			std::fill(in_neighborhood.begin(), in_neighborhood.end(), false);
-
-			std::fill(out_arc_end.begin(), out_arc_end.end(), 0);
-			for(unsigned i=0; i<arc_count; ++i){
-				unsigned t = tail[i];
-				++out_arc_end[t];
-			}
-
-			out_arc_begin[0] = 0;
-			for(unsigned i=1; i<node_count; ++i){
-				out_arc_begin[i] = out_arc_end[i-1];
-				out_arc_end[i] = out_arc_end[i] + out_arc_begin[i];
-			}
-			assert(out_arc_end[node_count-1] == arc_count);
-
-			for(unsigned i=0; i<arc_count; ++i){
-				unsigned t = tail[i];
-				arc_head[out_arc_begin[t]] = head[i];
-				out_arc_begin[t] = out_arc_begin[t]+1;
-			}
-			for(unsigned i=0; i<arc_count; ++i){
-				unsigned t = tail[i];
-				out_arc_begin[t] = out_arc_begin[t]-1;
-			}
-		}
-
-	private:
-		std::vector<unsigned> next_adjacency_in_ring;
-		std::vector<unsigned> union_find_parent;
-		std::vector<unsigned> out_arc_begin;
-		std::vector<unsigned> out_arc_end;
-		std::vector<unsigned> arc_head;
-		std::vector<bool> in_neighborhood;
-		std::vector<unsigned> neighborhood;
-		unsigned neighborhood_size;
-	};
-
-	class NodeContractionGraph{
-	public:
-		NodeContractionGraph(unsigned node_count, const std::vector<unsigned>&tail, const std::vector<unsigned>&head):
-			g(node_count, tail, head), is_virtual(node_count){
-			std::fill(is_virtual.begin(), is_virtual.end(), false);
-		}
-
-		template<class F>
-		void forall_neighbors_then_contract_node(int v, const F&callback){
-			g.compute_neighborhood_of(v);
-			g.forall_nodes_in_last_computed_neighborhood(
-				[&](unsigned u){
-					if(is_virtual[u])
-						g.rewire_arcs_from_second_to_first(v, u);
-				}
-			);
-			is_virtual[v] = true;
-			g.compute_neighborhood_of(v);
-			g.forall_nodes_in_last_computed_neighborhood(callback);
-		}
-
-	private:
-		EdgeContractionGraph g;
-		std::vector<bool> is_virtual;
-	};
-
 	template<class OnNewArc>
 	unsigned compute_chordal_supergraph(unsigned node_count, const std::vector<unsigned>&tail, const std::vector<unsigned>&head, const OnNewArc&on_new_arc){
-		NodeContractionGraph g(node_count, tail, head);
+		std::vector<std::vector<unsigned>> nodes(node_count);
+		for(unsigned i = 0; i < tail.size(); ++i){
+			if(tail[i] < head[i]) {
+				nodes[tail[i]].push_back(head[i]);
+			}
+		}
 
-		unsigned max_upward_degree = 0;
-		for(unsigned x=0; x<node_count-1; ++x){
-			unsigned upward_degree = 0;
-			g.forall_neighbors_then_contract_node(
-				x,
-				[&](unsigned y){
-					on_new_arc(x, y);
-					++upward_degree;
-				}
-			);
-			max_to(max_upward_degree, upward_degree);
+		for(unsigned n = 0; n < node_count; ++n){
+			std::sort(nodes[n].begin(), nodes[n].end());
+			auto it = std::unique(nodes[n].begin(), nodes[n].end());
+			nodes[n].resize(std::distance(nodes[n].begin(), it));
+		}
+
+		size_t max_upward_degree = 0;
+		for(unsigned n = 0; n < node_count; ++n){
+			if(nodes[n].size() == 0){ continue; }
+			const unsigned lowest_neighbor = nodes[n][0];
+
+			std::vector<unsigned> merged(nodes[n].size() + nodes[lowest_neighbor].size() - 1);
+			std::merge(++nodes[n].begin(), nodes[n].end(), nodes[lowest_neighbor].begin(), nodes[lowest_neighbor].end(), merged.begin());
+			auto it = std::unique(merged.begin(), merged.end());
+			merged.resize(std::distance(merged.begin(), it));
+			nodes[lowest_neighbor] = std::move(merged);
+
+			for(unsigned neighbor : nodes[n]){
+				on_new_arc(n, neighbor);
+			}
+			max_to(max_upward_degree, nodes[n].size());
 		}
 		return max_upward_degree;
 	}
@@ -913,8 +775,26 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 
 	extract_initial_metric(*cch, *this);
 
-	for(unsigned a=0; a<cch->cch_arc_count(); ++a){
-		forall_upper_triangles_of_arc(*cch, a, LowerTriangleRelaxer(*this));
+	std::vector<unsigned> arc_id_cache(cch->node_count());
+
+	for(unsigned x=0; x<cch->node_count(); ++x){
+		const unsigned xz_up_end = cch->up_first_out[x+1];
+		for(unsigned xz_up = cch->up_first_out[x]; xz_up < xz_up_end; ++xz_up){
+			arc_id_cache[cch->up_head[xz_up]] = xz_up;
+		}
+
+		const unsigned xy_down_end = cch->down_first_out[x+1];
+		for(unsigned xy_down = cch->down_first_out[x]; xy_down < xy_down_end; ++xy_down){
+			const unsigned yx_up = cch->down_to_up[xy_down];
+			const unsigned y = cch->down_head[xy_down];
+			const unsigned yz_up_end_reversed = cch->up_first_out[y];
+			for(unsigned yz_up_reversed = cch->up_first_out[y+1]; yz_up_reversed > yz_up_end_reversed; --yz_up_reversed){
+				const unsigned yz_up = yz_up_reversed-1;
+				const unsigned z = cch->up_head[yz_up];
+				if (z <= x) { break; }
+				LowerTriangleRelaxer(*this)(yx_up, yz_up, arc_id_cache[z], y, x, z);
+			}
+		}
 	}
 
 	#ifndef NDEBUG
