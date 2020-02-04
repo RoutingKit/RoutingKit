@@ -14,8 +14,8 @@
 #include <atomic>
 #include <string.h>
 
-// The following includes are only there to get access to ntohl. Nothing else is
-// used from the networking headers. If someone has a good idea of how to
+// The following include is only there to get access to ntohl. Nothing else is
+// used from the networking header. If someone has a good idea of how to
 // implement ntohl in a portable way that
 // (a) runs on big endian machines
 // (b) runs on a semi-recent MSVC
@@ -25,11 +25,11 @@
 // Another option would be to drop support for big-endian hosts. I know of no
 // recent architecture that uses big-endian. Maybe this will happen sometime in
 // the future.
-#ifdef ROUTING_KIT_NO_POSIX
-#ifdef _WIN32 // _WIN64 being defined implies _WIN32
-#include <winsock2.h>
+#ifndef ROUTING_KIT_ASSUME_LITTLE_ENDIAN
+#include <netinet/in.h>
 #else
-// Currently, we assume that everything that is neither POSIX nor Windows, is little endian.
+// If we know, that the machine is little endian, then we can avoid all networking 
+// headers by implementing ntohl ourselves.
 static uint32_t ntohl(uint32_t netlong){
 	return
 		(netlong << 24) |
@@ -37,9 +37,6 @@ static uint32_t ntohl(uint32_t netlong){
 		((netlong << 8) >> 16) |
 		(netlong >> 24);
 }
-#endif
-#else
-#include <netinet/in.h>
 #endif
 
 // link with -lz
