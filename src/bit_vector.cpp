@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <new>
 
+#ifndef ROUTING_KIT_NO_ALIGNED_ALLOC
 #ifdef _MSC_VER
 #include <malloc.h>
 // Let us hope that this workaround does not break when MS finally implements the C11 standard function aligned_alloc from <stdlib.h>...
@@ -15,6 +16,7 @@
 #define aligned_free(ptr) _aligned_free(ptr)
 #else
 #define aligned_free(ptr) free(ptr)
+#endif
 #endif
 
 namespace RoutingKit{
