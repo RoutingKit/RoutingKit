@@ -41,13 +41,11 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 	std::function<void(uint64_t,double,double,const TagMap&)>node_callback;
 	if(is_routing_node){
 		node_callback = [&](uint64_t osm_node_id, double lat, double lon, const TagMap&tags){
-			if(!tags.empty()){
-				if(is_routing_node(osm_node_id, tags)){
-					map.is_modelling_node.make_large_enough_for(osm_node_id);
-					map.is_modelling_node.set(osm_node_id);
-					map.is_routing_node.make_large_enough_for(osm_node_id);
-					map.is_routing_node.set(osm_node_id);
-				}
+			if(is_routing_node(osm_node_id, tags)){
+				map.is_modelling_node.make_large_enough_for(osm_node_id);
+				map.is_modelling_node.set(osm_node_id);
+				map.is_routing_node.make_large_enough_for(osm_node_id);
+				map.is_routing_node.set(osm_node_id);
 			}
 		};
 	}
