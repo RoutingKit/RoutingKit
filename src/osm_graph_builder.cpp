@@ -135,6 +135,10 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		way_callback = [](uint64_t, unsigned, const TagMap&){ return OSMWayDirectionCategory::open_in_both; };
 	}
 
+	if(turn_restriction_decoder && geometry_to_be_extracted == OSMRoadGeometry::none){
+		geometry_to_be_extracted = OSMRoadGeometry::first_and_last;
+	}
+
 	std::vector<unsigned>tail;
 	OSMRoutingGraph routing_graph;
 
@@ -174,6 +178,17 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 				routing_graph.modelling_node_longitude.end(),
 				modelling_node_longitude.begin(), modelling_node_longitude.end()
 			);
+		}else if(geometry_to_be_extracted == OSMRoadGeometry::first_and_last){
+			routing_graph.first_modelling_node.push_back(routing_graph.modelling_node_latitude.size());
+			if(modelling_node_latitude.size() == 1){
+				routing_graph.modelling_node_latitude.push_back(modelling_node_latitude.front());
+				routing_graph.modelling_node_longitude.push_back(modelling_node_longitude.front());
+			}else if(!modelling_node_latitude.empty()){
+				routing_graph.modelling_node_latitude.push_back(modelling_node_latitude.front());
+				routing_graph.modelling_node_longitude.push_back(modelling_node_longitude.front());
+				routing_graph.modelling_node_latitude.push_back(modelling_node_latitude.back());
+				routing_graph.modelling_node_longitude.push_back(modelling_node_longitude.back());
+			}
 		}
 	};
 
@@ -228,7 +243,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 							latitude[modelling_id_of_current_node], longitude[modelling_id_of_current_node],
 							latitude[modelling_id_of_previous_modelling_node], longitude[modelling_id_of_previous_modelling_node]
 						);
-						if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+						if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed || geometry_to_be_extracted == OSMRoadGeometry::first_and_last){
 							modelling_node_latitude.push_back(latitude[modelling_id_of_current_node]);
 							modelling_node_longitude.push_back(longitude[modelling_id_of_current_node]);
 						}
@@ -238,7 +253,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 						unsigned routing_id_of_current_node = routing_node.to_local(node_list[i], invalid_id);
 						if(routing_id_of_current_node != invalid_id){
 
-							if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+							if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed || geometry_to_be_extracted == OSMRoadGeometry::first_and_last){
 								modelling_node_latitude.pop_back();
 								modelling_node_longitude.pop_back();
 							}
@@ -291,7 +306,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 		routing_graph.is_arc_antiparallel_to_way = apply_inverse_permutation(p, std::move(routing_graph.is_arc_antiparallel_to_way));
 		routing_graph.first_out = invert_vector(tail, node_count);
 
-		if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed){
+		if(geometry_to_be_extracted == OSMRoadGeometry::uncompressed || geometry_to_be_extracted == OSMRoadGeometry::first_and_last){
 			routing_graph.first_modelling_node.push_back(routing_graph.modelling_node_latitude.size());
 
 			std::vector<unsigned>first_modelling_node;
@@ -403,6 +418,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 				} else {
 					out->osm_relation_id = in->osm_relation_id;
 					out->category = in->category;
+					out->direction = in->direction;
 					out->from_way = local_from_way;
 					out->to_way = local_to_way;
 					out->via_node = local_via_node;
@@ -547,6 +563,7 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 							++repaired_count;
 
 							out->osm_relation_id = in->osm_relation_id;
+							out->direction = in->direction;
 							out->category = in->category;
 							out->from_way = in->from_way;
 							out->to_way = in->to_way;
@@ -592,52 +609,162 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 				assert(x.from_way != invalid_id);
 				assert(x.to_way != invalid_id);
 
-				unsigned from = invalid_id;
+				std::vector<unsigned>from_candidates;
 				for(unsigned i=first_in[x.via_node]; i!=first_in[x.via_node+1]; ++i){
 					assert(i < arc_count);
 					unsigned arc = in_arc[i];
 					assert(arc < arc_count);
 					if(routing_graph.way[arc] == x.from_way){
-						from = arc;
-						break;
+						from_candidates.push_back(arc);
 					}
 				}
-				if(from == invalid_id){
-					if(log_message){
-						log_message(
-							"Cannot find from-arc for turn restriction with OSM relation ID \""+std::to_string(x.osm_relation_id)+"\" "
-							"and OSM from-way \""+std::to_string(routing_way.to_global(x.from_way))+"\" "
-							"and OSM to-way \""+std::to_string(routing_way.to_global(x.to_way))+"\" "
-							"and OSM via-node \""+std::to_string(routing_node.to_global(x.via_node))+"\""
-							", ignoring restriction"
-						);
-					}
+				if(from_candidates.empty()){
+					// if(log_message){
+					// 	log_message(
+					// 		"Cannot find from-arc for turn restriction with OSM relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+					// 		"and OSM from-way \""+std::to_string(routing_way.to_global(x.from_way))+"\" "
+					// 		"and OSM to-way \""+std::to_string(routing_way.to_global(x.to_way))+"\" "
+					// 		"and OSM via-node \""+std::to_string(routing_node.to_global(x.via_node))+"\""
+					// 		", ignoring restriction"
+					// 	);
+					// }
 					continue;
 				}
-				assert(head[from] == x.via_node);
+				#ifndef NDEBUG
+				for(auto from:from_candidates)
+					assert(head[from] == x.via_node);
+				#endif
 
-				unsigned to = invalid_id;
+				std::vector<unsigned>to_candidates;
 				for(unsigned arc=routing_graph.first_out[x.via_node]; arc!=routing_graph.first_out[x.via_node+1]; ++arc){
 					assert(arc < arc_count);
 					if(routing_graph.way[arc] == x.to_way){
-						to = arc;
-						break;
+						to_candidates.push_back(arc);
 					}
 				}
-				if(to == invalid_id){
-					if(log_message){
-						log_message(
-							"Cannot find to-arc for turn restriction with OSM relation ID \""+std::to_string(x.osm_relation_id)+"\" "
-							"and OSM from-way \""+std::to_string(routing_way.to_global(x.from_way))+"\" "
-							"and OSM to-way \""+std::to_string(routing_way.to_global(x.to_way))+"\" "
-							"and OSM via-node \""+std::to_string(routing_node.to_global(x.via_node))+"\""
-							", ignoring restriction"
-						);
-					}
+				if(to_candidates.empty()){
+					// if(log_message){
+					// 	log_message(
+					// 		"Cannot find to-arc for turn restriction with OSM relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+					// 		"and OSM from-way \""+std::to_string(routing_way.to_global(x.from_way))+"\" "
+					// 		"and OSM to-way \""+std::to_string(routing_way.to_global(x.to_way))+"\" "
+					// 		"and OSM via-node \""+std::to_string(routing_node.to_global(x.via_node))+"\""
+					// 		", ignoring restriction"
+					// 	);
+					// }
 					continue;
 				}
-				assert(tail[to] == x.via_node);
+				#ifndef NDEBUG
+				for(auto to:to_candidates)
+					assert(tail[to] == x.via_node);
+				#endif
 
+
+				unsigned from, to;
+				if(from_candidates.size() == 1 && to_candidates.size() == 1){
+					from = from_candidates[0];
+					to = to_candidates[0];
+				} else {
+
+					float via_lat = routing_graph.latitude[x.via_node];
+					float via_lon = routing_graph.longitude[x.via_node];
+
+					const float pi = 3.14159265359f;
+
+					auto mod_2pi = [&](float angle) -> float {
+						while(angle < 0.0f){
+							angle += 2.0f*pi;
+						}
+						while(angle > 2.0f*pi){
+							angle -= 2.0f*pi;
+						}
+						return angle;
+					};
+
+					unsigned matching_candidate_count = 0;
+
+					for(unsigned from_cand: from_candidates){
+
+						float from_lat, from_lon;
+						if(routing_graph.first_modelling_node[from_cand] == routing_graph.first_modelling_node[from_cand+1]){
+							from_lat = routing_graph.latitude[tail[from_cand]];
+							from_lon = routing_graph.longitude[tail[from_cand]];
+						}else{
+							from_lat = routing_graph.modelling_node_latitude[routing_graph.first_modelling_node[from_cand+1]-1];
+							from_lon = routing_graph.modelling_node_longitude[routing_graph.first_modelling_node[from_cand+1]-1];
+						}
+
+						float from_angle = atan2(via_lat-from_lat, via_lon-from_lon);
+
+						for(unsigned to_cand: to_candidates){
+							float to_lat, to_lon;
+
+							if(routing_graph.first_modelling_node[to_cand] == routing_graph.first_modelling_node[to_cand+1]){
+								to_lat = routing_graph.latitude[routing_graph.head[to_cand]];
+								to_lon = routing_graph.longitude[routing_graph.head[to_cand]];
+							}else{
+								to_lat = routing_graph.modelling_node_latitude[routing_graph.first_modelling_node[to_cand]];
+								to_lon = routing_graph.modelling_node_longitude[routing_graph.first_modelling_node[to_cand]];
+							}
+
+							float to_angle = atan2(to_lat-via_lat, to_lon-via_lon);
+
+							float angle_diff = mod_2pi(to_angle - from_angle);
+
+							switch(x.direction){
+								case OSMTurnDirection::left_turn:
+								if(pi*1.0/4.0 < angle_diff && angle_diff < pi*3.0/4.0){
+									++matching_candidate_count;
+									from = from_cand;
+									to = to_cand;
+								}
+								break;
+								case OSMTurnDirection::right_turn:
+								if(pi*5.0/4.0 < angle_diff && angle_diff < pi*7.0/4.0){
+									++matching_candidate_count;
+									from = from_cand;
+									to = to_cand;
+								}
+								break;
+								case OSMTurnDirection::straight_on:
+								if(angle_diff < pi/3.0f || 5.0f*pi/3.0f < angle_diff){
+									++matching_candidate_count;
+									from = from_cand;
+									to = to_cand;
+								}
+								break;
+								case OSMTurnDirection::u_turn:
+								if(2.0f*pi/3.0f < angle_diff && angle_diff < 4.0f*pi/3.0f){
+									++matching_candidate_count;
+									from = from_cand;
+									to = to_cand;
+								}
+								break;
+							}
+						}
+					}
+
+					if(matching_candidate_count == 0){
+						log_message(
+							"OSM turn restriction relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+							"is a turn restriction where it is impossible to infer the restriction without "
+							"using the turn direction information. However, no restriction candidate is consistent "
+							"with the turn direction. -> ignoring restriction"
+						);
+						continue;
+					}
+
+					if(matching_candidate_count >= 2){
+						log_message(
+							"OSM turn restriction relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+							"is a turn restriction where it is impossible to infer the restriction without "
+							"using the turn direction information. However, "+std::to_string(matching_candidate_count)+" restriction candidates are consistent "
+							"with the turn direction -> ignoring all candidates restriction"
+						);
+						continue;
+					}
+
+				}
 
 				if(x.category == OSMTurnRestrictionCategory::prohibitive){
 					add_forbidden_turn(from, to);

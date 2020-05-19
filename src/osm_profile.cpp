@@ -667,11 +667,31 @@ void decode_osm_car_turn_restrictions(
 
 	OSMTurnRestrictionCategory restriction_type;
 
+	int direction_offset;
+
 	if(starts_with("only_", restriction)) {
 		restriction_type = OSMTurnRestrictionCategory::mandatory;
+		direction_offset = 5;
 	} else if(starts_with("no_", restriction)) {
 		restriction_type = OSMTurnRestrictionCategory::prohibitive;
+		direction_offset = 3;
 	} else {
+		if(log_message)
+			log_message("Unknown OSM turn restriction with ID "+std::to_string(osm_relation_id)+" and value \""+restriction+"\", ignoring restriction");
+		return;
+	}
+
+	OSMTurnDirection turn_direction;
+
+	if(str_eq("left_turn", restriction+direction_offset)){
+		turn_direction = OSMTurnDirection::left_turn;
+	} else if(str_eq("right_turn", restriction+direction_offset)) {
+		turn_direction = OSMTurnDirection::right_turn;
+	} else if(str_eq("straight_on", restriction+direction_offset)) {
+		turn_direction = OSMTurnDirection::straight_on;
+	} else if(str_eq("u_turn", restriction+direction_offset)) {
+		turn_direction = OSMTurnDirection::u_turn;
+	}else{
 		if(log_message)
 			log_message("Unknown OSM turn restriction with ID "+std::to_string(osm_relation_id)+" and value \""+restriction+"\", ignoring restriction");
 		return;
@@ -775,7 +795,7 @@ void decode_osm_car_turn_restrictions(
 
 	for(unsigned from_member:from_member_list)
 		for(unsigned to_member:to_member_list)
-			on_new_turn_restriction(OSMTurnRestriction{osm_relation_id, restriction_type, member_list[from_member].id, via_node, member_list[to_member].id});
+			on_new_turn_restriction(OSMTurnRestriction{osm_relation_id, restriction_type, turn_direction, member_list[from_member].id, via_node, member_list[to_member].id});
 }
 
 } // RoutingKit

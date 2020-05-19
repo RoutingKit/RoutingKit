@@ -38,9 +38,18 @@ enum class OSMTurnRestrictionCategory{
 	prohibitive
 };
 
+enum class OSMTurnDirection{
+	left_turn,
+	right_turn,
+	straight_on,
+	u_turn
+
+};
+
 struct OSMTurnRestriction{
 	uint64_t osm_relation_id;
 	OSMTurnRestrictionCategory category;
+	OSMTurnDirection direction;
 	uint64_t from_way;
 	uint64_t via_node;
 	uint64_t to_way;
@@ -48,7 +57,8 @@ struct OSMTurnRestriction{
 
 enum class OSMRoadGeometry{
 	none,
-	uncompressed
+	uncompressed,
+	first_and_last
 };
 
 struct OSMRoutingGraph{
@@ -66,7 +76,7 @@ struct OSMRoutingGraph{
 	std::vector<unsigned>first_modelling_node;
 	std::vector<float>modelling_node_latitude;
 	std::vector<float>modelling_node_longitude;
-	
+
 
 	unsigned node_count()const{
 		return first_out.size()-1;
@@ -84,17 +94,17 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 
 	std::function<
 		OSMWayDirectionCategory(
-			uint64_t osm_way_id, 
-			unsigned routing_way_id, 
+			uint64_t osm_way_id,
+			unsigned routing_way_id,
 			const TagMap&way_tags
 		)
 	>way_callback,
 
 	std::function<
 		void(
-			uint64_t osm_relation_id, 
-			const std::vector<OSMRelationMember>&member_list, 
-			const TagMap&tags, 
+			uint64_t osm_relation_id,
+			const std::vector<OSMRelationMember>&member_list,
+			const TagMap&tags,
 			std::function<void(OSMTurnRestriction)>
 		)
 	>turn_restriction_decoder,
