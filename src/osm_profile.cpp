@@ -326,7 +326,7 @@ namespace{
 			return 80;
 		if(str_eq(maxspeed, "it:rural") || str_eq(maxspeed, "hu:rural"))
 			return 90;
-		if(str_eq(maxspeed, "de:zone:30"))
+		if(str_eq(maxspeed, "de:zone:30") || str_eq(maxspeed, "de:zone30"))
 			return 30;
 
 
@@ -414,9 +414,9 @@ unsigned get_osm_way_speed(uint64_t osm_way_id, const TagMap&tags, std::function
 		if(str_eq(highway, "living_street"))
 			return 10;
 		if(str_eq(highway, "service"))
-			return 1;
+			return 8;
 		if(str_eq(highway, "track"))
-			return 1;
+			return 8;
 		if(str_eq(highway, "ferry"))
 			return 5;
 	}
