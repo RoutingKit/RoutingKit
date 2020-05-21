@@ -79,6 +79,7 @@ script:
   - bin/test_protobuf
   - bin/test_sort
   - bin/test_tag_map
+  - bin/test_strongly_connected_component
   - bin/test_customizable_contraction_hierarchy_reset
   - bin/test_osm_simple data/luxembourg.pbf
   - bin/test_dijkstra data/luxembourg_first_out data/luxembourg_head data/luxembourg_travel_time
