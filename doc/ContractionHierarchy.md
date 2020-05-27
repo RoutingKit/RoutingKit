@@ -192,7 +192,7 @@ to access the results. Note, that `get_distance` has a constant running time, wh
 As already stated there can be several source and target nodes. You can write 
 
 ```cpp
-query.reset().add_source(a).add_source(b).add_target(c).run();
+query.reset().add_source(a).add_target(b).add_target(c).run();
 ```
 
 which has the meaning that either a path from `a` to `b` or from `a` to `c` (but not both) should be computed depending on which is smaller. 
