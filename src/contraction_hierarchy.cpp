@@ -43,7 +43,7 @@ namespace{
 					head[out] = head[in];
 					weight[out] = weight[in];
 					input_arc_id[out] = input_arc_id[in];
-					++out;				
+					++out;
 				}
 			}
 			arc_count = out;
@@ -94,7 +94,7 @@ namespace{
 				unsigned y = head[a];
 				unsigned w = weight[a];
 
-				
+
 				if(x != y){
 					out_[x].push_back({y, w, 1, invalid_id});
 					in_[y].push_back({x, w, 1, invalid_id});
@@ -244,7 +244,7 @@ namespace{
 //				if(was_forward_pushed.is_set(x) && was_backward_pushed.is_set(x)){
 //					assert(forward_tentative_distance[x] + backward_tentative_distance[x] > len);
 //				}
-//			}	
+//			}
 		}
 
 		void assert_forward_tentative_distances_correct()const{
@@ -511,7 +511,7 @@ namespace{
 		}
 
 		unsigned get_max_pop_count()const{
-			return max_pop_count;		
+			return max_pop_count;
 		}
 	private:
 		unsigned max_pop_count;
@@ -627,7 +627,7 @@ namespace {
 		ch.rank.resize(node_count);
 		ch.order.resize(node_count);
 		MinIDQueue queue(node_count);
-	
+
 
 		for(unsigned i=0; i<node_count; ++i){
 			queue.push({i, estimate_node_importance(graph, shorter_path_test, i)});
@@ -645,7 +645,7 @@ namespace {
 			timer += get_micro_time();
 			log_message("Finished building queue. Needed "+std::to_string(timer)+"musec time.");
 			log_message("Start contracting nodes.");
-			timer = -get_micro_time();			
+			timer = -get_micro_time();
 		}
 
 		std::vector<unsigned>neighbor_list;
@@ -655,7 +655,7 @@ namespace {
 
 		while(!queue.empty()){
 			unsigned node_being_contracted = queue.pop().id;
-	
+
 			ch.rank[node_being_contracted] = contracted_node_count;
 			ch.order[contracted_node_count] = node_being_contracted;
 
@@ -723,7 +723,7 @@ namespace {
 			neighbor_list.clear();
 
 			++contracted_node_count;
-				
+
 			if(log_message){
 				long long current_time = get_micro_time();
 				if(current_time - last_log_message_time > 1000000){
@@ -745,7 +745,7 @@ namespace {
 
 		if(log_message){
 			timer += get_micro_time();
-			log_message("Finished contracting nodes. Needed "+std::to_string(timer)+"musec.");		
+			log_message("Finished contracting nodes. Needed "+std::to_string(timer)+"musec.");
 		}
 
 	}
@@ -825,7 +825,7 @@ namespace {
 
 		if(log_message){
 			timer += get_micro_time();
-			log_message("Finished contracting nodes. Needed "+std::to_string(timer)+"musec.");		
+			log_message("Finished contracting nodes. Needed "+std::to_string(timer)+"musec.");
 		}
 	}
 
@@ -857,7 +857,7 @@ namespace {
 
 		if(log_message){
 			timer += get_micro_time();
-			log_message("Finished reordering nodes by rank. Needed "+std::to_string(timer)+"musec.");		
+			log_message("Finished reordering nodes by rank. Needed "+std::to_string(timer)+"musec.");
 		}
 	}
 
@@ -895,7 +895,7 @@ namespace {
 
 		if(log_message){
 			timer += get_micro_time();
-			log_message("Finished sorting arcs. Needed "+std::to_string(timer)+"musec.");		
+			log_message("Finished sorting arcs. Needed "+std::to_string(timer)+"musec.");
 		}
 	}
 
@@ -966,7 +966,7 @@ namespace {
 
 		if(log_message){
 			timer += get_micro_time();
-			log_message("Finished optimizing order for cache. Needed "+std::to_string(timer)+"musec.");		
+			log_message("Finished optimizing order for cache. Needed "+std::to_string(timer)+"musec.");
 		}
 	}
 
@@ -974,7 +974,7 @@ namespace {
 		unsigned node_count,
 		const std::vector<unsigned>&tail,
 		const std::vector<unsigned>&head,
-		const std::vector<unsigned>&input_arc_id,	
+		const std::vector<unsigned>&input_arc_id,
 		ContractionHierarchy&ch,
 		const ContractionHierarchyExtraInfo&ch_extra,
 		const std::function<void(std::string)>&log_message
@@ -993,7 +993,7 @@ namespace {
 		ch.backward.shortcut_first_arc = std::vector<unsigned>(ch.backward.head.size());
 		ch.backward.shortcut_second_arc = std::vector<unsigned>(ch.backward.head.size());
 		ch.backward.is_shortcut_an_original_arc = BitVector(ch.backward.head.size(), BitVector::uninitialized);
-		
+
 		auto first_out = invert_vector(tail, node_count);
 
 		for(unsigned x=0; x<node_count; ++x){
@@ -1028,7 +1028,7 @@ namespace {
 					ch.backward.shortcut_second_arc[xy] = head[a];
 				}else{
 					ch.backward.is_shortcut_an_original_arc.reset(xy);
-					ch.backward.shortcut_first_arc[xy] = find_arc_given_sorted_head(ch.backward.first_out, ch.backward.head, z, y);		
+					ch.backward.shortcut_first_arc[xy] = find_arc_given_sorted_head(ch.backward.first_out, ch.backward.head, z, y);
 					ch.backward.shortcut_second_arc[xy] = find_arc_given_sorted_head(ch.forward.first_out, ch.forward.head, z, x);
 				}
 			}
@@ -1056,11 +1056,11 @@ namespace {
 			}
 		}
 		#endif
-	
+
 
 		if(log_message){
 			timer += get_micro_time();
-			log_message("Finished building path unpacking information. Needed "+std::to_string(timer)+"musec.");		
+			log_message("Finished building path unpacking information. Needed "+std::to_string(timer)+"musec.");
 			log_message("Contraction Hierarchy is fully constructed.");
 		}
 	}
@@ -1146,12 +1146,12 @@ ContractionHierarchy ContractionHierarchy::build_given_rank(
 	assert(max_element_of(tail) < node_count);
 	assert(max_element_of(head) < node_count);
 
-	
+
 
 	ContractionHierarchy ch;
 	ContractionHierarchyExtraInfo ch_extra;
 
-	
+
 	log_input_graph_statistics(node_count, tail, head, log_message);
 
 	std::vector<unsigned>input_arc_id = identity_permutation(head.size());
@@ -1191,7 +1191,7 @@ void check_contraction_hierarchy_for_errors(const ContractionHierarchy&ch){
 
 	if(ch.rank != invert_permutation(ch.order))
 		throw std::runtime_error("CH is invalid because: ch.rank != invert_permutation(ch.order)");
-	
+
 	if(ch.forward.first_out.size() != node_count+1)
 		throw std::runtime_error("CH is invalid because: ch.forward.first_out.size() != node_count+1");
 	if(ch.backward.first_out.size() != node_count+1)
@@ -1283,7 +1283,7 @@ void check_contraction_hierarchy_for_errors(const ContractionHierarchy&ch){
 				throw std::runtime_error("CH is invalid because: ch.backward.shortcut_second_arc["+std::to_string(xy)+"] >= node_count for an original arc");
 		}
 	}
-	
+
 }
 
 
@@ -1318,7 +1318,7 @@ ContractionHierarchy ContractionHierarchy::read(std::istream&in, unsigned long l
 	);
 }
 
-void ContractionHierarchy::write(std::ostream&out){
+void ContractionHierarchy::write(std::ostream&out) const {
 	write(
 		[&](const char*p, unsigned long long l){
 			if(!out.write(p, l))
@@ -1333,7 +1333,7 @@ ContractionHierarchy ContractionHierarchy::load_file(const std::string&file_name
 	return ch;
 }
 
-void ContractionHierarchy::save_file(const std::string&file_name){
+void ContractionHierarchy::save_file(const std::string&file_name) const {
 	open_file_for_saving(file_name, [&](std::ostream&out){write(out);});
 }
 
@@ -1376,12 +1376,12 @@ ContractionHierarchy ContractionHierarchy::read(std::function<void(char*, unsign
 			+ (
 				header.node_count+1 +
 				4*header.forward_arc_count
-				
+
 			)
 			+ (
 				header.node_count+1 +
 				4*header.backward_arc_count
-				
+
 			)
 		)
 		+ ((header.backward_arc_count+511)/512) * 64
@@ -1398,7 +1398,7 @@ ContractionHierarchy ContractionHierarchy::read(std::function<void(char*, unsign
 	return finish_read(in, header);
 }
 
-void ContractionHierarchy::write(std::function<void(const char*, unsigned long long)>out){
+void ContractionHierarchy::write(std::function<void(const char*, unsigned long long)>out) const {
 	CHFileHeader header;
 	header.magic_number = ch_magic_number;
 	header.node_count = forward.first_out.size()-1;
@@ -1572,7 +1572,7 @@ namespace{
 				shortest_path_meeting_node = popped_node;
 			}
 		}
-		
+
 		if(
 			!forward_can_stall_at_node(
 				popped_node,
@@ -1619,8 +1619,8 @@ namespace{
 	}
 
 
-		
-	
+
+
 }
 
 ContractionHierarchyQuery& ContractionHierarchyQuery::run(){
@@ -1646,7 +1646,7 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run(){
 			backward_finished = true;
 		else if(backward_queue.peek().key >= shortest_path_length)
 			backward_finished = true;
-		
+
 		if(forward_finished && backward_finished)
 			break;
 
@@ -1755,7 +1755,7 @@ unsigned ContractionHierarchyQuery::get_distance() {
 	else
 		return forward_tentative_distance[shortest_path_meeting_node] + backward_tentative_distance[shortest_path_meeting_node];
 }
-	
+
 
 std::vector<unsigned>ContractionHierarchyQuery::get_arc_path(){
 	assert(ch && "query object must have an attached CH");
@@ -1763,7 +1763,7 @@ std::vector<unsigned>ContractionHierarchyQuery::get_arc_path(){
 
 	std::vector<unsigned>path;
 	if(shortest_path_meeting_node != invalid_id)
-	{	
+	{
 		std::vector<unsigned>up_path;
 		{
 			unsigned x = shortest_path_meeting_node;
@@ -1797,7 +1797,7 @@ std::vector<unsigned>ContractionHierarchyQuery::get_node_path(){
 
 	std::vector<unsigned>path;
 	if(shortest_path_meeting_node != invalid_id)
-	{	
+	{
 		std::vector<unsigned>up_path;
 		{
 			unsigned x = shortest_path_meeting_node;
@@ -1825,8 +1825,8 @@ std::vector<unsigned>ContractionHierarchyQuery::get_node_path(){
 
 ContractionHierarchyQuery&ContractionHierarchyQuery::reset_source(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == ContractionHierarchyQuery::InternalState::target_pinned || state == ContractionHierarchyQuery::InternalState::target_run);	
-	
+	assert(state == ContractionHierarchyQuery::InternalState::target_pinned || state == ContractionHierarchyQuery::InternalState::target_run);
+
 	was_forward_pushed.reset_all();
 	forward_queue.clear();
 
@@ -1836,11 +1836,11 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::reset_source(){
 
 ContractionHierarchyQuery&ContractionHierarchyQuery::reset_target(){
 	assert(ch && "query object must have an attached CH");
-	assert(state == ContractionHierarchyQuery::InternalState::source_pinned || state == ContractionHierarchyQuery::InternalState::source_run);	
-	
+	assert(state == ContractionHierarchyQuery::InternalState::source_pinned || state == ContractionHierarchyQuery::InternalState::source_run);
+
 	was_backward_pushed.reset_all();
 	backward_queue.clear();
-	
+
 	state = ContractionHierarchyQuery::InternalState::source_pinned;
 	return *this;
 }
@@ -1909,14 +1909,14 @@ namespace{
 	void pinned_run(
 		std::vector<unsigned>&select_list,
 		unsigned&select_count,
-	
+
 		TimestampFlags&has_forward_predecessor,
 		MinIDQueue&forward_queue,
 		std::vector<unsigned>&tentative_distance,
 
-		std::vector<unsigned>&forward_predecessor_node, 
-		std::vector<unsigned>&predecessor_arc, 
-	
+		std::vector<unsigned>&forward_predecessor_node,
+		std::vector<unsigned>&predecessor_arc,
+
 		const std::vector<unsigned>&forward_first_out,
 		const std::vector<unsigned>&forward_head,
 		const std::vector<unsigned>&forward_weight,
@@ -1934,9 +1934,9 @@ namespace{
 		);
 
 		for(unsigned i=0; i<select_count; ++i){
-			unsigned 
+			unsigned
 				x = select_list[i],
-				dist = inf_weight, 
+				dist = inf_weight,
 				pred = invalid_id;
 			if(has_forward_predecessor.is_set(x))
 				dist = tentative_distance[x];
@@ -1950,7 +1950,7 @@ namespace{
 					pred = xy;
 				}
 			}
-			
+
 			if(pred != invalid_id){
 				tentative_distance[x] = dist;
 				predecessor_arc[x] = pred;
@@ -1986,7 +1986,7 @@ namespace{
 ContractionHierarchyQuery&ContractionHierarchyQuery::pin_targets(const std::vector<unsigned>&external_target_list){
 	assert(ch && "query object must have an attached CH");
 	assert((external_target_list.empty() || max_element_of(external_target_list) < ch->node_count()) && "node id out of bounds");
-	assert(state == ContractionHierarchyQuery::InternalState::initialized);	
+	assert(state == ContractionHierarchyQuery::InternalState::initialized);
 
 	pin(
 		external_target_list,
@@ -1998,7 +1998,7 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::pin_targets(const std::vect
 		backward_predecessor_node, many_to_many_source_or_target_count, backward_tentative_distance, shortest_path_meeting_node,
 
 		backward_queue,
-		
+
 		ch->backward.first_out,
 		ch->backward.head,
 		ch->backward.weight
@@ -2011,7 +2011,7 @@ ContractionHierarchyQuery&ContractionHierarchyQuery::pin_targets(const std::vect
 ContractionHierarchyQuery& ContractionHierarchyQuery::pin_sources(const std::vector<unsigned>&external_source_list){
 	assert(ch && "query object must have an attached CH");
 	assert((external_source_list.empty() || max_element_of(external_source_list) < ch->node_count()) && "node id out of bounds");
-	assert(state == ContractionHierarchyQuery::InternalState::initialized);	
+	assert(state == ContractionHierarchyQuery::InternalState::initialized);
 
 	pin(
 		external_source_list,
@@ -2035,7 +2035,7 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::pin_sources(const std::vec
 ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_targets(){
 	assert(ch && "query object must have an attached CH");
 	assert(!forward_queue.empty() && "must add at least one source before calling run");
-	assert(state == ContractionHierarchyQuery::InternalState::target_pinned);	
+	assert(state == ContractionHierarchyQuery::InternalState::target_pinned);
 
 	pinned_run(
 		backward_tentative_distance, shortest_path_meeting_node,
@@ -2045,7 +2045,7 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_targets(){
 		forward_tentative_distance,
 
 		forward_predecessor_node, forward_predecessor_arc,
-	
+
 		ch->forward.first_out,
 		ch->forward.head,
 		ch->forward.weight,
@@ -2063,17 +2063,17 @@ ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_targets(){
 ContractionHierarchyQuery& ContractionHierarchyQuery::run_to_pinned_sources(){
 	assert(ch && "query object must have an attached CH");
 	assert(!backward_queue.empty() && "must add at least one target before calling run");
-	assert(state == ContractionHierarchyQuery::InternalState::source_pinned);	
-	
+	assert(state == ContractionHierarchyQuery::InternalState::source_pinned);
+
 	pinned_run(
 		forward_tentative_distance, shortest_path_meeting_node,
 
 		was_backward_pushed,
 		backward_queue,
 		backward_tentative_distance,
-	
+
 		backward_predecessor_node, backward_predecessor_arc,
-	
+
 		ch->backward.first_out,
 		ch->backward.head,
 		ch->backward.weight,
@@ -2215,4 +2215,3 @@ template unsigned ContractionHierarchyQuery::get_extra_weight_distance<Contracti
 template int ContractionHierarchyQuery::get_extra_weight_distance<ContractionHierarchyExtraWeight<int>,SaturatedWeightAddition>(const ContractionHierarchyExtraWeight<int>&, const SaturatedWeightAddition&);
 
 } // namespace RoutingKit
-
