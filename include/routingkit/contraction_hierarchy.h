@@ -7,6 +7,7 @@
 #include <routingkit/permutation.h>
 
 #include <vector>
+#include <string>
 #include <functional>
 #include <cassert>
 #include <type_traits>
