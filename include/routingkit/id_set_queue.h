@@ -181,7 +181,9 @@ public:
 			}
 
 			if(is_smaller_child(x)){
-				if(data[other_child(x)])
+				unsigned y = other_child(x);
+				assert(y < data.size());
+				if(data[y])
 					break;
 			} else {
 				assert(!data[other_child(x)]);
