@@ -105,18 +105,19 @@ public:
 
 	//! The queue may contain IDs from 0 to n-1.
 	explicit IDSetMinQueue(unsigned n):
+		max_number_of_ids(n),
 		min_id(invalid_id),
 		offset(smallest_two_power_no_smaller_than(n)),
 		data(n+offset, false){}
 
 	unsigned id_count() const {
-		return data.size()-offset;
+		return max_number_of_ids;
 	}
 
 	//! Adds an ID to the queue. If the ID is already in the queue, then
 	//! nothing happens.
 	void push(unsigned id){
-		assert(id < data.size()-offset && "id out of bounds");
+		assert(id < id_count() && "id out of bounds");
 
 		if(min_id == invalid_id)
 			min_id = id;
@@ -145,7 +146,7 @@ public:
 
 	//! Checks whether an ID is in the queue.
 	bool contains(unsigned id) const {
-		assert(offset + id < data.size() && "id out of bounds");
+		assert(id < id_count() && "id out of bounds");
 		return data[offset + id];
 	}
 
@@ -214,6 +215,7 @@ public:
 
 private:
 
+	unsigned max_number_of_ids;
 	unsigned min_id;
 	unsigned offset;
 	std::vector<bool>data;
