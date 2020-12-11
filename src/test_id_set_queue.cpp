@@ -10,7 +10,6 @@ using namespace std;
 int main(){
 	try{
 		IDSetMinQueue q(100);
-
 		EXPECT_CMP(q.id_count(), ==, 100);
 
 		EXPECT(q.empty());
@@ -50,7 +49,11 @@ int main(){
 		q.clear();
 
 		EXPECT(q.empty());
-	
+
+		q = IDSetMinQueue(5);
+		q.push(4);
+		q.pop();
+
 		cout << "All finished" << endl;
 	}catch(std::exception&err){
 		cout << "exception" << ":" << err.what() << endl;
