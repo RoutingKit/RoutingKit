@@ -37,6 +37,10 @@ private:
 	// The lowest level contains 6 bits because we have at most 6 IDs. Each of 
 	// these lowest level bits encodes whether an ID is in the queue or not.
 	//
+	// If the number of IDs is uneven, for example 5, then we add another node
+	// to the lowest level to make sure that every node has a sibling. This
+	// padding bit will always remain false.
+	//
 	// The bit of upper level nodes is set, iff, there is a child whose bit is
 	// set. If the queue would contain the IDs 1 and 2, then the nodes
 	// 9, 10, 4, 5, 2, and 1 would have their bits sets. 
@@ -108,7 +112,8 @@ public:
 		max_number_of_ids(n),
 		min_id(invalid_id),
 		offset(smallest_two_power_no_smaller_than(n)),
-		data(n+offset, false){}
+		data(n+offset+(n&1), false)// +(n&1) add an element if n is odd
+	{}
 
 	unsigned id_count() const {
 		return max_number_of_ids;
