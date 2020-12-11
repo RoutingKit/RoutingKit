@@ -8,31 +8,85 @@
 
 namespace RoutingKit{
 
+//! This is min queue that can only contain IDs from a given range.
+//! IDs are compared by their value. Ids in the queue cannot be
+//! duplicated.
 class IDSetMinQueue{
 
 private:
+	// Internally, the queue is represented using an implicit binary tree
+	// For every node in the tree, a bit is stored in data.
+	//
+	// Suppose that id_count() is 6, then the tree nodes are organized as
+	// follows:
+	//           1
+	//          / |
+	//         /   |
+	//        /     |
+	//       /       |
+	//      2         3
+	//     / |       / |
+	//    /   |     /   |
+	//   4     5   6     7
+	//  /|    /|  / |
+	// 8 9  10 11 12 13
+	//
+	// Node ids are counted starting from 1 and not from 0. IDs are counted 
+	// starting from 0.
+	//
+	// The lowest level contains 6 bits because we have at most 6 IDs. Each of 
+	// these lowest level bits encodes whether an ID is in the queue or not.
+	//
+	// The bit of upper level nodes is set, iff, there is a child whose bit is
+	// set. If the queue would contain the IDs 1 and 2, then the nodes
+	// 9, 10, 4, 5, 2, and 1 would have their bits sets. 
+	//
+	// Whether a bit is set is stored in data. data[0] is not used. The first
+	// meaningful bit is data[1].
+	//
+	// offset stores the node number of the first node of the lowest level.
+	// Because of the way that the tree is constructed, this is always
+	// a power of two and it is never smaller than id_count().
+	//
+	// min_id stores the smallest id in the queue or invalid_id.
+	//
+	//
+	// parent maps a node onto its parent.
+	//	
+	// other_child turns a node into its sibling.
+	// is_larger_child checks whether a node is a right child in the 
+	// above diagram.
+	// is_smaller_child 
+
+
 	static const unsigned root = 1;
 
+	//! Maps a node onto its parent. Only works if x != root.
 	static unsigned parent(unsigned x){
 		return x>>1;
 	}
-
+	
+	//! Maps a node onto its sibling. Only works if x != root.
 	static unsigned other_child(unsigned x){
 		return x^1;
 	}
 
+	//! True if other_child(x) < x. Only works if x != root.
 	static unsigned is_larger_child(unsigned x){
 		return x&1;
 	}
 
+	//! True if other_child(x) > x. Only works if x != root.
 	static unsigned is_smaller_child(unsigned x){
 		return !is_larger_child(x);
 	}
 
+	//! Returns the node y such that parent(y) == x and y < other_child(y).
 	static unsigned smaller_child(unsigned x){
 		return x<<1;
 	}
 
+	//! Returns the node y such that parent(y) == x and y > other_child(y).
 	static unsigned larger_child(unsigned x){
 		return (x<<1)|1;
 	}
@@ -49,6 +103,7 @@ private:
 public:
 	IDSetMinQueue(){}
 
+	//! The queue may contain IDs from 0 to n-1.
 	explicit IDSetMinQueue(unsigned n):
 		min_id(invalid_id),
 		offset(smallest_two_power_no_smaller_than(n)),
@@ -58,6 +113,8 @@ public:
 		return data.size()-offset;
 	}
 
+	//! Adds an ID to the queue. If the ID is already in the queue, then
+	//! nothing happens.
 	void push(unsigned id){
 		assert(id < data.size()-offset && "id out of bounds");
 
@@ -86,19 +143,25 @@ public:
 		}
 	}
 
+	//! Checks whether an ID is in the queue.
 	bool contains(unsigned id) const {
 		assert(offset + id < data.size() && "id out of bounds");
 		return data[offset + id];
 	}
 
+	//! Checks whether the queue contains any element.
 	bool empty() const {
 		return min_id == invalid_id;
 	}
 
+	//! Returns the smallest ID in the queue without removing it.
+	//! Returns invalid_id if the queue is empty.
 	unsigned peek() const {
 		return min_id;
 	}
 
+	//! Returns the smallest ID in the queue and removes it.
+	//! Returns invalid_id if the queue is empty.
 	unsigned pop() {
 		assert(!empty());
 
@@ -143,15 +206,16 @@ public:
 		return ret;
 	}
 
+	//! Removes all elements from the queue.
 	void clear(){
 		while(!empty())
 			pop();
 	}
 
 private:
+
 	unsigned min_id;
 	unsigned offset;
-	
 	std::vector<bool>data;
 };
 
