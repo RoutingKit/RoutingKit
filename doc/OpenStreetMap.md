@@ -1,8 +1,8 @@
-RoutingKit includes an OpenStreetMap (OSM) data importer. There importer reads PBF files and is optimized for speed an memory consumption. OSM contains the map data. How this data should interpreted is left to the user and depends on the application. For example, the extracted routing graph is significantly different, if one wants to route pedestrians or cars. Pedestrians can use stairs while cars cannot. Cars can drive 130 km/h on the freeway, while pedestrians and not even allowed on the freeway. 
+RoutingKit includes an OpenStreetMap (OSM) data importer. The importer reads PBF files and is optimized for speed and memory consumption. OSM contains the map data. How this data should interpreted is left to the user and depends on the application. For example, the extracted routing graph is significantly different, if one wants to route pedestrians or cars. Pedestrians can use stairs while cars cannot. Cars can drive 130 km/h on the freeway, while pedestrians and not even allowed on the freeway. 
 
 The meta information attached to OSM objects is encoded in a key-value-form. For example, a stair is encoded using "highway=steps". RoutingKit separates the OSM data decoding from the interpretation of the data. The decoding step figures out that there is a tag "highway=steps". The interpretation step determines that "highway=steps" means that no cars can pass.
 
-In many situations, one does not care about the exact interpretation and wants to have something that "just works". RoutingKit therefore provides very simple but unflexible functions in the header `<routingkit/osm_simple.h>`. If you just want a graph, this is the header for you.
+In many situations, one does not care about the exact interpretation and wants to have something that "just works". RoutingKit therefore provides very simple but inflexible functions in the header `<routingkit/osm_simple.h>`. If you just want a graph, this is the header for you.
 
 OSM contains many nodes. A lot of these encode for example the contours of buildings. These are not relevant for routing. RoutingKit therefore does not export every node. It discerns between three types of nodes:
 

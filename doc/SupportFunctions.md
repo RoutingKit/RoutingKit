@@ -170,7 +170,7 @@ A sort is stable if it preserves the relative order of equal elements. A sort pe
 
 You can sort by three criteria. The additional order parameters and the underlying algorithm depend on the criterion used. `using_less` means that the global operator< should be used. No arguments beside the vector are needed. `using_comparator` means that a comparator as the one used by `std::sort` is provided as only additional parameter. Finally `using_key` first maps all elements only ID keys in the range `0` to `key_count-1` using a function object `get_key` and sorts the elements using the key increasingly. The first additional parameter is `key_count` and the second one is `get_key`.
 
-The `using_key` functions use bucket sort and therefore guarentee that their running time is linear in `key_count`. This is for example useful to quickly sort the arcs to build an adjacency array:
+The `using_key` functions use bucket sort and therefore guarantee that their running time is linear in `key_count`. This is for example useful to quickly sort the arcs to build an adjacency array:
 
 ```cpp
 auto p = compute_inverse_sort_permutation_using_key(tail, node_count, [](unsigned x){return x;});
@@ -232,11 +232,11 @@ for(unsigned x=0; x<node_count; ++x)
 		assert(head[xy-1] <= head[xy]);
 ```
 
-For the signifcantly less common case that the tail and the head IDs are from different ID ranges we also provide `compute_[inverse_]sort_permutation_first_by_left_then_by_right[_and_apply_sort_to_left](left_count, left_vector, right_count, right_vector)`.
+For the significantly less common case that the tail and the head IDs are from different ID ranges we also provide `compute_[inverse_]sort_permutation_first_by_left_then_by_right[_and_apply_sort_to_left](left_count, left_vector, right_count, right_vector)`.
 
 # BitVector, IDMapper and Filter
 
-`BitVector` is a class defined in `<routingkit/bit_vector.h>` that, as the name suggests, stores for every element one bit of information. It is similar to `std::vector<bool>` but has the advantage that it allows access to the underlying array. This is crucial in being able to quickly serialize a bit vector to disk. This direct access further allows us to make use of certain processor instructions such as the instruction `popcnt` which counts how many bits are set in an unsigned integer. You can directly manipulate the internal array of a BitVector. It is guarenteed to be a multiple of 512 bits and to be aligned on a 512 bit boundary. Further, all padding bits are guarenteed to be zero.
+`BitVector` is a class defined in `<routingkit/bit_vector.h>` that, as the name suggests, stores for every element one bit of information. It is similar to `std::vector<bool>` but has the advantage that it allows access to the underlying array. This is crucial in being able to quickly serialize a bit vector to disk. This direct access further allows us to make use of certain processor instructions such as the instruction `popcnt` which counts how many bits are set in an unsigned integer. You can directly manipulate the internal array of a BitVector. It is guaranteed to be a multiple of 512 bits and to be aligned on a 512 bit boundary. Further, all padding bits are guaranteed to be zero.
 
 You can use a `BitVector` to filter the elements of another vector. The header `<routingkit/filter.h>` provides the following four functions which do exactly what their name suggests:
 

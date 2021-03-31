@@ -68,7 +68,7 @@ make lib/libroutingkit.a
 
 It should also be possible to get the DLL version to work with some file renaming and tweaking of the make file. Further, you must make sure that all paths during the execution of your executable are correct. Our recommendation is to avoid all this and go the simpler route of just statically linking the library into every executable. 
 
-Strictly speaking, `ROUTING_KIT_NO_POSIX` should not be necessary and RoutingKit will build without it. However, without it, we have witnessed problems in the PBF reader. As these do not occure under Linux, we suspect that there is a problem with the MinGW POSIX compatibility layer.
+Strictly speaking, `ROUTING_KIT_NO_POSIX` should not be necessary and RoutingKit will build without it. However, without it, we have witnessed problems in the PBF reader. As these do not occur under Linux, we suspect that there is a problem with the MinGW POSIX compatibility layer.
 
 Getting the Windows vs Linux paths right in MSYS2 is tricky. We therefore recommend to install RoutingKit MSYS2 system-wide. You do this by copying files into the appropriate places as follows:
 
