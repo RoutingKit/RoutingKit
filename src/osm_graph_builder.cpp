@@ -745,22 +745,26 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
 					}
 
 					if(matching_candidate_count == 0){
-						log_message(
-							"OSM turn restriction relation ID \""+std::to_string(x.osm_relation_id)+"\" "
-							"is a turn restriction where it is impossible to infer the restriction without "
-							"using the turn direction information. However, no restriction candidate is consistent "
-							"with the turn direction. -> ignoring restriction"
-						);
+						if(log_message){
+							log_message(
+								"OSM turn restriction relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+								"is a turn restriction where it is impossible to infer the restriction without "
+								"using the turn direction information. However, no restriction candidate is consistent "
+								"with the turn direction. -> ignoring restriction"
+							);
+						}
 						continue;
 					}
 
 					if(matching_candidate_count >= 2){
-						log_message(
-							"OSM turn restriction relation ID \""+std::to_string(x.osm_relation_id)+"\" "
-							"is a turn restriction where it is impossible to infer the restriction without "
-							"using the turn direction information. However, "+std::to_string(matching_candidate_count)+" restriction candidates are consistent "
-							"with the turn direction -> ignoring all candidates restriction"
-						);
+						if(log_message){
+							log_message(
+								"OSM turn restriction relation ID \""+std::to_string(x.osm_relation_id)+"\" "
+								"is a turn restriction where it is impossible to infer the restriction without "
+								"using the turn direction information. However, "+std::to_string(matching_candidate_count)+" restriction candidates are consistent "
+								"with the turn direction -> ignoring all candidates restriction"
+							);
+						}
 						continue;
 					}
 
