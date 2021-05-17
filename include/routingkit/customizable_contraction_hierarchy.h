@@ -64,6 +64,51 @@ struct CustomizableContractionHierarchy{
 	std::vector<unsigned>extra_backward_input_arc_of_cch;
 };
 
+struct DirectedCustomizableContractionHierarchy{
+	DirectedCustomizableContractionHierarchy(){}
+
+	DirectedCustomizableContractionHierarchy(const std::vector<unsigned>& order, const std::vector<unsigned>& tail, const std::vector<unsigned>& head, std::function<void(const std::string&)>log_message = [](const std::string&){});
+
+	unsigned node_count()const{
+		return rank.size();
+	}
+
+	unsigned input_arc_count() const {
+		return input_arc_to_cch_arc.size();
+	}
+
+	unsigned cch_forward_arc_count() const {
+		return forward_head.size();
+	}
+
+	unsigned cch_backward_arc_count() const {
+		return backward_head.size();
+	}
+
+// private:
+	std::vector<unsigned>order;
+	std::vector<unsigned>rank;
+	
+	std::vector<unsigned>elimination_tree_parent;
+	
+	std::vector<unsigned>forward_first_out;
+	std::vector<unsigned>forward_head;
+	std::vector<unsigned>forward_tail;
+
+	std::vector<unsigned>backward_first_out;
+	std::vector<unsigned>backward_head;
+	std::vector<unsigned>backward_tail;
+	
+	std::vector<unsigned>forward_first_in;
+	std::vector<unsigned>forward_id;
+
+	std::vector<unsigned>backward_first_in;
+	std::vector<unsigned>backward_id;
+	
+	std::vector<unsigned>input_arc_to_cch_arc;
+	BitVector is_forward;
+};
+
 struct CustomizableContractionHierarchyMetric{
 	CustomizableContractionHierarchyMetric(){}
 	CustomizableContractionHierarchyMetric(const CustomizableContractionHierarchy&cch, const unsigned*input_weight);
@@ -83,6 +128,27 @@ struct CustomizableContractionHierarchyMetric{
 	std::vector<unsigned>forward;
 	std::vector<unsigned>backward;
 	const CustomizableContractionHierarchy*cch;
+	const unsigned*input_weight;
+
+};
+
+struct DirectedCustomizableContractionHierarchyMetric{
+	DirectedCustomizableContractionHierarchyMetric(){}
+	DirectedCustomizableContractionHierarchyMetric(const DirectedCustomizableContractionHierarchy&cch, const unsigned*input_weight);
+	DirectedCustomizableContractionHierarchyMetric(const DirectedCustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight);
+
+	DirectedCustomizableContractionHierarchyMetric& reset(const DirectedCustomizableContractionHierarchy&cch, const unsigned*input_weight);
+	DirectedCustomizableContractionHierarchyMetric& reset(const DirectedCustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight);
+
+	DirectedCustomizableContractionHierarchyMetric& reset(const unsigned*input_weight);
+	DirectedCustomizableContractionHierarchyMetric& reset(const std::vector<unsigned>&input_weight);
+
+	DirectedCustomizableContractionHierarchyMetric& customize();
+
+// private:
+	std::vector<unsigned>forward;
+	std::vector<unsigned>backward;
+	const DirectedCustomizableContractionHierarchy*cch;
 	const unsigned*input_weight;
 
 };
@@ -172,6 +238,41 @@ struct CustomizableContractionHierarchyQuery{
 
 	const CustomizableContractionHierarchy*cch;
 	const CustomizableContractionHierarchyMetric*metric;
+	unsigned state;
+};
+
+struct DirectedCustomizableContractionHierarchyQuery{
+	DirectedCustomizableContractionHierarchyQuery(){}
+	explicit DirectedCustomizableContractionHierarchyQuery(const DirectedCustomizableContractionHierarchyMetric&metric);
+
+	DirectedCustomizableContractionHierarchyQuery&reset();
+	DirectedCustomizableContractionHierarchyQuery&reset(const DirectedCustomizableContractionHierarchyMetric&metric);
+
+	DirectedCustomizableContractionHierarchyQuery&add_source(unsigned s, unsigned dist_to_s = 0);
+	DirectedCustomizableContractionHierarchyQuery&add_target(unsigned t, unsigned dist_to_t = 0);
+
+	DirectedCustomizableContractionHierarchyQuery&run();
+
+	unsigned get_used_source();
+	unsigned get_used_target();
+
+	unsigned get_distance();
+
+// private:
+	std::vector<unsigned>forward_tentative_distance, backward_tentative_distance;
+	std::vector<unsigned>source_node;
+	std::vector<unsigned>source_elimination_tree_end;
+	std::vector<unsigned>target_node;
+	std::vector<unsigned>target_elimination_tree_end;
+
+	std::vector<unsigned>forward_predecessor_node, backward_predecessor_node;
+
+	std::vector<bool>in_forward_search_space, in_backward_search_space;
+	
+	unsigned shortest_path_meeting_node;
+
+	const DirectedCustomizableContractionHierarchy*cch;
+	const DirectedCustomizableContractionHierarchyMetric*metric;
 	unsigned state;
 };
 
