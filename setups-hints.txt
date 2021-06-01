@@ -1,0 +1,12 @@
+sudo apt-get install zlib1g-dev
+
+git clone https://github.com/RoutingKit/RoutingKit.git
+cd RoutingKit
+make
+
+g++ -Iinclude -Llib -std=c++11 test_2.cpp -o test_2 -lroutingkit -fopenmp -pthread -lm
+
+export LD_LIBRARY_PATH=lib
+./test_2
+
+//test_2 has coordinates already available, test_1 receives in the terminal as many trips as someone wants
