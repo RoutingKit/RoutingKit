@@ -1,6 +1,6 @@
 sudo apt-get install zlib1g-dev
 
-git clone https://github.com/RoutingKit/RoutingKit.git
+git clone https://github.com/DinuDiana/RoutingKit.git
 cd RoutingKit
 make
 
