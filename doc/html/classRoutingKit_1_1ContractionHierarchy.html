@@ -76,6 +76,8 @@ $(function() {
 <div class="title">RoutingKit::ContractionHierarchy Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="contraction__hierarchy_8h_source.html">contraction_hierarchy.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for RoutingKit::ContractionHierarchy:</div>
 <div class="dyncontent">
@@ -104,35 +106,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (std::ostre
 <tr class="memitem:a159e7c0dd6bcd02acabb39d2a767b82b"><td class="memItemLeft" align="right" valign="top"><a id="a159e7c0dd6bcd02acabb39d2a767b82b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>save_file</b> (const std::string &amp;file_name) const</td></tr>
 <tr class="separator:a159e7c0dd6bcd02acabb39d2a767b82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a203b54f9480783b6b69e11d95fdb9207"><td class="memItemLeft" align="right" valign="top"><a id="a203b54f9480783b6b69e11d95fdb9207"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>node_count</b> () const</td></tr>
+<tr class="memitem:a203b54f9480783b6b69e11d95fdb9207"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#a203b54f9480783b6b69e11d95fdb9207">node_count</a> () const</td></tr>
 <tr class="separator:a203b54f9480783b6b69e11d95fdb9207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aacccc44dcef8bf7465f41cec43cade80"><td class="memItemLeft" align="right" valign="top"><a id="aacccc44dcef8bf7465f41cec43cade80"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>build</b> (unsigned node_count, std::vector&lt; unsigned &gt;tail, std::vector&lt; unsigned &gt;head, std::vector&lt; unsigned &gt;weight, const std::function&lt; void(std::string)&gt; &amp;log_message=std::function&lt; void(std::string)&gt;(), unsigned max_pop_count=default_max_pop_count)</td></tr>
+<tr class="memitem:aacccc44dcef8bf7465f41cec43cade80"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#aacccc44dcef8bf7465f41cec43cade80">build</a> (unsigned <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#a203b54f9480783b6b69e11d95fdb9207">node_count</a>, std::vector&lt; unsigned &gt;tail, std::vector&lt; unsigned &gt;head, std::vector&lt; unsigned &gt;weight, const std::function&lt; void(std::string)&gt; &amp;log_message=std::function&lt; void(std::string)&gt;(), unsigned max_pop_count=default_max_pop_count)</td></tr>
 <tr class="separator:aacccc44dcef8bf7465f41cec43cade80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ae211a13fb20028674152d49787251c"><td class="memItemLeft" align="right" valign="top"><a id="a1ae211a13fb20028674152d49787251c"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>build_given_rank</b> (std::vector&lt; unsigned &gt;rank, std::vector&lt; unsigned &gt;tail, std::vector&lt; unsigned &gt;head, std::vector&lt; unsigned &gt;weight, const std::function&lt; void(std::string)&gt; &amp;log_message=std::function&lt; void(std::string)&gt;(), unsigned max_pop_count=default_max_pop_count)</td></tr>
+<tr class="memitem:a1ae211a13fb20028674152d49787251c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#a1ae211a13fb20028674152d49787251c">build_given_rank</a> (std::vector&lt; unsigned &gt;rank, std::vector&lt; unsigned &gt;tail, std::vector&lt; unsigned &gt;head, std::vector&lt; unsigned &gt;weight, const std::function&lt; void(std::string)&gt; &amp;log_message=std::function&lt; void(std::string)&gt;(), unsigned max_pop_count=default_max_pop_count)</td></tr>
 <tr class="separator:a1ae211a13fb20028674152d49787251c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a468c18c3086ffe7d81cbe4cce0286dbe"><td class="memItemLeft" align="right" valign="top"><a id="a468c18c3086ffe7d81cbe4cce0286dbe"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>build_given_order</b> (std::vector&lt; unsigned &gt;order, std::vector&lt; unsigned &gt;tail, std::vector&lt; unsigned &gt;head, std::vector&lt; unsigned &gt;weight, const std::function&lt; void(std::string)&gt; &amp;log_message=std::function&lt; void(std::string)&gt;(), unsigned max_pop_count=default_max_pop_count)</td></tr>
+<tr class="memitem:a468c18c3086ffe7d81cbe4cce0286dbe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#a468c18c3086ffe7d81cbe4cce0286dbe">build_given_order</a> (std::vector&lt; unsigned &gt;order, std::vector&lt; unsigned &gt;tail, std::vector&lt; unsigned &gt;head, std::vector&lt; unsigned &gt;weight, const std::function&lt; void(std::string)&gt; &amp;log_message=std::function&lt; void(std::string)&gt;(), unsigned max_pop_count=default_max_pop_count)</td></tr>
 <tr class="separator:a468c18c3086ffe7d81cbe4cce0286dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae69d6a5e0a2716d40d3655f53e5e619a"><td class="memItemLeft" align="right" valign="top"><a id="ae69d6a5e0a2716d40d3655f53e5e619a"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (std::function&lt; void(char *, unsigned long long)&gt;data_source)</td></tr>
+<tr class="memitem:ae69d6a5e0a2716d40d3655f53e5e619a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#ae69d6a5e0a2716d40d3655f53e5e619a">read</a> (std::function&lt; void(char *, unsigned long long)&gt;data_source)</td></tr>
 <tr class="separator:ae69d6a5e0a2716d40d3655f53e5e619a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdc5c729274acd43cdd20b0b43984825"><td class="memItemLeft" align="right" valign="top"><a id="acdc5c729274acd43cdd20b0b43984825"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (std::function&lt; void(char *, unsigned long long)&gt;data_source, unsigned long long file_size)</td></tr>
+<tr class="memitem:acdc5c729274acd43cdd20b0b43984825"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#acdc5c729274acd43cdd20b0b43984825">read</a> (std::function&lt; void(char *, unsigned long long)&gt;data_source, unsigned long long file_size)</td></tr>
 <tr class="separator:acdc5c729274acd43cdd20b0b43984825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1271716ad8a4e92d5d0f50cfd5b71bd7"><td class="memItemLeft" align="right" valign="top"><a id="a1271716ad8a4e92d5d0f50cfd5b71bd7"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (std::istream &amp;in)</td></tr>
+<tr class="memitem:a1271716ad8a4e92d5d0f50cfd5b71bd7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#a1271716ad8a4e92d5d0f50cfd5b71bd7">read</a> (std::istream &amp;in)</td></tr>
 <tr class="separator:a1271716ad8a4e92d5d0f50cfd5b71bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ac9001237f61bbd7b0782629e8bccb1"><td class="memItemLeft" align="right" valign="top"><a id="a0ac9001237f61bbd7b0782629e8bccb1"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (std::istream &amp;in, unsigned long long file_size)</td></tr>
+<tr class="memitem:a0ac9001237f61bbd7b0782629e8bccb1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#a0ac9001237f61bbd7b0782629e8bccb1">read</a> (std::istream &amp;in, unsigned long long file_size)</td></tr>
 <tr class="separator:a0ac9001237f61bbd7b0782629e8bccb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad042de33a5c421f908cdfd895dadb849"><td class="memItemLeft" align="right" valign="top"><a id="ad042de33a5c421f908cdfd895dadb849"></a>
-static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>load_file</b> (const std::string &amp;file_name)</td></tr>
+<tr class="memitem:ad042de33a5c421f908cdfd895dadb849"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRoutingKit_1_1ContractionHierarchy.html#ad042de33a5c421f908cdfd895dadb849">load_file</a> (const std::string &amp;file_name)</td></tr>
 <tr class="separator:ad042de33a5c421f908cdfd895dadb849"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -156,6 +149,432 @@ Static Public Attributes</h2></td></tr>
 static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>default_max_pop_count</b> = 500</td></tr>
 <tr class="separator:a6955f37ee2d4490bdde8685937604299"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> contains all the information needed for the hierarchies in this project </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aacccc44dcef8bf7465f41cec43cade80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacccc44dcef8bf7465f41cec43cade80">&#9670;&nbsp;</a></span>build()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::build </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>node_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>tail</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void(std::string)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>log_message</em> = <code>std::function&lt;&#160;void(std::string)&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>max_pop_count</em> = <code>default_max_pop_count</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Build an hierarchy containing a certain amount of nodes</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node_count</td><td>Numbers of nodes in the connection </td></tr>
+    <tr><td class="paramname">tail</td><td>Last node </td></tr>
+    <tr><td class="paramname">head</td><td>First node </td></tr>
+    <tr><td class="paramname">weight</td><td>The weights of the nodes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a468c18c3086ffe7d81cbe4cce0286dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a468c18c3086ffe7d81cbe4cce0286dbe">&#9670;&nbsp;</a></span>build_given_order()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::build_given_order </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>order</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>tail</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void(std::string)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>log_message</em> = <code>std::function&lt;&#160;void(std::string)&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>max_pop_count</em> = <code>default_max_pop_count</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Build an hierarchy containing with a given order</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">order</td><td>The nodes order </td></tr>
+    <tr><td class="paramname">tail</td><td>Last node </td></tr>
+    <tr><td class="paramname">head</td><td>First node </td></tr>
+    <tr><td class="paramname">weight</td><td>The weights of the nodes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1ae211a13fb20028674152d49787251c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ae211a13fb20028674152d49787251c">&#9670;&nbsp;</a></span>build_given_rank()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::build_given_rank </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>rank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>tail</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; unsigned &gt;&#160;</td>
+          <td class="paramname"><em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void(std::string)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>log_message</em> = <code>std::function&lt;&#160;void(std::string)&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>max_pop_count</em> = <code>default_max_pop_count</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Build an hierarchy containing with a given rank</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rank</td><td>The nodes rank </td></tr>
+    <tr><td class="paramname">tail</td><td>Last node </td></tr>
+    <tr><td class="paramname">head</td><td>First node </td></tr>
+    <tr><td class="paramname">weight</td><td>The weights of the nodes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad042de33a5c421f908cdfd895dadb849"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad042de33a5c421f908cdfd895dadb849">&#9670;&nbsp;</a></span>load_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::load_file </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>file_name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read an hierarchy based on an input file</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_name</td><td>The input file name @type file_name std::string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a203b54f9480783b6b69e11d95fdb9207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a203b54f9480783b6b69e11d95fdb9207">&#9670;&nbsp;</a></span>node_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned RoutingKit::ContractionHierarchy::node_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get the node count from the current object </p>
+
+</div>
+</div>
+<a id="ae69d6a5e0a2716d40d3655f53e5e619a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae69d6a5e0a2716d40d3655f53e5e619a">&#9670;&nbsp;</a></span>read() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::read </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(char *, unsigned long long)&gt;&#160;</td>
+          <td class="paramname"><em>data_source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read an hierarchy based on source data</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data_source</td><td>The source data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acdc5c729274acd43cdd20b0b43984825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdc5c729274acd43cdd20b0b43984825">&#9670;&nbsp;</a></span>read() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::read </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(char *, unsigned long long)&gt;&#160;</td>
+          <td class="paramname"><em>data_source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long long&#160;</td>
+          <td class="paramname"><em>file_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read an hierarchy based on source data and a file size</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data_source</td><td>The source data </td></tr>
+    <tr><td class="paramname">file_size</td><td>The size of the file </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1271716ad8a4e92d5d0f50cfd5b71bd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1271716ad8a4e92d5d0f50cfd5b71bd7">&#9670;&nbsp;</a></span>read() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::read </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read an hierarchy based on an input stream</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The input stream </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0ac9001237f61bbd7b0782629e8bccb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ac9001237f61bbd7b0782629e8bccb1">&#9670;&nbsp;</a></span>read() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRoutingKit_1_1ContractionHierarchy.html">ContractionHierarchy</a> RoutingKit::ContractionHierarchy::read </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long long&#160;</td>
+          <td class="paramname"><em>file_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read an hierarchy based on an input stream and file size</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The input stream </td></tr>
+    <tr><td class="paramname">file_size</td><td>The size of the file </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/routingkit/<a class="el" href="contraction__hierarchy_8h_source.html">contraction_hierarchy.h</a></li>
 </ul>

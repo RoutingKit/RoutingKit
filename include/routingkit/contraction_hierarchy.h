@@ -13,39 +13,105 @@
 #include <type_traits>
 #include <limits.h>
 
+/**
+* RoutingKit is the namespace for the entire project
+*/
 namespace RoutingKit{
 
+/**
+ * Class ContractionHierarchy contains all the information needed for the hierarchies in this project
+ */
 class ContractionHierarchy{
 public:
 	static const unsigned default_max_pop_count = 500;
 
+	/**
+	 * Build an hierarchy containing a certain amount of nodes
+	 *
+	 * @param node_count Numbers of nodes in the connection
+	 * @param tail Last node
+	 * @param head First node
+	 * @param weight The weights of the nodes 
+	 */
 	static ContractionHierarchy build(
 		unsigned node_count, std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 		const std::function<void(std::string)>&log_message = std::function<void(std::string)>(), unsigned max_pop_count = default_max_pop_count
 	);
 
+	/**
+	 * Build an hierarchy containing with a given rank
+	 *
+	 * @param rank The nodes rank
+	 * @param tail Last node
+	 * @param head First node
+	 * @param weight The weights of the nodes 
+	 */
 	static ContractionHierarchy build_given_rank(
 		std::vector<unsigned>rank,
 		std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 		const std::function<void(std::string)>&log_message = std::function<void(std::string)>(), unsigned max_pop_count = default_max_pop_count
 	);
 
+	/**
+	 * Build an hierarchy containing with a given order
+	 *
+	 * @param order The nodes order
+	 * @param tail Last node
+	 * @param head First node
+	 * @param weight The weights of the nodes 
+	 */
 	static ContractionHierarchy build_given_order(
 		std::vector<unsigned>order,
 		std::vector<unsigned>tail, std::vector<unsigned>head, std::vector<unsigned>weight,
 		const std::function<void(std::string)>&log_message = std::function<void(std::string)>(), unsigned max_pop_count = default_max_pop_count
 	);
 
+	/**
+	 * Read an hierarchy based on source data
+	 *
+	 * @param data_source The source data
+	 */
 	static ContractionHierarchy read(std::function<void(char*, unsigned long long)>data_source);
+	
+	/**
+	 * Read an hierarchy based on source data and a file size
+	 *
+	 * @param data_source The source data
+	 * @param file_size The size of the file
+	 */
 	static ContractionHierarchy read(std::function<void(char*, unsigned long long)>data_source, unsigned long long file_size);
+	
+	/**
+	 * Read an hierarchy based on an input stream
+	 *
+	 * @param in The input stream
+	 */
 	static ContractionHierarchy read(std::istream&in);
+	
+	/**
+	 * Read an hierarchy based on an input stream and file size
+	 *
+	 * @param in The input stream
+	 * @param file_size The size of the file
+	 */
 	static ContractionHierarchy read(std::istream&in, unsigned long long file_size);
+	
+	/**
+	 * Read an hierarchy based on an input file 
+	 *
+	 * @param file_name The input file name
+	 * @type file_name std::string
+	 */
 	static ContractionHierarchy load_file(const std::string&file_name);
 
 	void write(std::function<void(const char*, unsigned long long)>data_sink) const;
 	void write(std::ostream&out) const;
 	void save_file(const std::string&file_name) const;
 
+	
+	/**
+	 * Get the node count from the current object
+	 */
 	unsigned node_count()const{
 		return rank.size();
 	}

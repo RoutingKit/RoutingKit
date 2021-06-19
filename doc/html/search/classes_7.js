@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['minidqueue_107',['MinIDQueue',['../classRoutingKit_1_1MinIDQueue.html',1,'RoutingKit']]]
+  ['minidqueue_113',['MinIDQueue',['../classRoutingKit_1_1MinIDQueue.html',1,'RoutingKit']]]
 ];

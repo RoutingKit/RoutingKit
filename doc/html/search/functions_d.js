@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_7ebitvector_162',['~BitVector',['../classRoutingKit_1_1BitVector.html#ac8a66fa8749f355d35729617f5d388e8',1,'RoutingKit::BitVector']]]
+  ['size_171',['size',['../classRoutingKit_1_1MinIDQueue.html#a957c6cd4eddc180ba24a690a36e42eb6',1,'RoutingKit::MinIDQueue']]],
+  ['swap_172',['swap',['../classRoutingKit_1_1BitVector.html#a0e63b74a0fa7bb2f08fc36c252a1fe87',1,'RoutingKit::BitVector']]]
 ];
