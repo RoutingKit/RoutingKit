@@ -1,0 +1,91 @@
+\href{https://travis-ci.org/RoutingKit/RoutingKit}{\texttt{ }}
+
+\mbox{\hyperlink{namespaceRoutingKit}{Routing\+Kit}} is a C++ library that provides advanced route planning functionality. It was developed at \href{https://www.kit.edu}{\texttt{ K\+IT}} in the \href{https://i11www.iti.kit.edu/}{\texttt{ group of Prof. Dorothea Wagner}}. The most prominent component is an index-\/based data structure called (Customizable) Contraction Hierarchy, that allows to answer shortest path queries within milliseconds or even less on data sets of continental size while keeping the arc weights flexible. Such running times cannot be achieved without indices.
+
+One of the main design goals of \mbox{\hyperlink{namespaceRoutingKit}{Routing\+Kit}} is to make recent research results easily accessible to people developing route planning applications. A key element is an interface that is a good compromise between usability and running time performance. For example the following code snippet is enough to build and query a basic index given an \href{https://www.openstreetmap.org}{\texttt{ O\+SM}} P\+BF data export.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <routingkit/osm\_simple.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <routingkit/contraction\_hierarchy.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <routingkit/inverse\_vector.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <routingkit/timer.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <routingkit/geo\_position\_to\_node.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{\textcolor{keyword}{using namespace }\mbox{\hyperlink{namespaceRoutingKit}{RoutingKit}};}
+\DoxyCodeLine{\textcolor{keyword}{using namespace }std;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} main()\{}
+\DoxyCodeLine{    \textcolor{comment}{// Load a car routing graph from OpenStreetMap-\/based data}}
+\DoxyCodeLine{    \textcolor{keyword}{auto} graph = simple\_load\_osm\_car\_routing\_graph\_from\_pbf(\textcolor{stringliteral}{"file.pbf"});}
+\DoxyCodeLine{    \textcolor{keyword}{auto} tail = invert\_inverse\_vector(graph.first\_out);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Build the shortest path index}}
+\DoxyCodeLine{    \textcolor{keyword}{auto} ch = ContractionHierarchy::build(}
+\DoxyCodeLine{        graph.node\_count(), }
+\DoxyCodeLine{        tail, graph.head, }
+\DoxyCodeLine{        graph.travel\_time}
+\DoxyCodeLine{    );}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Build the index to quickly map latitudes and longitudes}}
+\DoxyCodeLine{    \mbox{\hyperlink{classRoutingKit_1_1GeoPositionToNode}{GeoPositionToNode}} map\_geo\_position(graph.latitude, graph.longitude);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Besides the CH itself we need a query object. }}
+\DoxyCodeLine{    \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{ContractionHierarchyQuery}} ch\_query(ch);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Use the query object to answer queries from stdin to stdout}}
+\DoxyCodeLine{    \textcolor{keywordtype}{float} from\_latitude, from\_longitude, to\_latitude, to\_longitude;}
+\DoxyCodeLine{    \textcolor{keywordflow}{while}(cin >> from\_latitude >> from\_longitude >> to\_latitude >> to\_longitude)\{}
+\DoxyCodeLine{        \textcolor{keywordtype}{unsigned} from = map\_geo\_position.find\_nearest\_neighbor\_within\_radius(from\_latitude, from\_longitude, 1000).id;}
+\DoxyCodeLine{        \textcolor{keywordflow}{if}(from == invalid\_id)\{}
+\DoxyCodeLine{            cout << \textcolor{stringliteral}{"No node within 1000m from source position"} << endl;}
+\DoxyCodeLine{            \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        \textcolor{keywordtype}{unsigned} to = map\_geo\_position.find\_nearest\_neighbor\_within\_radius(to\_latitude, to\_longitude, 1000).id;}
+\DoxyCodeLine{        \textcolor{keywordflow}{if}(to == invalid\_id)\{}
+\DoxyCodeLine{            cout << \textcolor{stringliteral}{"No node within 1000m from target position"} << endl;}
+\DoxyCodeLine{            \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} start\_time = get\_micro\_time();}
+\DoxyCodeLine{        ch\_query.reset().add\_source(from).add\_target(to).run();}
+\DoxyCodeLine{        \textcolor{keyword}{auto} distance = ch\_query.get\_distance();}
+\DoxyCodeLine{        \textcolor{keyword}{auto} path = ch\_query.get\_node\_path();}
+\DoxyCodeLine{        \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} end\_time = get\_micro\_time();}
+\DoxyCodeLine{}
+\DoxyCodeLine{        cout << \textcolor{stringliteral}{"To get from "}<< from << \textcolor{stringliteral}{" to "}<< to << \textcolor{stringliteral}{" one needs "} << distance << \textcolor{stringliteral}{" milliseconds."} << endl;}
+\DoxyCodeLine{        cout << \textcolor{stringliteral}{"This query was answered in "} << (end\_time -\/ start\_time) << \textcolor{stringliteral}{" microseconds."} << endl;}
+\DoxyCodeLine{        cout << \textcolor{stringliteral}{"The path is"};}
+\DoxyCodeLine{        \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} x:path)}
+\DoxyCodeLine{            cout << \textcolor{stringliteral}{" "} << x;}
+\DoxyCodeLine{        cout << endl;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+You can get O\+SM P\+BF exports from various sources. A popular one is \href{https://download.geofabrik.de/}{\texttt{ Geofabrik}}. Another one is \href{https://mapzen.com/data/metro-extracts/}{\texttt{ Mapzen}}.\hypertarget{index_autotoc_md1}{}\doxysection{Documentation}\label{index_autotoc_md1}
+The functions of \mbox{\hyperlink{namespaceRoutingKit}{Routing\+Kit}} are made available using different headers. This allows for a fine-\/grained control over what is made available and what not. The exact headers are available from the documentation. For cases where this fine-\/grained control is not necessary, \mbox{\hyperlink{namespaceRoutingKit}{Routing\+Kit}} provides the {\ttfamily $<$\mbox{\hyperlink{all_8h_source}{routingkit/all.\+h}}$>$} header, which includes everything. All functionality is in the {\ttfamily \mbox{\hyperlink{namespaceRoutingKit}{Routing\+Kit}}} namespace.
+
+
+\begin{DoxyItemize}
+\item Setup and Installation
+\item Support Functionality
+\item Contraction Hierarchy
+\item Customizable Contraction Hierarchy
+\item Open\+Street\+Map Importer
+\item Converting Coordinates to Node ID
+\end{DoxyItemize}\hypertarget{index_autotoc_md2}{}\doxysection{Publications}\label{index_autotoc_md2}
+Please cite the following article if you use our code in a publication\+:
+
+
+\begin{DoxyItemize}
+\item Customizable Contraction Hierarchies. Julian Dibbelt, Ben Strasser, and Dorothea Wagner. A\+CM Journal of Experimental Algorithmics, 2016.
+\end{DoxyItemize}
+
+The original CH algorithm was introduced in\+:
+
+
+\begin{DoxyItemize}
+\item Exact Routing in Large Road Networks Using Contraction Hierarchies. Robert Geisberger, Peter Sanders, Dominik Schultes, and Christian Vetter. Transportation Science, 2012. 
+\end{DoxyItemize}

@@ -1,0 +1,547 @@
+\hypertarget{namespaceRoutingKit}{}\doxysection{Routing\+Kit Namespace Reference}
+\label{namespaceRoutingKit}\index{RoutingKit@{RoutingKit}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1BlockingFlow}{Blocking\+Flow}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1ContractionHierarchyExtraWeight}{Contraction\+Hierarchy\+Extra\+Weight}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1CustomizableContractionHierarchy}{Customizable\+Contraction\+Hierarchy}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1CustomizableContractionHierarchyMetric}{Customizable\+Contraction\+Hierarchy\+Metric}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1CustomizableContractionHierarchyParallelization}{Customizable\+Contraction\+Hierarchy\+Parallelization}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1CustomizableContractionHierarchyPartialCustomization}{Customizable\+Contraction\+Hierarchy\+Partial\+Customization}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1CustomizableContractionHierarchyQuery}{Customizable\+Contraction\+Hierarchy\+Query}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1CutSide}{Cut\+Side}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1Dijkstra}{Dijkstra}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1GeoPositionToNode}{Geo\+Position\+To\+Node}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1IDMapper}{I\+D\+Mapper}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue}{I\+D\+Set\+Min\+Queue}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1LocalIDMapper}{Local\+I\+D\+Mapper}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue}{Min\+I\+D\+Queue}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1OSMRelationMember}{O\+S\+M\+Relation\+Member}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1OSMRoutingGraph}{O\+S\+M\+Routing\+Graph}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1OSMRoutingIDMapping}{O\+S\+M\+Routing\+I\+D\+Mapping}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1OSMTurnRestriction}{O\+S\+M\+Turn\+Restriction}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1SaturatedWeightAddition}{Saturated\+Weight\+Addition}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1ScalarGetWeight}{Scalar\+Get\+Weight}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1SeparatorDecomposition}{Separator\+Decomposition}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1SimpleOSMBicycleRoutingGraph}{Simple\+O\+S\+M\+Bicycle\+Routing\+Graph}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1SimpleOSMCarRoutingGraph}{Simple\+O\+S\+M\+Car\+Routing\+Graph}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1SimpleOSMPedestrianRoutingGraph}{Simple\+O\+S\+M\+Pedestrian\+Routing\+Graph}}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1StronlyConnectedComponentsResult}{Stronly\+Connected\+Components\+Result}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}}
+\item 
+class \mbox{\hyperlink{classRoutingKit_1_1TimestampFlags}{Timestamp\+Flags}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab1871fe4bd72f64051e0c0a0e3ec72a0}\label{namespaceRoutingKit_ab1871fe4bd72f64051e0c0a0e3ec72a0}} 
+enum {\bfseries O\+S\+M\+I\+D\+Type} \{ {\bfseries node}, 
+{\bfseries way}, 
+{\bfseries relation}
+ \}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a3693c84f1e3cbd21fb5fda3efd8acd71}\label{namespaceRoutingKit_a3693c84f1e3cbd21fb5fda3efd8acd71}} 
+enum {\bfseries O\+S\+M\+Way\+Direction\+Category} \{ {\bfseries open\+\_\+in\+\_\+both}, 
+{\bfseries only\+\_\+open\+\_\+forwards}, 
+{\bfseries only\+\_\+open\+\_\+backwards}, 
+{\bfseries closed}
+ \}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a1d15dffbd00b8f17093261bcb103fa08}\label{namespaceRoutingKit_a1d15dffbd00b8f17093261bcb103fa08}} 
+enum {\bfseries O\+S\+M\+Turn\+Restriction\+Category} \{ {\bfseries mandatory}, 
+{\bfseries prohibitive}
+ \}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a6fcb406bd5921dc33909c32e1462c9c3}\label{namespaceRoutingKit_a6fcb406bd5921dc33909c32e1462c9c3}} 
+enum {\bfseries O\+S\+M\+Turn\+Direction} \{ {\bfseries left\+\_\+turn}, 
+{\bfseries right\+\_\+turn}, 
+{\bfseries straight\+\_\+on}, 
+{\bfseries u\+\_\+turn}
+ \}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afe0d55a53e4b65a62d8e446ac50eecfe}\label{namespaceRoutingKit_afe0d55a53e4b65a62d8e446ac50eecfe}} 
+enum {\bfseries O\+S\+M\+Road\+Geometry} \{ {\bfseries none}, 
+{\bfseries uncompressed}, 
+{\bfseries first\+\_\+and\+\_\+last}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa4355da082af1b999750326829ab6e08}\label{namespaceRoutingKit_aa4355da082af1b999750326829ab6e08}} 
+{\footnotesize template$<$class F $>$ }\\\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries make\+\_\+bit\+\_\+vector} (uint64\+\_\+t size, const F \&f)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a26f4d9865323037112d4d0524a9acacb}\label{namespaceRoutingKit_a26f4d9865323037112d4d0524a9acacb}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$\vert$} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&l, \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a0dfd294177b8a991756faab5341d3a33}\label{namespaceRoutingKit_a0dfd294177b8a991756faab5341d3a33}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$\vert$} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a78e61832d1de8cd1a553a2f3359ffb8c}\label{namespaceRoutingKit_a78e61832d1de8cd1a553a2f3359ffb8c}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$\vert$} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8d362000f068d545715d05b43f904c79}\label{namespaceRoutingKit_a8d362000f068d545715d05b43f904c79}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$\vert$} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a4de43b913bc4d85e9c03de1e378b9de2}\label{namespaceRoutingKit_a4de43b913bc4d85e9c03de1e378b9de2}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator\&} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&l, \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac4b74e362b837c1100ecddd2d4496719}\label{namespaceRoutingKit_ac4b74e362b837c1100ecddd2d4496719}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator\&} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8d37e0c1d5c91b78b9b465225bf133cd}\label{namespaceRoutingKit_a8d37e0c1d5c91b78b9b465225bf133cd}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator\&} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a7b1c5430e228fac3441a9c9ac1567d6d}\label{namespaceRoutingKit_a7b1c5430e228fac3441a9c9ac1567d6d}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator\&} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a00b58a4e0a8550d0042a33435b299f0f}\label{namespaceRoutingKit_a00b58a4e0a8550d0042a33435b299f0f}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$^\wedge$} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&l, \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a563575c0abae5bdf45422959599b6205}\label{namespaceRoutingKit_a563575c0abae5bdf45422959599b6205}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$^\wedge$} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a19cbc0fa38fb26d3ee5ceabe78916872}\label{namespaceRoutingKit_a19cbc0fa38fb26d3ee5ceabe78916872}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$^\wedge$} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae1d90fb813eb8649f7fb637a7992c0ff}\label{namespaceRoutingKit_ae1d90fb813eb8649f7fb637a7992c0ff}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries operator$^\wedge$} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a99a72bfb726362849f5b92da236908f0}\label{namespaceRoutingKit_a99a72bfb726362849f5b92da236908f0}} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa0dc77e2e630e563f5e110522320c9b1}\label{namespaceRoutingKit_aa0dc77e2e630e563f5e110522320c9b1}} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac4a27fcf8cfa489a3f15d53c6ccdd77b}\label{namespaceRoutingKit_ac4a27fcf8cfa489a3f15d53c6ccdd77b}} 
+bool {\bfseries operator$<$=} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a772bfed33a4d5050d395c806c57d1d1f}\label{namespaceRoutingKit_a772bfed33a4d5050d395c806c57d1d1f}} 
+bool {\bfseries operator$>$=} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a0a8b9803f302c41138ec3105de81d3c2}\label{namespaceRoutingKit_a0a8b9803f302c41138ec3105de81d3c2}} 
+void {\bfseries check\+\_\+contraction\+\_\+hierarchy\+\_\+for\+\_\+errors} (const \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} \&ch)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_acd1aefd2b55afdb4d928a64705c2650c}\label{namespaceRoutingKit_acd1aefd2b55afdb4d928a64705c2650c}} 
+template unsigned {\bfseries Contraction\+Hierarchy\+Query\+::get\+\_\+extra\+\_\+weight\+\_\+distance$<$ std\+::vector$<$ unsigned $>$, Saturated\+Weight\+Addition $>$} (const std\+::vector$<$ unsigned $>$ \&, const \mbox{\hyperlink{structRoutingKit_1_1SaturatedWeightAddition}{Saturated\+Weight\+Addition}} \&)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a1cc44756ed7ff2285736c81ce6ab1c11}\label{namespaceRoutingKit_a1cc44756ed7ff2285736c81ce6ab1c11}} 
+template int {\bfseries Contraction\+Hierarchy\+Query\+::get\+\_\+extra\+\_\+weight\+\_\+distance$<$ std\+::vector$<$ int $>$, Saturated\+Weight\+Addition $>$} (const std\+::vector$<$ int $>$ \&, const \mbox{\hyperlink{structRoutingKit_1_1SaturatedWeightAddition}{Saturated\+Weight\+Addition}} \&)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a100ae53c4263c51905497124969d1ca3}\label{namespaceRoutingKit_a100ae53c4263c51905497124969d1ca3}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries inplace\+\_\+keep\+\_\+element\+\_\+of\+\_\+vector\+\_\+if} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&keep\+\_\+filter, std\+::vector$<$ T $>$ \&vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_af75c11706f0c4b7fb5f18fa8b75e4c6b}\label{namespaceRoutingKit_af75c11706f0c4b7fb5f18fa8b75e4c6b}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries inplace\+\_\+remove\+\_\+element\+\_\+from\+\_\+vector\+\_\+if} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&remove\+\_\+filter, std\+::vector$<$ T $>$ \&vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a81a5ed5e670e5b70fe08512161165b97}\label{namespaceRoutingKit_a81a5ed5e670e5b70fe08512161165b97}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries keep\+\_\+element\+\_\+of\+\_\+vector\+\_\+if} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&keep\+\_\+filter, std\+::vector$<$ T $>$vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a3077d2e9933f4601eae57e90acd805e2}\label{namespaceRoutingKit_a3077d2e9933f4601eae57e90acd805e2}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries remove\+\_\+element\+\_\+from\+\_\+vector\+\_\+if} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&keep\+\_\+filter, std\+::vector$<$ T $>$vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a65aeb9bb693a4ec491f9ddc3b7e95a93}\label{namespaceRoutingKit_a65aeb9bb693a4ec491f9ddc3b7e95a93}} 
+double \mbox{\hyperlink{namespaceRoutingKit_a65aeb9bb693a4ec491f9ddc3b7e95a93}{geo\+\_\+dist}} (double lat\+\_\+a, double lon\+\_\+a, double lat\+\_\+b, double lon\+\_\+b)
+\begin{DoxyCompactList}\small\item\em Returns the distance in meters. Latitudes must be in range \mbox{[}-\/90,+90\mbox{]} and longitudes in range \mbox{[}-\/180,+180\mbox{]}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a977172a4784b95bf489f98bafc4b81d6}\label{namespaceRoutingKit_a977172a4784b95bf489f98bafc4b81d6}} 
+std\+::vector$<$ unsigned $>$ {\bfseries convert\+\_\+node\+\_\+path\+\_\+to\+\_\+arc\+\_\+path} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head, std\+::vector$<$ unsigned $>$path)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afa7c4dd005129c52c2c6ee47e2969d5c}\label{namespaceRoutingKit_afa7c4dd005129c52c2c6ee47e2969d5c}} 
+std\+::vector$<$ unsigned $>$ {\bfseries convert\+\_\+arc\+\_\+path\+\_\+to\+\_\+node\+\_\+path} (unsigned source, const std\+::vector$<$ unsigned $>$ \&head, std\+::vector$<$ unsigned $>$path)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a6bb8c414fa4fba843f4192da089372f5}\label{namespaceRoutingKit_a6bb8c414fa4fba843f4192da089372f5}} 
+unsigned {\bfseries find\+\_\+arc} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head, unsigned x, unsigned y)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae574a1b6ded9a986994365282246e2f2}\label{namespaceRoutingKit_ae574a1b6ded9a986994365282246e2f2}} 
+unsigned {\bfseries find\+\_\+arc\+\_\+or\+\_\+return\+\_\+invalid} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head, unsigned x, unsigned y)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a0d497957050c42331feb718c556e3fb1}\label{namespaceRoutingKit_a0d497957050c42331feb718c556e3fb1}} 
+unsigned {\bfseries find\+\_\+arc\+\_\+given\+\_\+sorted\+\_\+head} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head, unsigned x, unsigned y)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ad07f5f2f59aba6519730b38982d44897}\label{namespaceRoutingKit_ad07f5f2f59aba6519730b38982d44897}} 
+unsigned {\bfseries find\+\_\+arc\+\_\+or\+\_\+return\+\_\+invalid\+\_\+given\+\_\+sorted\+\_\+head} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head, unsigned x, unsigned y)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a4bce22970a4111d067057f0c1303a649}\label{namespaceRoutingKit_a4bce22970a4111d067057f0c1303a649}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+left\+\_\+then\+\_\+by\+\_\+right} (unsigned a\+\_\+count, const std\+::vector$<$ unsigned $>$ \&a, unsigned b\+\_\+count, const std\+::vector$<$ unsigned $>$ \&b)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8dbd5438986a6db936e2dbf982138b0f}\label{namespaceRoutingKit_a8dbd5438986a6db936e2dbf982138b0f}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+left\+\_\+then\+\_\+by\+\_\+right} (unsigned a\+\_\+count, const std\+::vector$<$ unsigned $>$ \&a, unsigned b\+\_\+count, const std\+::vector$<$ unsigned $>$ \&b)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac589aa0d1e60de720c5334f28def05cb}\label{namespaceRoutingKit_ac589aa0d1e60de720c5334f28def05cb}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+left\+\_\+then\+\_\+by\+\_\+right\+\_\+and\+\_\+apply\+\_\+sort\+\_\+to\+\_\+left} (unsigned a\+\_\+count, std\+::vector$<$ unsigned $>$ \&a, unsigned b\+\_\+count, const std\+::vector$<$ unsigned $>$ \&b)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a9b16e27c5fb4818ca597b16d60092966}\label{namespaceRoutingKit_a9b16e27c5fb4818ca597b16d60092966}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+tail\+\_\+then\+\_\+by\+\_\+head} (unsigned node\+\_\+count, const std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a13bc37cc43acd3e3ab24c09d43164d97}\label{namespaceRoutingKit_a13bc37cc43acd3e3ab24c09d43164d97}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+tail\+\_\+then\+\_\+by\+\_\+head} (unsigned node\+\_\+count, const std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a57bd4b82d830dfe2bb4bc7cdff4f6b1f}\label{namespaceRoutingKit_a57bd4b82d830dfe2bb4bc7cdff4f6b1f}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+tail\+\_\+then\+\_\+by\+\_\+head\+\_\+and\+\_\+apply\+\_\+sort\+\_\+to\+\_\+tail} (unsigned node\+\_\+count, std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a05d6dd191e7f05e4b25e9a6bbacbffa8}\label{namespaceRoutingKit_a05d6dd191e7f05e4b25e9a6bbacbffa8}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+sort\+\_\+permutation\+\_\+first\+\_\+by\+\_\+tail\+\_\+then\+\_\+by\+\_\+head\+\_\+and\+\_\+apply\+\_\+sort\+\_\+to\+\_\+tail} (unsigned node\+\_\+count, std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a95ab955bdd8d031fc27b340b1830597e}\label{namespaceRoutingKit_a95ab955bdd8d031fc27b340b1830597e}} 
+std\+::vector$<$ unsigned $>$ {\bfseries invert\+\_\+vector} (const std\+::vector$<$ unsigned $>$ \&v, unsigned element\+\_\+count)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a29f6db63decc1a385eb983fbb2ad6280}\label{namespaceRoutingKit_a29f6db63decc1a385eb983fbb2ad6280}} 
+std\+::vector$<$ unsigned $>$ {\bfseries invert\+\_\+inverse\+\_\+vector} (const std\+::vector$<$ unsigned $>$ \&sorted\+\_\+index)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a58badb817f8574ad1040262a382d03df}\label{namespaceRoutingKit_a58badb817f8574ad1040262a382d03df}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries min\+\_\+to} (T \&x, const T \&y)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a72d717e35c842cd70c6dc8c609bb7def}\label{namespaceRoutingKit_a72d717e35c842cd70c6dc8c609bb7def}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries max\+\_\+to} (T \&x, const T \&y)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a755069ee4f1916022dd0cc509d342e7f}\label{namespaceRoutingKit_a755069ee4f1916022dd0cc509d342e7f}} 
+{\footnotesize template$<$class T $>$ }\\unsigned {\bfseries first\+\_\+min\+\_\+element\+\_\+position\+\_\+of} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa972fc557e561133ce114cacee2dadac}\label{namespaceRoutingKit_aa972fc557e561133ce114cacee2dadac}} 
+{\footnotesize template$<$class T $>$ }\\const T \& {\bfseries min\+\_\+element\+\_\+of} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a07065be9e5cbe783ec89746f0351ccd2}\label{namespaceRoutingKit_a07065be9e5cbe783ec89746f0351ccd2}} 
+{\footnotesize template$<$class T $>$ }\\const T \& {\bfseries min\+\_\+element\+\_\+of} (const std\+::vector$<$ T $>$ \&v, const T \&empty\+\_\+value)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a340a19bc81c7abf0adbc77a2340f0ff4}\label{namespaceRoutingKit_a340a19bc81c7abf0adbc77a2340f0ff4}} 
+{\footnotesize template$<$class T $>$ }\\unsigned {\bfseries first\+\_\+max\+\_\+element\+\_\+position\+\_\+of} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a4f4cbe620a0b259b7179dd7a91ca0afd}\label{namespaceRoutingKit_a4f4cbe620a0b259b7179dd7a91ca0afd}} 
+{\footnotesize template$<$class T $>$ }\\const T \& {\bfseries max\+\_\+element\+\_\+of} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a3d212098ed5d932a421e6acbb54987ef}\label{namespaceRoutingKit_a3d212098ed5d932a421e6acbb54987ef}} 
+{\footnotesize template$<$class T $>$ }\\const T \& {\bfseries max\+\_\+element\+\_\+of} (const std\+::vector$<$ T $>$ \&v, const T \&empty\+\_\+value)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae80fa6c1dcc6f7a804d0549d23cb2d7f}\label{namespaceRoutingKit_ae80fa6c1dcc6f7a804d0549d23cb2d7f}} 
+\mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} {\bfseries make\+\_\+graph\+\_\+fragment} (unsigned node\+\_\+count, const std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a898a50f305255e893361126987f0701b}\label{namespaceRoutingKit_a898a50f305255e893361126987f0701b}} 
+std\+::vector$<$ \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} $>$ {\bfseries decompose\+\_\+graph\+\_\+fragment\+\_\+into\+\_\+connected\+\_\+components} (\mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} fragment)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac86fe6d8d3fc5c26ad57fff235516714}\label{namespaceRoutingKit_ac86fe6d8d3fc5c26ad57fff235516714}} 
+void {\bfseries pick\+\_\+smaller\+\_\+side} (\mbox{\hyperlink{structRoutingKit_1_1CutSide}{Cut\+Side}} \&cut)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_af0bf95ec99a5a2ad5b6bcc0089a7b5d2}\label{namespaceRoutingKit_af0bf95ec99a5a2ad5b6bcc0089a7b5d2}} 
+\mbox{\hyperlink{structRoutingKit_1_1CutSide}{Cut\+Side}} {\bfseries inertial\+\_\+flow} (const \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} \&fragment, unsigned min\+\_\+balance, const std\+::vector$<$ float $>$ \&latitude, const std\+::vector$<$ float $>$ \&longitude, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\})
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a0d7e154e85753cf93a24fac01fb90012}\label{namespaceRoutingKit_a0d7e154e85753cf93a24fac01fb90012}} 
+\mbox{\hyperlink{structRoutingKit_1_1CutSide}{Cut\+Side}} {\bfseries inertial\+\_\+flow} (const \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} \&fragment, const std\+::vector$<$ float $>$ \&latitude, const std\+::vector$<$ float $>$ \&longitude, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\})
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a39e6080000ecea582fee1e955196d7bc}\label{namespaceRoutingKit_a39e6080000ecea582fee1e955196d7bc}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries derive\+\_\+separator\+\_\+from\+\_\+cut} (const \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} \&fragment, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&cut)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab8596fd46f3f226e97b8239efc313521}\label{namespaceRoutingKit_ab8596fd46f3f226e97b8239efc313521}} 
+\mbox{\hyperlink{structRoutingKit_1_1SeparatorDecomposition}{Separator\+Decomposition}} {\bfseries compute\+\_\+separator\+\_\+decomposition} (\mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} fragment, const std\+::function$<$ \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}(const \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} \&)$>$ \&compute\+\_\+separator, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\})
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a06523463d14124a1c95407066f0f8771}\label{namespaceRoutingKit_a06523463d14124a1c95407066f0f8771}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+nested\+\_\+node\+\_\+dissection\+\_\+order} (\mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} fragment, const std\+::function$<$ \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}(const \mbox{\hyperlink{structRoutingKit_1_1GraphFragment}{Graph\+Fragment}} \&)$>$ \&compute\+\_\+separator, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\})
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae8e3b026a70b54371caf140369968073}\label{namespaceRoutingKit_ae8e3b026a70b54371caf140369968073}} 
+std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+nested\+\_\+node\+\_\+dissection\+\_\+order\+\_\+using\+\_\+inertial\+\_\+flow} (unsigned node\+\_\+count, const std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head, const std\+::vector$<$ float $>$ \&latitude, const std\+::vector$<$ float $>$ \&longitude, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\})
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac20da88f5cc9d068b59ebad5b55b45eb}\label{namespaceRoutingKit_ac20da88f5cc9d068b59ebad5b55b45eb}} 
+void {\bfseries unordered\+\_\+read\+\_\+osm\+\_\+pbf} (const std\+::string \&file\+\_\+name, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+node\+\_\+id, double latitude, double longitude, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags)$>$node\+\_\+callback, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+way\+\_\+id, const std\+::vector$<$ uint64\+\_\+t $>$ \&osm\+\_\+node\+\_\+id\+\_\+list, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags)$>$way\+\_\+callback, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+relation\+\_\+id, const std\+::vector$<$ \mbox{\hyperlink{structRoutingKit_1_1OSMRelationMember}{O\+S\+M\+Relation\+Member}} $>$ \&member\+\_\+list, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags)$>$relation\+\_\+callback, std\+::function$<$ void(const std\+::string \&msg)$>$log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\})
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a04712d1b60f2dadda61507a3681ab43e}\label{namespaceRoutingKit_a04712d1b60f2dadda61507a3681ab43e}} 
+void {\bfseries ordered\+\_\+read\+\_\+osm\+\_\+pbf} (const std\+::string \&file\+\_\+name, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+node\+\_\+id, double latitude, double longitude, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags)$>$node\+\_\+callback, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+way\+\_\+id, const std\+::vector$<$ uint64\+\_\+t $>$ \&osm\+\_\+node\+\_\+id\+\_\+list, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags)$>$way\+\_\+callback, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+relation\+\_\+id, const std\+::vector$<$ \mbox{\hyperlink{structRoutingKit_1_1OSMRelationMember}{O\+S\+M\+Relation\+Member}} $>$ \&member\+\_\+list, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags)$>$relation\+\_\+callback, std\+::function$<$ void(const std\+::string \&msg)$>$log\+\_\+message=\mbox{[}$\,$\mbox{]}(const std\+::string \&)\{\}, bool file\+\_\+is\+\_\+ordered\+\_\+even\+\_\+though\+\_\+file\+\_\+header\+\_\+says\+\_\+that\+\_\+it\+\_\+is\+\_\+unordered=false)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a5539bfc8ea64f6a9d66b5c6c9dc819e1}\label{namespaceRoutingKit_a5539bfc8ea64f6a9d66b5c6c9dc819e1}} 
+void {\bfseries speedtest\+\_\+osm\+\_\+pbf\+\_\+reading} (const std\+::string \&pbf\+\_\+file, std\+::function$<$ void(std\+::string)$>$log\+\_\+message)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_acf6fa878cb441a07069d50cedd6e4343}\label{namespaceRoutingKit_acf6fa878cb441a07069d50cedd6e4343}} 
+\mbox{\hyperlink{structRoutingKit_1_1OSMRoutingIDMapping}{O\+S\+M\+Routing\+I\+D\+Mapping}} {\bfseries load\+\_\+osm\+\_\+id\+\_\+mapping\+\_\+from\+\_\+pbf} (const std\+::string \&file\+\_\+name, std\+::function$<$ bool(uint64\+\_\+t osm\+\_\+node\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&node\+\_\+tags)$>$is\+\_\+routing\+\_\+node, std\+::function$<$ bool(uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&way\+\_\+tags)$>$is\+\_\+way\+\_\+used\+\_\+for\+\_\+routing, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr, bool all\+\_\+modelling\+\_\+nodes\+\_\+are\+\_\+routing\+\_\+nodes=false)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab657a2d3051391547ceb42669ad1bb58}\label{namespaceRoutingKit_ab657a2d3051391547ceb42669ad1bb58}} 
+\mbox{\hyperlink{structRoutingKit_1_1OSMRoutingGraph}{O\+S\+M\+Routing\+Graph}} {\bfseries load\+\_\+osm\+\_\+routing\+\_\+graph\+\_\+from\+\_\+pbf} (const std\+::string \&pbf\+\_\+file, const \mbox{\hyperlink{structRoutingKit_1_1OSMRoutingIDMapping}{O\+S\+M\+Routing\+I\+D\+Mapping}} \&mapping, std\+::function$<$ O\+S\+M\+Way\+Direction\+Category(uint64\+\_\+t osm\+\_\+way\+\_\+id, unsigned routing\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&way\+\_\+tags) $>$way\+\_\+callback, std\+::function$<$ void(uint64\+\_\+t osm\+\_\+relation\+\_\+id, const std\+::vector$<$ \mbox{\hyperlink{structRoutingKit_1_1OSMRelationMember}{O\+S\+M\+Relation\+Member}} $>$ \&member\+\_\+list, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(\mbox{\hyperlink{structRoutingKit_1_1OSMTurnRestriction}{O\+S\+M\+Turn\+Restriction}})$>$) $>$turn\+\_\+restriction\+\_\+decoder, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr, bool file\+\_\+is\+\_\+ordered\+\_\+even\+\_\+though\+\_\+file\+\_\+header\+\_\+says\+\_\+that\+\_\+it\+\_\+is\+\_\+unordered=false, O\+S\+M\+Road\+Geometry geometry\+\_\+to\+\_\+be\+\_\+extracted=O\+S\+M\+Road\+Geometry\+::none)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab5bacaf23ee55f82e01a460ac4dd259f}\label{namespaceRoutingKit_ab5bacaf23ee55f82e01a460ac4dd259f}} 
+bool {\bfseries is\+\_\+osm\+\_\+way\+\_\+used\+\_\+by\+\_\+cars} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa71505075c8eabefa69dd1be9835f836}\label{namespaceRoutingKit_aa71505075c8eabefa69dd1be9835f836}} 
+unsigned {\bfseries get\+\_\+osm\+\_\+way\+\_\+speed} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae1855d755b2b4328bbc51770dc11550a}\label{namespaceRoutingKit_ae1855d755b2b4328bbc51770dc11550a}} 
+std\+::string {\bfseries get\+\_\+osm\+\_\+way\+\_\+name} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ad12b9b1901d8219b9cf85a77db6c5612}\label{namespaceRoutingKit_ad12b9b1901d8219b9cf85a77db6c5612}} 
+O\+S\+M\+Way\+Direction\+Category {\bfseries get\+\_\+osm\+\_\+car\+\_\+direction\+\_\+category} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac919109ac11e293d398c69cec0e5f9c4}\label{namespaceRoutingKit_ac919109ac11e293d398c69cec0e5f9c4}} 
+void {\bfseries decode\+\_\+osm\+\_\+car\+\_\+turn\+\_\+restrictions} (uint64\+\_\+t osm\+\_\+relation\+\_\+id, const std\+::vector$<$ \mbox{\hyperlink{structRoutingKit_1_1OSMRelationMember}{O\+S\+M\+Relation\+Member}} $>$ \&member\+\_\+list, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(\mbox{\hyperlink{structRoutingKit_1_1OSMTurnRestriction}{O\+S\+M\+Turn\+Restriction}})$>$on\+\_\+new\+\_\+turn\+\_\+restriction, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a3440f2c8d0d153704e1241b2ebc9f3ba}\label{namespaceRoutingKit_a3440f2c8d0d153704e1241b2ebc9f3ba}} 
+bool {\bfseries is\+\_\+osm\+\_\+way\+\_\+used\+\_\+by\+\_\+bicycles} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8662b137f1135d71160df2eba8313996}\label{namespaceRoutingKit_a8662b137f1135d71160df2eba8313996}} 
+unsigned char {\bfseries get\+\_\+osm\+\_\+way\+\_\+bicycle\+\_\+comfort\+\_\+level} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a1dd9905b176d2689991c51d43899e989}\label{namespaceRoutingKit_a1dd9905b176d2689991c51d43899e989}} 
+O\+S\+M\+Way\+Direction\+Category {\bfseries get\+\_\+osm\+\_\+bicycle\+\_\+direction\+\_\+category} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab6540c099371f058f9a7aa4464aa15c9}\label{namespaceRoutingKit_ab6540c099371f058f9a7aa4464aa15c9}} 
+unsigned char {\bfseries get\+\_\+min\+\_\+bicycle\+\_\+comfort\+\_\+level} ()
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a225a7a67e7c34536827cf27ad7b931fd}\label{namespaceRoutingKit_a225a7a67e7c34536827cf27ad7b931fd}} 
+unsigned char {\bfseries get\+\_\+max\+\_\+bicycle\+\_\+comfort\+\_\+level} ()
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a9b61e079452db321d1f27437c7fd1ee3}\label{namespaceRoutingKit_a9b61e079452db321d1f27437c7fd1ee3}} 
+bool {\bfseries is\+\_\+osm\+\_\+way\+\_\+used\+\_\+by\+\_\+pedestrians} (uint64\+\_\+t osm\+\_\+way\+\_\+id, const \mbox{\hyperlink{classRoutingKit_1_1TagMap}{Tag\+Map}} \&tags, std\+::function$<$ void(const std\+::string \&)$>$log\+\_\+message=nullptr)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aef3de1bf5347f1b44499fc49bcf731bf}\label{namespaceRoutingKit_aef3de1bf5347f1b44499fc49bcf731bf}} 
+\mbox{\hyperlink{structRoutingKit_1_1SimpleOSMCarRoutingGraph}{Simple\+O\+S\+M\+Car\+Routing\+Graph}} {\bfseries simple\+\_\+load\+\_\+osm\+\_\+car\+\_\+routing\+\_\+graph\+\_\+from\+\_\+pbf} (const std\+::string \&pbf\+\_\+file, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=nullptr, bool all\+\_\+modelling\+\_\+nodes\+\_\+are\+\_\+routing\+\_\+nodes=false, bool file\+\_\+is\+\_\+ordered\+\_\+even\+\_\+though\+\_\+file\+\_\+header\+\_\+says\+\_\+that\+\_\+it\+\_\+is\+\_\+unordered=false)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_adf7c642c1265a90dbae004f669a7a652}\label{namespaceRoutingKit_adf7c642c1265a90dbae004f669a7a652}} 
+\mbox{\hyperlink{structRoutingKit_1_1SimpleOSMPedestrianRoutingGraph}{Simple\+O\+S\+M\+Pedestrian\+Routing\+Graph}} {\bfseries simple\+\_\+load\+\_\+osm\+\_\+pedestrian\+\_\+routing\+\_\+graph\+\_\+from\+\_\+pbf} (const std\+::string \&pbf\+\_\+file, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=nullptr, bool all\+\_\+modelling\+\_\+nodes\+\_\+are\+\_\+routing\+\_\+nodes=false, bool file\+\_\+is\+\_\+ordered\+\_\+even\+\_\+though\+\_\+file\+\_\+header\+\_\+says\+\_\+that\+\_\+it\+\_\+is\+\_\+unordered=false)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a700374ba57beb2db75e3638971556fa7}\label{namespaceRoutingKit_a700374ba57beb2db75e3638971556fa7}} 
+\mbox{\hyperlink{structRoutingKit_1_1SimpleOSMBicycleRoutingGraph}{Simple\+O\+S\+M\+Bicycle\+Routing\+Graph}} {\bfseries simple\+\_\+load\+\_\+osm\+\_\+bicycle\+\_\+routing\+\_\+graph\+\_\+from\+\_\+pbf} (const std\+::string \&pbf\+\_\+file, const std\+::function$<$ void(const std\+::string \&)$>$ \&log\+\_\+message=nullptr, bool all\+\_\+modelling\+\_\+nodes\+\_\+are\+\_\+routing\+\_\+nodes=false, bool file\+\_\+is\+\_\+ordered\+\_\+even\+\_\+though\+\_\+file\+\_\+header\+\_\+says\+\_\+that\+\_\+it\+\_\+is\+\_\+unordered=false)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa88347cffeb10c0c82c8c84f03146663}\label{namespaceRoutingKit_aa88347cffeb10c0c82c8c84f03146663}} 
+bool {\bfseries is\+\_\+permutation} (const std\+::vector$<$ unsigned $>$ \&p)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ad33a899f3a2ee58f4c2ad8f2eb32c897}\label{namespaceRoutingKit_ad33a899f3a2ee58f4c2ad8f2eb32c897}} 
+std\+::vector$<$ unsigned $>$ {\bfseries chain\+\_\+permutation\+\_\+first\+\_\+left\+\_\+then\+\_\+right} (const std\+::vector$<$ unsigned $>$ \&p, const std\+::vector$<$ unsigned $>$ \&q)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aeecb5a9f78989134528f1b5a271e4ca2}\label{namespaceRoutingKit_aeecb5a9f78989134528f1b5a271e4ca2}} 
+std\+::vector$<$ unsigned $>$ {\bfseries chain\+\_\+permutation\+\_\+first\+\_\+right\+\_\+then\+\_\+left} (const std\+::vector$<$ unsigned $>$ \&p, const std\+::vector$<$ unsigned $>$ \&q)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a7eab85ee9eddd3c551de4096c78fe53d}\label{namespaceRoutingKit_a7eab85ee9eddd3c551de4096c78fe53d}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries apply\+\_\+permutation} (const std\+::vector$<$ unsigned $>$ \&p, const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aeb959143ed568f0706c231f753366105}\label{namespaceRoutingKit_aeb959143ed568f0706c231f753366105}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries apply\+\_\+permutation} (const std\+::vector$<$ unsigned $>$ \&p, std\+::vector$<$ T $>$ \&\&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afcac47355842e78c54d66eaaaa755d84}\label{namespaceRoutingKit_afcac47355842e78c54d66eaaaa755d84}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries apply\+\_\+inverse\+\_\+permutation} (const std\+::vector$<$ unsigned $>$ \&p, const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a30e53cf89d97088498a1c4f577fb2912}\label{namespaceRoutingKit_a30e53cf89d97088498a1c4f577fb2912}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries apply\+\_\+inverse\+\_\+permutation} (const std\+::vector$<$ unsigned $>$ \&p, std\+::vector$<$ T $>$ \&\&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a0f1ac79b3cc39f1632173438eeeb553d}\label{namespaceRoutingKit_a0f1ac79b3cc39f1632173438eeeb553d}} 
+void {\bfseries inplace\+\_\+apply\+\_\+permutation\+\_\+to\+\_\+elements\+\_\+of} (const std\+::vector$<$ unsigned $>$ \&p, std\+::vector$<$ unsigned $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aecc5d5c365d03665ca17c5a0d0508ffd}\label{namespaceRoutingKit_aecc5d5c365d03665ca17c5a0d0508ffd}} 
+std\+::vector$<$ unsigned $>$ {\bfseries apply\+\_\+permutation\+\_\+to\+\_\+elements\+\_\+of} (const std\+::vector$<$ unsigned $>$ \&p, const std\+::vector$<$ unsigned $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aeb431b8382665d783de14e01ea815375}\label{namespaceRoutingKit_aeb431b8382665d783de14e01ea815375}} 
+void {\bfseries inplace\+\_\+apply\+\_\+permutation\+\_\+to\+\_\+possibly\+\_\+invalid\+\_\+elements\+\_\+of} (const std\+::vector$<$ unsigned $>$ \&p, std\+::vector$<$ unsigned $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_af5aedfbec18f453b8bbc542ddaef067d}\label{namespaceRoutingKit_af5aedfbec18f453b8bbc542ddaef067d}} 
+std\+::vector$<$ unsigned $>$ {\bfseries apply\+\_\+permutation\+\_\+to\+\_\+possibly\+\_\+invalid\+\_\+elements\+\_\+of} (const std\+::vector$<$ unsigned $>$ \&p, const std\+::vector$<$ unsigned $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a5bd1c3df544e5c821f1d4f33ce9c76ae}\label{namespaceRoutingKit_a5bd1c3df544e5c821f1d4f33ce9c76ae}} 
+std\+::vector$<$ unsigned $>$ {\bfseries invert\+\_\+permutation} (const std\+::vector$<$ unsigned $>$ \&p)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a2b7dd5438441e40c341495e44b9de167}\label{namespaceRoutingKit_a2b7dd5438441e40c341495e44b9de167}} 
+std\+::vector$<$ unsigned $>$ {\bfseries identity\+\_\+permutation} (unsigned n)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a89cb1dee5658ffbceb59ae466aafc0f1}\label{namespaceRoutingKit_a89cb1dee5658ffbceb59ae466aafc0f1}} 
+{\footnotesize template$<$class Random\+Generator $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries random\+\_\+permutation} (unsigned n, Random\+Generator \&\&gen)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a37acee8244e0c51a5a46b6b41a09fb3f}\label{namespaceRoutingKit_a37acee8244e0c51a5a46b6b41a09fb3f}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+stable\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac3d75ffcdaf45315528188930f1f2176}\label{namespaceRoutingKit_ac3d75ffcdaf45315528188930f1f2176}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ T $>$ {\bfseries stable\+\_\+sort\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae3934f26ee38901dd88b548c81c16b93}\label{namespaceRoutingKit_ae3934f26ee38901dd88b548c81c16b93}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ T $>$ {\bfseries stable\+\_\+sort\+\_\+using\+\_\+comparator} (std\+::vector$<$ T $>$ \&\&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa5ad3b68f433ab5064cd78911523feb4}\label{namespaceRoutingKit_aa5ad3b68f433ab5064cd78911523feb4}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aa1c8754bfedd9046445e0cc91ac3828c}\label{namespaceRoutingKit_aa1c8754bfedd9046445e0cc91ac3828c}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ T $>$ {\bfseries sort\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a47c8aee16ad62b0273df84c60bcaf601}\label{namespaceRoutingKit_a47c8aee16ad62b0273df84c60bcaf601}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ T $>$ {\bfseries sort\+\_\+using\+\_\+comparator} (std\+::vector$<$ T $>$ \&\&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a3198f7f07a3e97f59dd8b6fee150d8ad}\label{namespaceRoutingKit_a3198f7f07a3e97f59dd8b6fee150d8ad}} 
+{\footnotesize template$<$class T , class C $>$ }\\bool {\bfseries is\+\_\+sorted\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a1001eaf1b536bfa77d771b30435a170d}\label{namespaceRoutingKit_a1001eaf1b536bfa77d771b30435a170d}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac2b2c5ced6589e097ddbc11916afb3bb}\label{namespaceRoutingKit_ac2b2c5ced6589e097ddbc11916afb3bb}} 
+{\footnotesize template$<$class T , class C $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+stable\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+comparator} (const std\+::vector$<$ T $>$ \&v, const C \&is\+\_\+less)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_acaf146381ec0d97140b5630d4b47adf6}\label{namespaceRoutingKit_acaf146381ec0d97140b5630d4b47adf6}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_af53969f19436adcbfc411ce4d02a49d6}\label{namespaceRoutingKit_af53969f19436adcbfc411ce4d02a49d6}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+stable\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ad846aceb2365904ec37c03687cdead02}\label{namespaceRoutingKit_ad846aceb2365904ec37c03687cdead02}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a1302c1152bacc7593275a3fbbf336c5e}\label{namespaceRoutingKit_a1302c1152bacc7593275a3fbbf336c5e}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+stable\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae2197a816e10499fd2e9d27acc72ae9d}\label{namespaceRoutingKit_ae2197a816e10499fd2e9d27acc72ae9d}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ T $>$ {\bfseries sort\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a3179b478d755da5e6556be4e03f0a64d}\label{namespaceRoutingKit_a3179b478d755da5e6556be4e03f0a64d}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ T $>$ {\bfseries sort\+\_\+using\+\_\+key} (std\+::vector$<$ T $>$ \&\&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a867a07beb03c16e5684d15775987f941}\label{namespaceRoutingKit_a867a07beb03c16e5684d15775987f941}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ T $>$ {\bfseries stable\+\_\+sort\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_abf64af20e6d7b8888a9a1b9e023154af}\label{namespaceRoutingKit_abf64af20e6d7b8888a9a1b9e023154af}} 
+{\footnotesize template$<$class T , class K $>$ }\\std\+::vector$<$ T $>$ {\bfseries stable\+\_\+sort\+\_\+using\+\_\+key} (std\+::vector$<$ T $>$ \&\&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a843a8937c4bb4467e344d9e38a2ecdeb}\label{namespaceRoutingKit_a843a8937c4bb4467e344d9e38a2ecdeb}} 
+{\footnotesize template$<$class T , class K $>$ }\\bool {\bfseries is\+\_\+sorted\+\_\+using\+\_\+key} (const std\+::vector$<$ T $>$ \&v, unsigned key\+\_\+count, const K \&get\+\_\+key)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a88bee8ace6e8ee51ce05416520614ced}\label{namespaceRoutingKit_a88bee8ace6e8ee51ce05416520614ced}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab5193b8b209ac9405f900d73188b6cf5}\label{namespaceRoutingKit_ab5193b8b209ac9405f900d73188b6cf5}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+stable\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a4c4ffc4de2638a64d8376f0309febb8c}\label{namespaceRoutingKit_a4c4ffc4de2638a64d8376f0309febb8c}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a87d6b386f7c7da33b14dcea24592f184}\label{namespaceRoutingKit_a87d6b386f7c7da33b14dcea24592f184}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ unsigned $>$ {\bfseries compute\+\_\+inverse\+\_\+stable\+\_\+sort\+\_\+permutation\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a74c58b00d00f542455b674b1ed485e6e}\label{namespaceRoutingKit_a74c58b00d00f542455b674b1ed485e6e}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries stable\+\_\+sort\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aac59f85addc0073b27b5af0cb971d3e2}\label{namespaceRoutingKit_aac59f85addc0073b27b5af0cb971d3e2}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries stable\+\_\+sort\+\_\+using\+\_\+less} (std\+::vector$<$ T $>$ \&\&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a9fd2003498dd8a77c5ddbada3fb55343}\label{namespaceRoutingKit_a9fd2003498dd8a77c5ddbada3fb55343}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries sort\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afc99cfebccd4142e9f57f0aa5ef37729}\label{namespaceRoutingKit_afc99cfebccd4142e9f57f0aa5ef37729}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries sort\+\_\+using\+\_\+less} (std\+::vector$<$ T $>$ \&\&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a02af8483d31a92cc56b1ce3d6fbf9899}\label{namespaceRoutingKit_a02af8483d31a92cc56b1ce3d6fbf9899}} 
+{\footnotesize template$<$class T $>$ }\\bool {\bfseries is\+\_\+sorted\+\_\+using\+\_\+less} (const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a897b3daef438e94889c5f736c726b778}\label{namespaceRoutingKit_a897b3daef438e94889c5f736c726b778}} 
+\mbox{\hyperlink{structRoutingKit_1_1StronlyConnectedComponentsResult}{Stronly\+Connected\+Components\+Result}} {\bfseries compute\+\_\+strongly\+\_\+connected\+\_\+components} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+std\+::vector$<$ bool $>$ \mbox{\hyperlink{namespaceRoutingKit_ad0443c586d1f7287738caa6e5bf1d3a8}{compute\+\_\+largest\+\_\+strongly\+\_\+connected\+\_\+component}} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a2a0740e0ffb6e72259141d040906db4f}\label{namespaceRoutingKit_a2a0740e0ffb6e72259141d040906db4f}} 
+long long {\bfseries get\+\_\+micro\+\_\+time} ()
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a37e30eb85401b98bd17838e06f2eb6f0}\label{namespaceRoutingKit_a37e30eb85401b98bd17838e06f2eb6f0}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries save\+\_\+vector} (const std\+::string \&file\+\_\+name, const std\+::vector$<$ T $>$ \&vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8a4d73ec7e25321c0116536feced489f}\label{namespaceRoutingKit_a8a4d73ec7e25321c0116536feced489f}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries load\+\_\+vector} (const std\+::string \&file\+\_\+name)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a4da270803f0b536da1319b923a9e2e31}\label{namespaceRoutingKit_a4da270803f0b536da1319b923a9e2e31}} 
+template$<$$>$ void {\bfseries save\+\_\+vector$<$ std\+::string $>$} (const std\+::string \&file\+\_\+name, const std\+::vector$<$ std\+::string $>$ \&vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_acf69def5835bed6b6c75e8f78427678c}\label{namespaceRoutingKit_acf69def5835bed6b6c75e8f78427678c}} 
+template$<$$>$ std\+::vector$<$ std\+::string $>$ {\bfseries load\+\_\+vector$<$ std\+::string $>$} (const std\+::string \&file\+\_\+name)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a60d443d6edce271cd6133d4366c2705c}\label{namespaceRoutingKit_a60d443d6edce271cd6133d4366c2705c}} 
+void {\bfseries save\+\_\+bit\+\_\+vector} (const std\+::string \&file\+\_\+name, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&vec)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a56ab7447b2b5df8eab35e7aa073154ff}\label{namespaceRoutingKit_a56ab7447b2b5df8eab35e7aa073154ff}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries load\+\_\+bit\+\_\+vector} (const std\+::string \&file\+\_\+name)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afe3800fd7e23f9c49486d369bfbcbe22}\label{namespaceRoutingKit_afe3800fd7e23f9c49486d369bfbcbe22}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries save\+\_\+value} (const std\+::string \&file\+\_\+name, const T \&val)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a6ddabb0e84d50e42e4743d70638acd15}\label{namespaceRoutingKit_a6ddabb0e84d50e42e4743d70638acd15}} 
+{\footnotesize template$<$class T $>$ }\\T {\bfseries load\+\_\+value} (const std\+::string \&file\+\_\+name)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a27d36ae90c7e399039f5e20b8b5d726f}\label{namespaceRoutingKit_a27d36ae90c7e399039f5e20b8b5d726f}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries write\+\_\+value} (std\+::ostream \&out, const T \&val)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a658153bcb055b54bfdec35adf25e240b}\label{namespaceRoutingKit_a658153bcb055b54bfdec35adf25e240b}} 
+{\footnotesize template$<$class T $>$ }\\T {\bfseries read\+\_\+value} (std\+::istream \&in)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac978895226568248a1ef84b1e0c074b1}\label{namespaceRoutingKit_ac978895226568248a1ef84b1e0c074b1}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries write\+\_\+vector} (std\+::ostream \&out, const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a4d3dde23122233f6be093af97c5d8654}\label{namespaceRoutingKit_a4d3dde23122233f6be093af97c5d8654}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries read\+\_\+vector} (std\+::istream \&in, unsigned long long size)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8d1fe0a900617cb3ee0e1941ec9a8f7e}\label{namespaceRoutingKit_a8d1fe0a900617cb3ee0e1941ec9a8f7e}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries write\+\_\+value} (const std\+::function$<$ void(const char $\ast$, unsigned long long)$>$ \&out, const T \&val)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a2cc5a678a886d5a597bb016524494ac3}\label{namespaceRoutingKit_a2cc5a678a886d5a597bb016524494ac3}} 
+{\footnotesize template$<$class T $>$ }\\T {\bfseries read\+\_\+value} (const std\+::function$<$ void(char $\ast$, unsigned long long)$>$ \&in)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ab41db329d73aa4d446d2c9b404e626b5}\label{namespaceRoutingKit_ab41db329d73aa4d446d2c9b404e626b5}} 
+{\footnotesize template$<$class T $>$ }\\void {\bfseries write\+\_\+vector} (const std\+::function$<$ void(const char $\ast$, unsigned long long)$>$ \&out, const std\+::vector$<$ T $>$ \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a8166c80efbf4a81c6f37387f64b01de0}\label{namespaceRoutingKit_a8166c80efbf4a81c6f37387f64b01de0}} 
+{\footnotesize template$<$class T $>$ }\\std\+::vector$<$ T $>$ {\bfseries read\+\_\+vector} (const std\+::function$<$ void(char $\ast$, unsigned long long)$>$ \&in, unsigned long long size)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afdc3be7045421baf05d8ad8bb326c7d9}\label{namespaceRoutingKit_afdc3be7045421baf05d8ad8bb326c7d9}} 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} {\bfseries read\+\_\+bit\+\_\+vector} (const std\+::function$<$ void(char $\ast$, unsigned long long)$>$ \&in, unsigned long long size)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_a085b17cd450addd7fe4a6e1bee5796a5}\label{namespaceRoutingKit_a085b17cd450addd7fe4a6e1bee5796a5}} 
+void {\bfseries write\+\_\+bit\+\_\+vector} (const std\+::function$<$ void(const char $\ast$, unsigned long long)$>$ \&out, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&v)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_afee69ea8d2b2457448fdd0ba8fef0c44}\label{namespaceRoutingKit_afee69ea8d2b2457448fdd0ba8fef0c44}} 
+{\footnotesize template$<$class F $>$ }\\void {\bfseries open\+\_\+file\+\_\+for\+\_\+saving} (const std\+::string \&file\+\_\+name, const F \&f)
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ac1e90f1632a8990377a5d4cb02ed0c15}\label{namespaceRoutingKit_ac1e90f1632a8990377a5d4cb02ed0c15}} 
+{\footnotesize template$<$class F $>$ }\\void {\bfseries open\+\_\+file\+\_\+for\+\_\+loading} (const std\+::string \&file\+\_\+name, const F \&f)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_ae1fe0ab0d955ec8f170f1d1cca737fe6}\label{namespaceRoutingKit_ae1fe0ab0d955ec8f170f1d1cca737fe6}} 
+const unsigned {\bfseries invalid\+\_\+id} = 4294967295u
+\item 
+\mbox{\Hypertarget{namespaceRoutingKit_aed1fd21063386118aada0e06668e4eaf}\label{namespaceRoutingKit_aed1fd21063386118aada0e06668e4eaf}} 
+const unsigned {\bfseries inf\+\_\+weight} = 2147483647u
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{namespaceRoutingKit}{Routing\+Kit}} is the namespace for the entire project 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceRoutingKit_ad0443c586d1f7287738caa6e5bf1d3a8}\label{namespaceRoutingKit_ad0443c586d1f7287738caa6e5bf1d3a8}} 
+\index{RoutingKit@{RoutingKit}!compute\_largest\_strongly\_connected\_component@{compute\_largest\_strongly\_connected\_component}}
+\index{compute\_largest\_strongly\_connected\_component@{compute\_largest\_strongly\_connected\_component}!RoutingKit@{RoutingKit}}
+\doxysubsubsection{\texorpdfstring{compute\_largest\_strongly\_connected\_component()}{compute\_largest\_strongly\_connected\_component()}}
+{\footnotesize\ttfamily std\+::vector$<$bool$>$ Routing\+Kit\+::compute\+\_\+largest\+\_\+strongly\+\_\+connected\+\_\+component (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ unsigned $>$ \&}]{first\+\_\+out,  }\item[{const std\+::vector$<$ unsigned $>$ \&}]{head }\end{DoxyParamCaption})}
+
+Computes a largest strongly connected component and returns a vector that is true for every node in this component. 

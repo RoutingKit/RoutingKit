@@ -1,0 +1,59 @@
+\hypertarget{classRoutingKit_1_1IDSetMinQueue}{}\doxysection{Routing\+Kit\+::I\+D\+Set\+Min\+Queue Class Reference}
+\label{classRoutingKit_1_1IDSetMinQueue}\index{RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}}
+
+
+{\ttfamily \#include $<$id\+\_\+set\+\_\+queue.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_aeb22073270fb676355dfec5253439e18}\label{classRoutingKit_1_1IDSetMinQueue_aeb22073270fb676355dfec5253439e18}} 
+\mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_aeb22073270fb676355dfec5253439e18}{I\+D\+Set\+Min\+Queue}} (unsigned n)
+\begin{DoxyCompactList}\small\item\em The queue may contain I\+Ds from 0 to n-\/1. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_a12cab7a977d3f686676b02d856eeda66}\label{classRoutingKit_1_1IDSetMinQueue_a12cab7a977d3f686676b02d856eeda66}} 
+unsigned {\bfseries id\+\_\+count} () const
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_a4df277b3ad09f7e2294ef2e2dd2f8972}{push}} (unsigned id)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_ad238a85f0aa807097156950baa91d05e}\label{classRoutingKit_1_1IDSetMinQueue_ad238a85f0aa807097156950baa91d05e}} 
+bool \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_ad238a85f0aa807097156950baa91d05e}{contains}} (unsigned id) const
+\begin{DoxyCompactList}\small\item\em Checks whether an ID is in the queue. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_a9e2a13622ae21aa5b56895f86a770e00}\label{classRoutingKit_1_1IDSetMinQueue_a9e2a13622ae21aa5b56895f86a770e00}} 
+bool \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_a9e2a13622ae21aa5b56895f86a770e00}{empty}} () const
+\begin{DoxyCompactList}\small\item\em Checks whether the queue contains any element. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_a16799cad7ec016f3f70d7a628a9f62a6}{peek}} () const
+\item 
+unsigned \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_abda0a71ae3dc544244d30c177f15a005}{pop}} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_ac603c863bdef1473ec4c470085e9eb0c}\label{classRoutingKit_1_1IDSetMinQueue_ac603c863bdef1473ec4c470085e9eb0c}} 
+void \mbox{\hyperlink{classRoutingKit_1_1IDSetMinQueue_ac603c863bdef1473ec4c470085e9eb0c}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Removes all elements from the queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is min queue that can only contain I\+Ds from a given range. I\+Ds are compared by their value. Ids in the queue cannot be duplicated. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_a16799cad7ec016f3f70d7a628a9f62a6}\label{classRoutingKit_1_1IDSetMinQueue_a16799cad7ec016f3f70d7a628a9f62a6}} 
+\index{RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}!peek@{peek}}
+\index{peek@{peek}!RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}}
+\doxysubsubsection{\texorpdfstring{peek()}{peek()}}
+{\footnotesize\ttfamily unsigned Routing\+Kit\+::\+I\+D\+Set\+Min\+Queue\+::peek (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the smallest ID in the queue without removing it. Returns invalid\+\_\+id if the queue is empty. \mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_abda0a71ae3dc544244d30c177f15a005}\label{classRoutingKit_1_1IDSetMinQueue_abda0a71ae3dc544244d30c177f15a005}} 
+\index{RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}!pop@{pop}}
+\index{pop@{pop}!RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily unsigned Routing\+Kit\+::\+I\+D\+Set\+Min\+Queue\+::pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the smallest ID in the queue and removes it. Returns invalid\+\_\+id if the queue is empty. \mbox{\Hypertarget{classRoutingKit_1_1IDSetMinQueue_a4df277b3ad09f7e2294ef2e2dd2f8972}\label{classRoutingKit_1_1IDSetMinQueue_a4df277b3ad09f7e2294ef2e2dd2f8972}} 
+\index{RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}!push@{push}}
+\index{push@{push}!RoutingKit::IDSetMinQueue@{RoutingKit::IDSetMinQueue}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+I\+D\+Set\+Min\+Queue\+::push (\begin{DoxyParamCaption}\item[{unsigned}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Adds an ID to the queue. If the ID is already in the queue, then nothing happens. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/id\+\_\+set\+\_\+queue.\+h\end{DoxyCompactItemize}

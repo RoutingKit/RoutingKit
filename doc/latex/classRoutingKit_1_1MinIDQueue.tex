@@ -1,0 +1,82 @@
+\hypertarget{classRoutingKit_1_1MinIDQueue}{}\doxysection{Routing\+Kit\+::Min\+I\+D\+Queue Class Reference}
+\label{classRoutingKit_1_1MinIDQueue}\index{RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}}
+
+
+{\ttfamily \#include $<$id\+\_\+queue.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a2b9cccf4fb8176b83973ca0d16a7b621}\label{classRoutingKit_1_1MinIDQueue_a2b9cccf4fb8176b83973ca0d16a7b621}} 
+{\bfseries Min\+I\+D\+Queue} (unsigned \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a15ec310e670581939a6965a25d9c7613}{id\+\_\+count}})
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a3cd741e49dea74b93f6a9c3676904548}\label{classRoutingKit_1_1MinIDQueue_a3cd741e49dea74b93f6a9c3676904548}} 
+bool \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a3cd741e49dea74b93f6a9c3676904548}{empty}} () const
+\begin{DoxyCompactList}\small\item\em Returns whether the queue is empty. Equivalent to checking whether \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a957c6cd4eddc180ba24a690a36e42eb6}{size()}} returns 0. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a957c6cd4eddc180ba24a690a36e42eb6}\label{classRoutingKit_1_1MinIDQueue_a957c6cd4eddc180ba24a690a36e42eb6}} 
+unsigned \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a957c6cd4eddc180ba24a690a36e42eb6}{size}} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of elements in the queue. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a15ec310e670581939a6965a25d9c7613}\label{classRoutingKit_1_1MinIDQueue_a15ec310e670581939a6965a25d9c7613}} 
+unsigned \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a15ec310e670581939a6965a25d9c7613}{id\+\_\+count}} () const
+\begin{DoxyCompactList}\small\item\em Returns the id\+\_\+count value passed to the constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a6117d6980095b747f9480d3c4973ee13}\label{classRoutingKit_1_1MinIDQueue_a6117d6980095b747f9480d3c4973ee13}} 
+bool \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a6117d6980095b747f9480d3c4973ee13}{contains\+\_\+id}} (unsigned id)
+\begin{DoxyCompactList}\small\item\em Checks whether an element is in the queue. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a7f8b64ad59aa6f3dd75addcdcb8792fd}\label{classRoutingKit_1_1MinIDQueue_a7f8b64ad59aa6f3dd75addcdcb8792fd}} 
+void \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a7f8b64ad59aa6f3dd75addcdcb8792fd}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Removes all elements from the queue. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a6875c1c0ad435baf418c21b6f1a2bb5d}{get\+\_\+key}} (unsigned id) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_aab88842493bef39ea659f5e7728f01eb}\label{classRoutingKit_1_1MinIDQueue_aab88842493bef39ea659f5e7728f01eb}} 
+\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}} \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_aab88842493bef39ea659f5e7728f01eb}{peek}} () const
+\begin{DoxyCompactList}\small\item\em Returns the smallest element key pair without removing it from the queue. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a4b206c605447b64bf2c672cbaea5ac61}\label{classRoutingKit_1_1MinIDQueue_a4b206c605447b64bf2c672cbaea5ac61}} 
+\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}} \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a4b206c605447b64bf2c672cbaea5ac61}{pop}} ()
+\begin{DoxyCompactList}\small\item\em Returns the smallest element key pair and removes it form the queue. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a9c59ca138ed6119f366a125e968ed355}{push}} (\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}} p)
+\item 
+bool \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_a6eeec4bfa17b0acaf5fd30cd531a40e8}{decrease\+\_\+key}} (\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}} p)
+\item 
+bool \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue_acb6f9793a40054f89aeb0bed10682f40}{increase\+\_\+key}} (\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}} p)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a5be6bf82ead35ca808f815631a881ce0}\label{classRoutingKit_1_1MinIDQueue_a5be6bf82ead35ca808f815631a881ce0}} 
+void {\bfseries swap} (\mbox{\hyperlink{classRoutingKit_1_1MinIDQueue}{Min\+I\+D\+Queue}} \&l, \mbox{\hyperlink{classRoutingKit_1_1MinIDQueue}{Min\+I\+D\+Queue}} \&r)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A priority queue where the elements are I\+Ds from 0 to id\+\_\+count-\/1 where id\+\_\+count is a number that is set in the constructor. The elements are sorted by integer keys. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a6eeec4bfa17b0acaf5fd30cd531a40e8}\label{classRoutingKit_1_1MinIDQueue_a6eeec4bfa17b0acaf5fd30cd531a40e8}} 
+\index{RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}!decrease\_key@{decrease\_key}}
+\index{decrease\_key@{decrease\_key}!RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}}
+\doxysubsubsection{\texorpdfstring{decrease\_key()}{decrease\_key()}}
+{\footnotesize\ttfamily bool Routing\+Kit\+::\+Min\+I\+D\+Queue\+::decrease\+\_\+key (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Updates the key of an element if the new key is smaller than the old key. Does nothing if the new key is larger. Undefined if the element is not part of the queue. \mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a6875c1c0ad435baf418c21b6f1a2bb5d}\label{classRoutingKit_1_1MinIDQueue_a6875c1c0ad435baf418c21b6f1a2bb5d}} 
+\index{RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}!get\_key@{get\_key}}
+\index{get\_key@{get\_key}!RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}}
+\doxysubsubsection{\texorpdfstring{get\_key()}{get\_key()}}
+{\footnotesize\ttfamily unsigned Routing\+Kit\+::\+Min\+I\+D\+Queue\+::get\+\_\+key (\begin{DoxyParamCaption}\item[{unsigned}]{id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the current key of an element. Undefined if the element is not part of the queue. \mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_acb6f9793a40054f89aeb0bed10682f40}\label{classRoutingKit_1_1MinIDQueue_acb6f9793a40054f89aeb0bed10682f40}} 
+\index{RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}!increase\_key@{increase\_key}}
+\index{increase\_key@{increase\_key}!RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}}
+\doxysubsubsection{\texorpdfstring{increase\_key()}{increase\_key()}}
+{\footnotesize\ttfamily bool Routing\+Kit\+::\+Min\+I\+D\+Queue\+::increase\+\_\+key (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Updates the key of an element if the new key is larger than the old key. Does nothing if the new key is smaller. Undefined if the element is not part of the queue. \mbox{\Hypertarget{classRoutingKit_1_1MinIDQueue_a9c59ca138ed6119f366a125e968ed355}\label{classRoutingKit_1_1MinIDQueue_a9c59ca138ed6119f366a125e968ed355}} 
+\index{RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}!push@{push}}
+\index{push@{push}!RoutingKit::MinIDQueue@{RoutingKit::MinIDQueue}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Min\+I\+D\+Queue\+::push (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRoutingKit_1_1IDKeyPair}{I\+D\+Key\+Pair}}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Inserts a element key pair. Undefined if the element is part of the queue. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/id\+\_\+queue.\+h\end{DoxyCompactItemize}

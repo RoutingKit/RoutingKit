@@ -1,0 +1,55 @@
+\hypertarget{classRoutingKit_1_1LocalIDMapper}{}\doxysection{Routing\+Kit\+::Local\+I\+D\+Mapper Class Reference}
+\label{classRoutingKit_1_1LocalIDMapper}\index{RoutingKit::LocalIDMapper@{RoutingKit::LocalIDMapper}}
+
+
+Inheritance diagram for Routing\+Kit\+::Local\+I\+D\+Mapper\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRoutingKit_1_1LocalIDMapper__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_ab104adbf58ce9831cf2a93fae816097c}\label{classRoutingKit_1_1LocalIDMapper_ab104adbf58ce9831cf2a93fae816097c}} 
+{\footnotesize template$<$class Vec $>$ }\\{\bfseries Local\+I\+D\+Mapper} (const Vec \&vec)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a3805fd4aca35c0e983f88686f336ac33}\label{classRoutingKit_1_1LocalIDMapper_a3805fd4aca35c0e983f88686f336ac33}} 
+{\bfseries Local\+I\+D\+Mapper} (uint64\+\_\+t bit\+\_\+count\+\_\+, const uint64\+\_\+t $\ast$bits\+\_\+)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a2864b1ff2202cfb271d30110b42641ea}\label{classRoutingKit_1_1LocalIDMapper_a2864b1ff2202cfb271d30110b42641ea}} 
+uint64\+\_\+t {\bfseries global\+\_\+id\+\_\+count} () const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a47f318f9a0bdf2107751ea2ffee64923}\label{classRoutingKit_1_1LocalIDMapper_a47f318f9a0bdf2107751ea2ffee64923}} 
+uint64\+\_\+t {\bfseries local\+\_\+id\+\_\+count} () const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_ab50e61bccf264b4354607db181d32c4a}\label{classRoutingKit_1_1LocalIDMapper_ab50e61bccf264b4354607db181d32c4a}} 
+bool {\bfseries is\+\_\+global\+\_\+id\+\_\+mapped} (uint64\+\_\+t global\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a5047521fafb26d529b275a8eab193bc5}\label{classRoutingKit_1_1LocalIDMapper_a5047521fafb26d529b275a8eab193bc5}} 
+uint64\+\_\+t {\bfseries to\+\_\+local} (uint64\+\_\+t global\+\_\+id) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a9d32c7398899f9d4e25321d2d1450855}\label{classRoutingKit_1_1LocalIDMapper_a9d32c7398899f9d4e25321d2d1450855}} 
+uint64\+\_\+t {\bfseries to\+\_\+local} (uint64\+\_\+t global\+\_\+id, uint64\+\_\+t invalid) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a69a3aedf867bb01d476157897b6a194d}\label{classRoutingKit_1_1LocalIDMapper_a69a3aedf867bb01d476157897b6a194d}} 
+uint64\+\_\+t {\bfseries memory\+\_\+overhead\+\_\+in\+\_\+bits} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a08bbe2431f14353d52798dcc0634b4c4}\label{classRoutingKit_1_1LocalIDMapper_a08bbe2431f14353d52798dcc0634b4c4}} 
+const uint64\+\_\+t $\ast$ {\bfseries bits\+\_\+}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_abdf2b551261f12155c0db4fbb9692854}\label{classRoutingKit_1_1LocalIDMapper_abdf2b551261f12155c0db4fbb9692854}} 
+uint64\+\_\+t {\bfseries bit\+\_\+count\+\_\+}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1LocalIDMapper_a93ebccec725f71fc0e17b005458ebbc6}\label{classRoutingKit_1_1LocalIDMapper_a93ebccec725f71fc0e17b005458ebbc6}} 
+std\+::vector$<$ uint64\+\_\+t $>$ {\bfseries rank\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/id\+\_\+mapper.\+h\end{DoxyCompactItemize}

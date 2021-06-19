@@ -24,6 +24,12 @@ namespace RoutingKit{
 // Not all compilers support aligned_alloc such as GCC 4.6. If you have such a compiler then define ROUTING_KIT_NO_ALIGNED_ALLOC
 
 #ifdef ROUTING_KIT_NO_ALIGNED_ALLOC
+/**
+ * Function that allocates memory in an alligned manner
+ * 
+ * @param alignment The allignment of the data to be allocated
+ * @param size The size of the data to be allocated
+ */ 
 void*aligned_alloc(uint8_t alignment, uint64_t size){
 	uint64_t potentially_unaligned_buffer = (uint64_t)malloc(size+alignment);
 	uint64_t aligned_buffer = ((potentially_unaligned_buffer + alignment)/alignment) * alignment;
@@ -172,9 +178,17 @@ namespace {
 	#endif
 }
 
+/**
+ * Basic constructor for the BitVector class
+ */ 
 BitVector::BitVector():
 	data_(nullptr), size_(0){}
 
+/**
+ * Constructor that takes the size
+ * 
+ * @param size Size of the BitVector object
+ */ 
 BitVector::BitVector(uint64_t size, BitVector::Uninitialized)
 {
 	if(__builtin_expect(size != 0, true)){
@@ -191,6 +205,12 @@ BitVector::BitVector(uint64_t size, BitVector::Uninitialized)
 	assert(are_all_padding_bits_zero(*this));
 }
 
+/**
+ * Constructor that takes the size and an initial value
+ * 
+ * @param size Size of the BitVector object
+ * @param init_value Initial value of the BitVector object
+ */ 
 BitVector::BitVector(uint64_t size, bool init_value)
 {
 	if(__builtin_expect(size != 0, true)){
@@ -223,10 +243,18 @@ BitVector::BitVector(uint64_t size, bool init_value)
 	assert(are_all_padding_bits_zero(*this));
 }
 
+/**
+ * CDestructor of the BitVector class
+ */ 
 BitVector::~BitVector(){
 	aligned_free(data_);
 }
 
+/**
+ * Constructor that takes another const BitVector object
+ * 
+ * @param o BitVector object to be copied into new object 
+ */ 
 BitVector::BitVector(const BitVector&o):
 	data_(static_cast<uint64_t*>(aligned_alloc(64, get_uint8_count(o.size_)))), size_(o.size_){
 	if(data_ == nullptr)
@@ -244,6 +272,11 @@ BitVector::BitVector(const BitVector&o):
 	assert(are_all_padding_bits_zero(*this));
 }
 
+/**
+ * Constructor that takes another BitVector object
+ * 
+ * @param o BitVector object to be copied into new object, which is then turned into an invalid object
+ */ 
 BitVector::BitVector(BitVector&&o):
 	data_(o.data_), size_(o.size_){
 
@@ -253,6 +286,11 @@ BitVector::BitVector(BitVector&&o):
 	o.size_ = 0;	
 }
 
+/**
+ * Override of =
+ * 
+ * @param o BitVector object to be copied into new object
+ */ 
 BitVector&BitVector::operator=(BitVector o){
 	assert(are_all_padding_bits_zero(o));
 
@@ -260,6 +298,11 @@ BitVector&BitVector::operator=(BitVector o){
 	return *this;
 }
 
+/**
+ * Swap function
+ * 
+ * @param o BitVector object to be swaped with object
+ */ 
 void BitVector::swap(BitVector&o){
 	assert(are_all_padding_bits_zero(o));
 	assert(are_all_padding_bits_zero(*this));
@@ -273,6 +316,9 @@ void BitVector::swap(BitVector&o){
 	size_ = y;
 }
 
+/**
+ * Resets the paddign bits for a BitVector object
+ */ 
 void BitVector::reset_all_padding_bits(){
 	if(size_ % 512 != 0){
 		v8_uint64_t* v = (v8_uint64_t*)data_ + size_/512;
@@ -281,7 +327,12 @@ void BitVector::reset_all_padding_bits(){
 
 	assert(are_all_padding_bits_zero(*this));
 }
-	
+
+/**
+ * Resize function
+ * 
+ * @param new_size New size of the BitVector object
+ */ 	
 void BitVector::resize(uint64_t new_size, BitVector::Uninitialized){
 	if(data_ == nullptr){
 		*this = BitVector(new_size, uninitialized);
@@ -309,6 +360,13 @@ void BitVector::resize(uint64_t new_size, BitVector::Uninitialized){
 	}
 }
 
+
+/**
+ * Resize function
+ * 
+ * @param new_size New size of the BitVector object
+ * @param value The new value of the BitVector function
+ */ 	
 void BitVector::resize(uint64_t new_size, bool value){
 	if(data_ == nullptr){
 		*this = BitVector(new_size, value);
@@ -366,6 +424,13 @@ void BitVector::resize(uint64_t new_size, bool value){
 	}
 }
 
+
+/**
+ * Make large enough for function.
+ * Resizes the BitVector until is large enough for a give size
+ * 
+ * @param x The size for which the object should be large enough
+ */ 
 void BitVector::make_large_enough_for(uint64_t x, BitVector::Uninitialized){
 	assert(are_all_padding_bits_zero(*this));
 	if(size_ <= x) {
@@ -379,6 +444,13 @@ void BitVector::make_large_enough_for(uint64_t x, BitVector::Uninitialized){
 	assert(size_ > x);
 }
 
+/**
+ * Make large enough for function.
+ * Resizes the BitVector until is large enough for a give size and gives it an initial value
+ * 
+ * @param x The size for which the object should be large enough
+ * @param init_value The initial value given 
+ */ 
 void BitVector::make_large_enough_for(uint64_t x, bool init_value){
 	assert(are_all_padding_bits_zero(*this));
 	if(size_ <= x) {

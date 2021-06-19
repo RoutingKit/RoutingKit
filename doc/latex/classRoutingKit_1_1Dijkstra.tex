@@ -1,0 +1,45 @@
+\hypertarget{classRoutingKit_1_1Dijkstra}{}\doxysection{Routing\+Kit\+::Dijkstra Class Reference}
+\label{classRoutingKit_1_1Dijkstra}\index{RoutingKit::Dijkstra@{RoutingKit::Dijkstra}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1Dijkstra_1_1SettleResult}{Settle\+Result}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_a4d94454b92ceddfb235cc6305b3cee79}\label{classRoutingKit_1_1Dijkstra_a4d94454b92ceddfb235cc6305b3cee79}} 
+{\bfseries Dijkstra} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_ac26f3aa64c4adec9c4beb1d2c412505d}\label{classRoutingKit_1_1Dijkstra_ac26f3aa64c4adec9c4beb1d2c412505d}} 
+\mbox{\hyperlink{classRoutingKit_1_1Dijkstra}{Dijkstra}} \& {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_a870ecce1b2cd73ee0fa7d82a58b95fb7}\label{classRoutingKit_1_1Dijkstra_a870ecce1b2cd73ee0fa7d82a58b95fb7}} 
+\mbox{\hyperlink{classRoutingKit_1_1Dijkstra}{Dijkstra}} \& {\bfseries reset} (const std\+::vector$<$ unsigned $>$ \&first\+\_\+out, const std\+::vector$<$ unsigned $>$ \&tail, const std\+::vector$<$ unsigned $>$ \&head)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_ab92b5bd5848615b5d837326e7f9fd8e2}\label{classRoutingKit_1_1Dijkstra_ab92b5bd5848615b5d837326e7f9fd8e2}} 
+\mbox{\hyperlink{classRoutingKit_1_1Dijkstra}{Dijkstra}} \& {\bfseries add\+\_\+source} (unsigned id, unsigned departure\+\_\+time=0)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_ab99fbea11133503f3bf1cc2391929705}\label{classRoutingKit_1_1Dijkstra_ab99fbea11133503f3bf1cc2391929705}} 
+bool {\bfseries is\+\_\+finished} () const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_ac9074d40df1665248afa499d54ae2cab}\label{classRoutingKit_1_1Dijkstra_ac9074d40df1665248afa499d54ae2cab}} 
+bool {\bfseries was\+\_\+node\+\_\+reached} (unsigned x) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_a3c347ba8835e04e9dbcea58767da9e6a}\label{classRoutingKit_1_1Dijkstra_a3c347ba8835e04e9dbcea58767da9e6a}} 
+{\footnotesize template$<$class Get\+Weight\+Func $>$ }\\\mbox{\hyperlink{structRoutingKit_1_1Dijkstra_1_1SettleResult}{Settle\+Result}} {\bfseries settle} (const Get\+Weight\+Func \&get\+\_\+weight)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_a9520ee5f1f480f4a5c215a64c4721aac}\label{classRoutingKit_1_1Dijkstra_a9520ee5f1f480f4a5c215a64c4721aac}} 
+unsigned {\bfseries get\+\_\+distance\+\_\+to} (unsigned x) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_a3ea4657d7675d13cb59a7f4da6396b58}\label{classRoutingKit_1_1Dijkstra_a3ea4657d7675d13cb59a7f4da6396b58}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+node\+\_\+path\+\_\+to} (unsigned x) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1Dijkstra_a13494a9915875a67beaa6c47b35d0f86}\label{classRoutingKit_1_1Dijkstra_a13494a9915875a67beaa6c47b35d0f86}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+arc\+\_\+path\+\_\+to} (unsigned x) const
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/dijkstra.\+h\end{DoxyCompactItemize}

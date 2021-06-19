@@ -1,0 +1,84 @@
+\hypertarget{classRoutingKit_1_1ContractionHierarchy}{}\doxysection{Routing\+Kit\+::Contraction\+Hierarchy Class Reference}
+\label{classRoutingKit_1_1ContractionHierarchy}\index{RoutingKit::ContractionHierarchy@{RoutingKit::ContractionHierarchy}}
+
+
+Collaboration diagram for Routing\+Kit\+::Contraction\+Hierarchy\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{classRoutingKit_1_1ContractionHierarchy__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1ContractionHierarchy_1_1Side}{Side}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a59725bad7b7026706def9cf4da8c44cc}\label{classRoutingKit_1_1ContractionHierarchy_a59725bad7b7026706def9cf4da8c44cc}} 
+void {\bfseries write} (std\+::function$<$ void(const char $\ast$, unsigned long long)$>$data\+\_\+sink) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a0cec3d3e64c3a4a3de27a74a4f81af01}\label{classRoutingKit_1_1ContractionHierarchy_a0cec3d3e64c3a4a3de27a74a4f81af01}} 
+void {\bfseries write} (std\+::ostream \&out) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a159e7c0dd6bcd02acabb39d2a767b82b}\label{classRoutingKit_1_1ContractionHierarchy_a159e7c0dd6bcd02acabb39d2a767b82b}} 
+void {\bfseries save\+\_\+file} (const std\+::string \&file\+\_\+name) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a203b54f9480783b6b69e11d95fdb9207}\label{classRoutingKit_1_1ContractionHierarchy_a203b54f9480783b6b69e11d95fdb9207}} 
+unsigned {\bfseries node\+\_\+count} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_aacccc44dcef8bf7465f41cec43cade80}\label{classRoutingKit_1_1ContractionHierarchy_aacccc44dcef8bf7465f41cec43cade80}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries build} (unsigned node\+\_\+count, std\+::vector$<$ unsigned $>$tail, std\+::vector$<$ unsigned $>$head, std\+::vector$<$ unsigned $>$weight, const std\+::function$<$ void(std\+::string)$>$ \&log\+\_\+message=std\+::function$<$ void(std\+::string)$>$(), unsigned max\+\_\+pop\+\_\+count=default\+\_\+max\+\_\+pop\+\_\+count)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a1ae211a13fb20028674152d49787251c}\label{classRoutingKit_1_1ContractionHierarchy_a1ae211a13fb20028674152d49787251c}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries build\+\_\+given\+\_\+rank} (std\+::vector$<$ unsigned $>$rank, std\+::vector$<$ unsigned $>$tail, std\+::vector$<$ unsigned $>$head, std\+::vector$<$ unsigned $>$weight, const std\+::function$<$ void(std\+::string)$>$ \&log\+\_\+message=std\+::function$<$ void(std\+::string)$>$(), unsigned max\+\_\+pop\+\_\+count=default\+\_\+max\+\_\+pop\+\_\+count)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a468c18c3086ffe7d81cbe4cce0286dbe}\label{classRoutingKit_1_1ContractionHierarchy_a468c18c3086ffe7d81cbe4cce0286dbe}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries build\+\_\+given\+\_\+order} (std\+::vector$<$ unsigned $>$order, std\+::vector$<$ unsigned $>$tail, std\+::vector$<$ unsigned $>$head, std\+::vector$<$ unsigned $>$weight, const std\+::function$<$ void(std\+::string)$>$ \&log\+\_\+message=std\+::function$<$ void(std\+::string)$>$(), unsigned max\+\_\+pop\+\_\+count=default\+\_\+max\+\_\+pop\+\_\+count)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_ae69d6a5e0a2716d40d3655f53e5e619a}\label{classRoutingKit_1_1ContractionHierarchy_ae69d6a5e0a2716d40d3655f53e5e619a}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries read} (std\+::function$<$ void(char $\ast$, unsigned long long)$>$data\+\_\+source)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_acdc5c729274acd43cdd20b0b43984825}\label{classRoutingKit_1_1ContractionHierarchy_acdc5c729274acd43cdd20b0b43984825}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries read} (std\+::function$<$ void(char $\ast$, unsigned long long)$>$data\+\_\+source, unsigned long long file\+\_\+size)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a1271716ad8a4e92d5d0f50cfd5b71bd7}\label{classRoutingKit_1_1ContractionHierarchy_a1271716ad8a4e92d5d0f50cfd5b71bd7}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries read} (std\+::istream \&in)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a0ac9001237f61bbd7b0782629e8bccb1}\label{classRoutingKit_1_1ContractionHierarchy_a0ac9001237f61bbd7b0782629e8bccb1}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries read} (std\+::istream \&in, unsigned long long file\+\_\+size)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_ad042de33a5c421f908cdfd895dadb849}\label{classRoutingKit_1_1ContractionHierarchy_ad042de33a5c421f908cdfd895dadb849}} 
+static \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} {\bfseries load\+\_\+file} (const std\+::string \&file\+\_\+name)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a91d8844994533d1dfa12376e56c471df}\label{classRoutingKit_1_1ContractionHierarchy_a91d8844994533d1dfa12376e56c471df}} 
+std\+::vector$<$ unsigned $>$ {\bfseries rank}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a6447208075b7f02d8ca0792a7841628c}\label{classRoutingKit_1_1ContractionHierarchy_a6447208075b7f02d8ca0792a7841628c}} 
+std\+::vector$<$ unsigned $>$ {\bfseries order}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_acf8ebe4ced92d9ea9b425065afbdfee0}\label{classRoutingKit_1_1ContractionHierarchy_acf8ebe4ced92d9ea9b425065afbdfee0}} 
+\mbox{\hyperlink{structRoutingKit_1_1ContractionHierarchy_1_1Side}{Side}} {\bfseries forward}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a0595bc11144854be293d76a91fd08086}\label{classRoutingKit_1_1ContractionHierarchy_a0595bc11144854be293d76a91fd08086}} 
+\mbox{\hyperlink{structRoutingKit_1_1ContractionHierarchy_1_1Side}{Side}} {\bfseries backward}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchy_a6955f37ee2d4490bdde8685937604299}\label{classRoutingKit_1_1ContractionHierarchy_a6955f37ee2d4490bdde8685937604299}} 
+static const unsigned {\bfseries default\+\_\+max\+\_\+pop\+\_\+count} = 500
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/contraction\+\_\+hierarchy.\+h\end{DoxyCompactItemize}

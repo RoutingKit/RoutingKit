@@ -5,6 +5,7 @@
 
 namespace RoutingKit{
 
+ 
 uint32_t uint64_bit_select(uint64_t word, uint32_t n) {
 	assert(n < __builtin_popcountll(word) && "n is out of bounds");
 

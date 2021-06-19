@@ -1,0 +1,180 @@
+\hypertarget{classRoutingKit_1_1ContractionHierarchyQuery}{}\doxysection{Routing\+Kit\+::Contraction\+Hierarchy\+Query Class Reference}
+\label{classRoutingKit_1_1ContractionHierarchyQuery}\index{RoutingKit::ContractionHierarchyQuery@{RoutingKit::ContractionHierarchyQuery}}
+
+
+Collaboration diagram for Routing\+Kit\+::Contraction\+Hierarchy\+Query\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classRoutingKit_1_1ContractionHierarchyQuery__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a373d067a55674a650ae596df01971b8f}\label{classRoutingKit_1_1ContractionHierarchyQuery_a373d067a55674a650ae596df01971b8f}} 
+enum {\bfseries Internal\+State} \+: unsigned \{ \newline
+{\bfseries initialized}, 
+{\bfseries run}, 
+{\bfseries source\+\_\+pinned}, 
+{\bfseries source\+\_\+run}, 
+\newline
+{\bfseries target\+\_\+pinned}, 
+{\bfseries target\+\_\+run}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a0be9af59a788ea568234155e6d29462a}\label{classRoutingKit_1_1ContractionHierarchyQuery_a0be9af59a788ea568234155e6d29462a}} 
+{\bfseries Contraction\+Hierarchy\+Query} (const \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} \&ch)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a6b933cb66462b90e82ec254b5200eed0}\label{classRoutingKit_1_1ContractionHierarchyQuery_a6b933cb66462b90e82ec254b5200eed0}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_adce3a7644d7345254e08ae4e6073975f}\label{classRoutingKit_1_1ContractionHierarchyQuery_adce3a7644d7345254e08ae4e6073975f}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries reset} (const \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} \&ch)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a8943968352b6635878747772753763b1}\label{classRoutingKit_1_1ContractionHierarchyQuery_a8943968352b6635878747772753763b1}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries add\+\_\+source} (unsigned s, unsigned dist\+\_\+to\+\_\+s=0)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ab34fe57b6aee3a44f15fee0ceae0f8b5}\label{classRoutingKit_1_1ContractionHierarchyQuery_ab34fe57b6aee3a44f15fee0ceae0f8b5}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries add\+\_\+target} (unsigned t, unsigned dist\+\_\+to\+\_\+t=0)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ac62d158f12412956005dea11c5eaf9e2}\label{classRoutingKit_1_1ContractionHierarchyQuery_ac62d158f12412956005dea11c5eaf9e2}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries run} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a9579565dfc14ed85ad6af0e3a78c1663}\label{classRoutingKit_1_1ContractionHierarchyQuery_a9579565dfc14ed85ad6af0e3a78c1663}} 
+unsigned {\bfseries get\+\_\+used\+\_\+source} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ac8d70e1aeed0a8b08b18086765e1630b}\label{classRoutingKit_1_1ContractionHierarchyQuery_ac8d70e1aeed0a8b08b18086765e1630b}} 
+unsigned {\bfseries get\+\_\+used\+\_\+target} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a497c732016a53611f7efbf63603929ea}\label{classRoutingKit_1_1ContractionHierarchyQuery_a497c732016a53611f7efbf63603929ea}} 
+unsigned {\bfseries get\+\_\+distance} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aec48ef496355cf0fa0bb454966396bb0}\label{classRoutingKit_1_1ContractionHierarchyQuery_aec48ef496355cf0fa0bb454966396bb0}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+node\+\_\+path} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a5941049e3dd820bf047c16f6f8bd9bf6}\label{classRoutingKit_1_1ContractionHierarchyQuery_a5941049e3dd820bf047c16f6f8bd9bf6}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+arc\+\_\+path} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a913a17790f96da025a48335856b91de9}\label{classRoutingKit_1_1ContractionHierarchyQuery_a913a17790f96da025a48335856b91de9}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function $>$ }\\detail\+::\+Get\+Extra\+Weight\+Type$<$ Extra\+Weight $>$ {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distance} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ad9f5c20061dc8df630aab57e7ac85a1b}\label{classRoutingKit_1_1ContractionHierarchyQuery_ad9f5c20061dc8df630aab57e7ac85a1b}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries reset\+\_\+source} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a4994db6c92f85b6a1876281b0eb54b84}\label{classRoutingKit_1_1ContractionHierarchyQuery_a4994db6c92f85b6a1876281b0eb54b84}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries pin\+\_\+targets} (const std\+::vector$<$ unsigned $>$ \&)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a48ceb88099bbce4cf0ad35b5d56d9984}\label{classRoutingKit_1_1ContractionHierarchyQuery_a48ceb88099bbce4cf0ad35b5d56d9984}} 
+unsigned {\bfseries get\+\_\+pinned\+\_\+target\+\_\+count} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ad21c745f85ed277567976dc2cc41cd39}\label{classRoutingKit_1_1ContractionHierarchyQuery_ad21c745f85ed277567976dc2cc41cd39}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries run\+\_\+to\+\_\+pinned\+\_\+targets} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_acedf6d3f1f5f827036f3b78a12e89219}\label{classRoutingKit_1_1ContractionHierarchyQuery_acedf6d3f1f5f827036f3b78a12e89219}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries get\+\_\+distances\+\_\+to\+\_\+targets} (unsigned $\ast$dist)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a91d65ca2e0f6e8d111d03b3487815790}\label{classRoutingKit_1_1ContractionHierarchyQuery_a91d65ca2e0f6e8d111d03b3487815790}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+distances\+\_\+to\+\_\+targets} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a5072d21bcd0d74dbbd1cea23369b30ae}\label{classRoutingKit_1_1ContractionHierarchyQuery_a5072d21bcd0d74dbbd1cea23369b30ae}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries reset\+\_\+target} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aae0aabe0778fae0ee91575891fb63e95}\label{classRoutingKit_1_1ContractionHierarchyQuery_aae0aabe0778fae0ee91575891fb63e95}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries pin\+\_\+sources} (const std\+::vector$<$ unsigned $>$ \&)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aef0aa6c77db922a94cddb02d09af3a11}\label{classRoutingKit_1_1ContractionHierarchyQuery_aef0aa6c77db922a94cddb02d09af3a11}} 
+unsigned {\bfseries get\+\_\+pinned\+\_\+source\+\_\+count} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a972d14b7320a4540ed382cdb53e8ee16}\label{classRoutingKit_1_1ContractionHierarchyQuery_a972d14b7320a4540ed382cdb53e8ee16}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries run\+\_\+to\+\_\+pinned\+\_\+sources} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aab7800e727050b7b0f61025444c33238}\label{classRoutingKit_1_1ContractionHierarchyQuery_aab7800e727050b7b0f61025444c33238}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries get\+\_\+distances\+\_\+to\+\_\+sources} (unsigned $\ast$dist)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a0a8ccba23c7c651b9958dbdccdc40c8e}\label{classRoutingKit_1_1ContractionHierarchyQuery_a0a8ccba23c7c651b9958dbdccdc40c8e}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+distances\+\_\+to\+\_\+sources} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a521cf67e1753157ecf8581f8a8aad830}\label{classRoutingKit_1_1ContractionHierarchyQuery_a521cf67e1753157ecf8581f8a8aad830}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries get\+\_\+used\+\_\+sources\+\_\+to\+\_\+targets} (unsigned $\ast$dist)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a761630318e9a7c65e49dc8d437cc7eb5}\label{classRoutingKit_1_1ContractionHierarchyQuery_a761630318e9a7c65e49dc8d437cc7eb5}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+used\+\_\+sources\+\_\+to\+\_\+targets} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aaf74709ee3b36e5ce69b3f4a87a24b34}\label{classRoutingKit_1_1ContractionHierarchyQuery_aaf74709ee3b36e5ce69b3f4a87a24b34}} 
+\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries get\+\_\+used\+\_\+targets\+\_\+to\+\_\+sources} (unsigned $\ast$dist)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ac89f7547388e312a3bc0b1613e6f3a3d}\label{classRoutingKit_1_1ContractionHierarchyQuery_ac89f7547388e312a3bc0b1613e6f3a3d}} 
+std\+::vector$<$ unsigned $>$ {\bfseries get\+\_\+used\+\_\+targets\+\_\+to\+\_\+sources} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a3231e091f9dce0941bc5a39198fd9404}\label{classRoutingKit_1_1ContractionHierarchyQuery_a3231e091f9dce0941bc5a39198fd9404}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function $>$ }\\std\+::vector$<$ detail\+::\+Get\+Extra\+Weight\+Type$<$ Extra\+Weight $>$ $>$ {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distances\+\_\+to\+\_\+targets} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ac42d07c341c500fc6ba269b047c21810}\label{classRoutingKit_1_1ContractionHierarchyQuery_ac42d07c341c500fc6ba269b047c21810}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function , class Tmp\+Container $>$ }\\std\+::vector$<$ detail\+::\+Get\+Extra\+Weight\+Type$<$ Extra\+Weight $>$ $>$ {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distances\+\_\+to\+\_\+targets} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link, Tmp\+Container \&tmp)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aa89ec4deaaddadb9c261fa9ac04ccba9}\label{classRoutingKit_1_1ContractionHierarchyQuery_aa89ec4deaaddadb9c261fa9ac04ccba9}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function , class Tmp\+Container , class Dist\+Container $>$ }\\\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distances\+\_\+to\+\_\+targets} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link, Tmp\+Container \&tmp, Dist\+Container \&dist)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_afcc84d10f4c7359ade1bf33c5a833cc6}\label{classRoutingKit_1_1ContractionHierarchyQuery_afcc84d10f4c7359ade1bf33c5a833cc6}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function $>$ }\\std\+::vector$<$ detail\+::\+Get\+Extra\+Weight\+Type$<$ Extra\+Weight $>$ $>$ {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distances\+\_\+to\+\_\+sources} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a4c83a511c2c8d5fb21b63020b8cfa924}\label{classRoutingKit_1_1ContractionHierarchyQuery_a4c83a511c2c8d5fb21b63020b8cfa924}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function , class Tmp\+Container $>$ }\\std\+::vector$<$ detail\+::\+Get\+Extra\+Weight\+Type$<$ Extra\+Weight $>$ $>$ {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distances\+\_\+to\+\_\+sources} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link, Tmp\+Container \&tmp)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a2dc91774cc93dd6872aba096b3697e3b}\label{classRoutingKit_1_1ContractionHierarchyQuery_a2dc91774cc93dd6872aba096b3697e3b}} 
+{\footnotesize template$<$class Extra\+Weight , class Link\+Function , class Tmp\+Container , class Dist\+Container $>$ }\\\mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchyQuery}{Contraction\+Hierarchy\+Query}} \& {\bfseries get\+\_\+extra\+\_\+weight\+\_\+distances\+\_\+to\+\_\+sources} (const Extra\+Weight \&extra\+\_\+weight, const Link\+Function \&link, Tmp\+Container \&tmp, Dist\+Container \&dist)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a530a9f8fa8975209cf624cd180f51a53}\label{classRoutingKit_1_1ContractionHierarchyQuery_a530a9f8fa8975209cf624cd180f51a53}} 
+const \mbox{\hyperlink{classRoutingKit_1_1ContractionHierarchy}{Contraction\+Hierarchy}} $\ast$ {\bfseries ch}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_af4d66372c968975f0a0c04c6ee69c719}\label{classRoutingKit_1_1ContractionHierarchyQuery_af4d66372c968975f0a0c04c6ee69c719}} 
+\mbox{\hyperlink{classRoutingKit_1_1TimestampFlags}{Timestamp\+Flags}} {\bfseries was\+\_\+forward\+\_\+pushed}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ab0e310fbf81971295781c2b9ff199f23}\label{classRoutingKit_1_1ContractionHierarchyQuery_ab0e310fbf81971295781c2b9ff199f23}} 
+\mbox{\hyperlink{classRoutingKit_1_1TimestampFlags}{Timestamp\+Flags}} {\bfseries was\+\_\+backward\+\_\+pushed}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a375d7618fd6cf2130e9349268ab9c1ac}\label{classRoutingKit_1_1ContractionHierarchyQuery_a375d7618fd6cf2130e9349268ab9c1ac}} 
+\mbox{\hyperlink{classRoutingKit_1_1MinIDQueue}{Min\+I\+D\+Queue}} {\bfseries forward\+\_\+queue}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aff3452cf8e94a1c79f5997474a05daaa}\label{classRoutingKit_1_1ContractionHierarchyQuery_aff3452cf8e94a1c79f5997474a05daaa}} 
+\mbox{\hyperlink{classRoutingKit_1_1MinIDQueue}{Min\+I\+D\+Queue}} {\bfseries backward\+\_\+queue}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a6c3db9b37bf17217f5e59329a5a8d015}\label{classRoutingKit_1_1ContractionHierarchyQuery_a6c3db9b37bf17217f5e59329a5a8d015}} 
+std\+::vector$<$ unsigned $>$ {\bfseries forward\+\_\+tentative\+\_\+distance}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a8849d419b095622dfcda7f68f94faa18}\label{classRoutingKit_1_1ContractionHierarchyQuery_a8849d419b095622dfcda7f68f94faa18}} 
+std\+::vector$<$ unsigned $>$ {\bfseries backward\+\_\+tentative\+\_\+distance}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_aebb4be829b4850f0045487d3578dd35d}\label{classRoutingKit_1_1ContractionHierarchyQuery_aebb4be829b4850f0045487d3578dd35d}} 
+std\+::vector$<$ unsigned $>$ {\bfseries forward\+\_\+predecessor\+\_\+node}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a0f8e85743fcabef867d910f8da904a6b}\label{classRoutingKit_1_1ContractionHierarchyQuery_a0f8e85743fcabef867d910f8da904a6b}} 
+std\+::vector$<$ unsigned $>$ {\bfseries backward\+\_\+predecessor\+\_\+node}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a576ad5331e6e2c6d8ba696e3a590ba26}\label{classRoutingKit_1_1ContractionHierarchyQuery_a576ad5331e6e2c6d8ba696e3a590ba26}} 
+std\+::vector$<$ unsigned $>$ {\bfseries forward\+\_\+predecessor\+\_\+arc}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a14b16c6fbd9c9ad65be993a20b235243}\label{classRoutingKit_1_1ContractionHierarchyQuery_a14b16c6fbd9c9ad65be993a20b235243}} 
+std\+::vector$<$ unsigned $>$ {\bfseries backward\+\_\+predecessor\+\_\+arc}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_ad616d3dac212520ac106f9e9f1c2440e}\label{classRoutingKit_1_1ContractionHierarchyQuery_ad616d3dac212520ac106f9e9f1c2440e}} 
+unsigned {\bfseries shortest\+\_\+path\+\_\+meeting\+\_\+node}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a25b9cec49e90c234ce35873c896033b3}\label{classRoutingKit_1_1ContractionHierarchyQuery_a25b9cec49e90c234ce35873c896033b3}} 
+unsigned {\bfseries many\+\_\+to\+\_\+many\+\_\+source\+\_\+or\+\_\+target\+\_\+count}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1ContractionHierarchyQuery_a0a697a6dc828a1f5bdae1550c6ec67cf}\label{classRoutingKit_1_1ContractionHierarchyQuery_a0a697a6dc828a1f5bdae1550c6ec67cf}} 
+enum Routing\+Kit\+::\+Contraction\+Hierarchy\+Query\+::\+Internal\+State {\bfseries state}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/contraction\+\_\+hierarchy.\+h\end{DoxyCompactItemize}

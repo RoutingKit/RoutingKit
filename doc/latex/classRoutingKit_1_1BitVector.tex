@@ -1,0 +1,401 @@
+\hypertarget{classRoutingKit_1_1BitVector}{}\doxysection{Routing\+Kit\+::Bit\+Vector Class Reference}
+\label{classRoutingKit_1_1BitVector}\index{RoutingKit::BitVector@{RoutingKit::BitVector}}
+
+
+{\ttfamily \#include $<$bit\+\_\+vector.\+h$>$}
+
+
+
+Collaboration diagram for Routing\+Kit\+::Bit\+Vector\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{classRoutingKit_1_1BitVector__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector_af4d1593b75f60effdc1df1dc11af15e8}{Bit\+Vector}} ()
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector_a2121da6e3167e8a10e7dd97f91df10ef}{Bit\+Vector}} (uint64\+\_\+t size, \mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}})
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector_ac3b503b1d1ef41fcea196ab70086d49e}{Bit\+Vector}} (uint64\+\_\+t size, bool init\+\_\+value=false)
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector_ac8a66fa8749f355d35729617f5d388e8}{$\sim$\+Bit\+Vector}} ()
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector_a6b7b4d7090ef8b122b07bfb67bcb0cf8}{Bit\+Vector}} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&)
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector_ab472f813a10119d7af60386f485c29ac}{Bit\+Vector}} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&)
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \& \mbox{\hyperlink{classRoutingKit_1_1BitVector_a1857ddfddea756e1df4b523cab815b64}{operator=}} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}})
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1BitVector_a0e63b74a0fa7bb2f08fc36c252a1fe87}{swap}} (\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a2e38edf3d17142ebb196300501f2242e}\label{classRoutingKit_1_1BitVector_a2e38edf3d17142ebb196300501f2242e}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_aa537446a213b2f87da03e0ac4c317cea}\label{classRoutingKit_1_1BitVector_aa537446a213b2f87da03e0ac4c317cea}} 
+uint64\+\_\+t {\bfseries size} () const
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1BitVector_aafb443d81bce1e9a7ec68cc3c21dc669}{resize}} (uint64\+\_\+t size, \mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}})
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1BitVector_a365f26ecd24dd8b1468ce09a9ede9015}{resize}} (uint64\+\_\+t size, bool init\+\_\+value=false)
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1BitVector_af01b1ed341ec10243667c564492c12fe}{make\+\_\+large\+\_\+enough\+\_\+for}} (uint64\+\_\+t x, \mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}})
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1BitVector_a6daa6c8638f15908eb1e10d56094b94b}{make\+\_\+large\+\_\+enough\+\_\+for}} (uint64\+\_\+t x, bool init\+\_\+value=false)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_af9ffcf0b88d0b0df527da2728afd72ef}\label{classRoutingKit_1_1BitVector_af9ffcf0b88d0b0df527da2728afd72ef}} 
+bool {\bfseries is\+\_\+set} (uint64\+\_\+t x) const
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a664baadd0fa02025ed11c03829a7d369}\label{classRoutingKit_1_1BitVector_a664baadd0fa02025ed11c03829a7d369}} 
+void {\bfseries set} (uint64\+\_\+t x)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a61bb25e602caa584b33df24408b5ccd4}\label{classRoutingKit_1_1BitVector_a61bb25e602caa584b33df24408b5ccd4}} 
+void {\bfseries set\+\_\+if} (uint64\+\_\+t x, bool value)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a7a72f1c52b6a9563fbc0b065e25c5b3e}\label{classRoutingKit_1_1BitVector_a7a72f1c52b6a9563fbc0b065e25c5b3e}} 
+void {\bfseries set} (uint64\+\_\+t x, bool value)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a2b8bb5440f4ef615353a8af58e8991eb}\label{classRoutingKit_1_1BitVector_a2b8bb5440f4ef615353a8af58e8991eb}} 
+void {\bfseries reset} (uint64\+\_\+t x)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a2893a78e9c5e168dc2ba14bb631d4032}\label{classRoutingKit_1_1BitVector_a2893a78e9c5e168dc2ba14bb631d4032}} 
+void {\bfseries toggle} (uint64\+\_\+t x)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a6ea1235a197dc047c628bf3c6ec9c016}\label{classRoutingKit_1_1BitVector_a6ea1235a197dc047c628bf3c6ec9c016}} 
+void {\bfseries set\+\_\+all} ()
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_adbe982330d4c545741241e2a5cbb0b56}\label{classRoutingKit_1_1BitVector_adbe982330d4c545741241e2a5cbb0b56}} 
+void {\bfseries set\+\_\+all} (bool value)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a551da3aa09617a1909690e31068502b7}\label{classRoutingKit_1_1BitVector_a551da3aa09617a1909690e31068502b7}} 
+void {\bfseries reset\+\_\+all} ()
+\item 
+bool \mbox{\hyperlink{classRoutingKit_1_1BitVector_a739a9a3bce3913373ddacb04eea5c0e5}{are\+\_\+all\+\_\+set}} () const
+\item 
+bool \mbox{\hyperlink{classRoutingKit_1_1BitVector_a078211a15a72530fb595c7be7025b61f}{is\+\_\+any\+\_\+set}} () const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classRoutingKit_1_1BitVector_ae6d56da1bc48c7eec5f95e18cceded2a}{population\+\_\+count}} () const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classRoutingKit_1_1BitVector_af5d75e2c7e7b750b3fda6a0853f7b5cc}{count\+\_\+true}} () const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classRoutingKit_1_1BitVector_aa214a59f14e86074dfaaffb628a0d3c3}{count\+\_\+false}} () const
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \& \mbox{\hyperlink{classRoutingKit_1_1BitVector_a21be7604cbc73a3af7be8deb604fe60b}{operator$\vert$=}} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&)
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \& \mbox{\hyperlink{classRoutingKit_1_1BitVector_a716d49077672bcfa1c6164f2bca59bce}{operator$^\wedge$=}} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&)
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \& \mbox{\hyperlink{classRoutingKit_1_1BitVector_a5c3a734c15a1ef7bbe63fa8e8962636b}{operator\&=}} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&)
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a6d621cbbe0ee20deb231f4b21a7f89fa}\label{classRoutingKit_1_1BitVector_a6d621cbbe0ee20deb231f4b21a7f89fa}} 
+void {\bfseries inplace\+\_\+not} ()
+\item 
+\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \mbox{\hyperlink{classRoutingKit_1_1BitVector_a959ef691591549b6db402c571f5b1fd3}{operator$\sim$}} () const
+\item 
+uint64\+\_\+t $\ast$ \mbox{\hyperlink{classRoutingKit_1_1BitVector_aa3a04ccda2a8d7b5c7036f04fb6e8dc8}{data}} ()
+\item 
+const uint64\+\_\+t $\ast$ \mbox{\hyperlink{classRoutingKit_1_1BitVector_a7cdc7bf2c0dcd9741f7c20faf97a4ef8}{data}} () const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classRoutingKit_1_1BitVector_a3515ee53661c3fc87c5d1435f20d8734}{uint512\+\_\+count}} () const
+\item 
+void \mbox{\hyperlink{classRoutingKit_1_1BitVector_ae57bb86da04cb266ddcb883f884ba9c0}{reset\+\_\+all\+\_\+padding\+\_\+bits}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a2c4bf8816b25429ec1078c432aacab10}\label{classRoutingKit_1_1BitVector_a2c4bf8816b25429ec1078c432aacab10}} 
+static constexpr \mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}} {\bfseries uninitialized} = \{\}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classRoutingKit_1_1BitVector_ac917953e3cac4e1a18d5a32d38a37299}{operator==}} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\item 
+bool \mbox{\hyperlink{classRoutingKit_1_1BitVector_a650c9024f9181df681de22010a131406}{operator$<$}} (const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&l, const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&r)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} contains all the information needed for a bit vector in this project 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_af4d1593b75f60effdc1df1dc11af15e8}\label{classRoutingKit_1_1BitVector_af4d1593b75f60effdc1df1dc11af15e8}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!BitVector@{BitVector}}
+\index{BitVector@{BitVector}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{BitVector()}{BitVector()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily Routing\+Kit\+::\+Bit\+Vector\+::\+Bit\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default Constructor \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a2121da6e3167e8a10e7dd97f91df10ef}\label{classRoutingKit_1_1BitVector_a2121da6e3167e8a10e7dd97f91df10ef}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!BitVector@{BitVector}}
+\index{BitVector@{BitVector}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{BitVector()}{BitVector()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily Routing\+Kit\+::\+Bit\+Vector\+::\+Bit\+Vector (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size,  }\item[{\mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}}}]{ }\end{DoxyParamCaption})}
+
+Constructor that takes the size
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Size of the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_ac3b503b1d1ef41fcea196ab70086d49e}\label{classRoutingKit_1_1BitVector_ac3b503b1d1ef41fcea196ab70086d49e}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!BitVector@{BitVector}}
+\index{BitVector@{BitVector}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{BitVector()}{BitVector()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily Routing\+Kit\+::\+Bit\+Vector\+::\+Bit\+Vector (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size,  }\item[{bool}]{init\+\_\+value = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Constructor that takes the size and an initial value
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Size of the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object \\
+\hline
+{\em init\+\_\+value} & Initial value of the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_ac8a66fa8749f355d35729617f5d388e8}\label{classRoutingKit_1_1BitVector_ac8a66fa8749f355d35729617f5d388e8}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!````~BitVector@{$\sim$BitVector}}
+\index{````~BitVector@{$\sim$BitVector}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{$\sim$BitVector()}{~BitVector()}}
+{\footnotesize\ttfamily Routing\+Kit\+::\+Bit\+Vector\+::$\sim$\+Bit\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a6b7b4d7090ef8b122b07bfb67bcb0cf8}\label{classRoutingKit_1_1BitVector_a6b7b4d7090ef8b122b07bfb67bcb0cf8}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!BitVector@{BitVector}}
+\index{BitVector@{BitVector}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{BitVector()}{BitVector()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily Routing\+Kit\+::\+Bit\+Vector\+::\+Bit\+Vector (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{ }\end{DoxyParamCaption})}
+
+Constructor that takes another const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be copied into new object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_ab472f813a10119d7af60386f485c29ac}\label{classRoutingKit_1_1BitVector_ab472f813a10119d7af60386f485c29ac}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!BitVector@{BitVector}}
+\index{BitVector@{BitVector}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{BitVector()}{BitVector()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily Routing\+Kit\+::\+Bit\+Vector\+::\+Bit\+Vector (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&\&}]{ }\end{DoxyParamCaption})}
+
+Constructor that takes another \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be copied into new object, which is then turned into an invalid object \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a739a9a3bce3913373ddacb04eea5c0e5}\label{classRoutingKit_1_1BitVector_a739a9a3bce3913373ddacb04eea5c0e5}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!are\_all\_set@{are\_all\_set}}
+\index{are\_all\_set@{are\_all\_set}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{are\_all\_set()}{are\_all\_set()}}
+{\footnotesize\ttfamily bool Routing\+Kit\+::\+Bit\+Vector\+::are\+\_\+all\+\_\+set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if all the bits are set, flase if not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_aa214a59f14e86074dfaaffb628a0d3c3}\label{classRoutingKit_1_1BitVector_aa214a59f14e86074dfaaffb628a0d3c3}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!count\_false@{count\_false}}
+\index{count\_false@{count\_false}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{count\_false()}{count\_false()}}
+{\footnotesize\ttfamily uint64\+\_\+t Routing\+Kit\+::\+Bit\+Vector\+::count\+\_\+false (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Counts the false population \mbox{\Hypertarget{classRoutingKit_1_1BitVector_af5d75e2c7e7b750b3fda6a0853f7b5cc}\label{classRoutingKit_1_1BitVector_af5d75e2c7e7b750b3fda6a0853f7b5cc}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!count\_true@{count\_true}}
+\index{count\_true@{count\_true}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{count\_true()}{count\_true()}}
+{\footnotesize\ttfamily uint64\+\_\+t Routing\+Kit\+::\+Bit\+Vector\+::count\+\_\+true (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Counts the true population \mbox{\Hypertarget{classRoutingKit_1_1BitVector_aa3a04ccda2a8d7b5c7036f04fb6e8dc8}\label{classRoutingKit_1_1BitVector_aa3a04ccda2a8d7b5c7036f04fb6e8dc8}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!data@{data}}
+\index{data@{data}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{data()}{data()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily uint64\+\_\+t$\ast$ Routing\+Kit\+::\+Bit\+Vector\+::data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the private field data \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a7cdc7bf2c0dcd9741f7c20faf97a4ef8}\label{classRoutingKit_1_1BitVector_a7cdc7bf2c0dcd9741f7c20faf97a4ef8}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!data@{data}}
+\index{data@{data}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{data()}{data()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const uint64\+\_\+t$\ast$ Routing\+Kit\+::\+Bit\+Vector\+::data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns const the private field data \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a078211a15a72530fb595c7be7025b61f}\label{classRoutingKit_1_1BitVector_a078211a15a72530fb595c7be7025b61f}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!is\_any\_set@{is\_any\_set}}
+\index{is\_any\_set@{is\_any\_set}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{is\_any\_set()}{is\_any\_set()}}
+{\footnotesize\ttfamily bool Routing\+Kit\+::\+Bit\+Vector\+::is\+\_\+any\+\_\+set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if there us any bit set, flase if not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a6daa6c8638f15908eb1e10d56094b94b}\label{classRoutingKit_1_1BitVector_a6daa6c8638f15908eb1e10d56094b94b}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!make\_large\_enough\_for@{make\_large\_enough\_for}}
+\index{make\_large\_enough\_for@{make\_large\_enough\_for}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{make\_large\_enough\_for()}{make\_large\_enough\_for()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Bit\+Vector\+::make\+\_\+large\+\_\+enough\+\_\+for (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{x,  }\item[{bool}]{init\+\_\+value = {\ttfamily false} }\end{DoxyParamCaption})}
+
+Make large enough for function. Resizes the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} until is large enough for a give size and gives it an initial value
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The size for which the object should be large enough \\
+\hline
+{\em init\+\_\+value} & The initial value given \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_af01b1ed341ec10243667c564492c12fe}\label{classRoutingKit_1_1BitVector_af01b1ed341ec10243667c564492c12fe}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!make\_large\_enough\_for@{make\_large\_enough\_for}}
+\index{make\_large\_enough\_for@{make\_large\_enough\_for}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{make\_large\_enough\_for()}{make\_large\_enough\_for()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Bit\+Vector\+::make\+\_\+large\+\_\+enough\+\_\+for (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{x,  }\item[{\mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}}}]{ }\end{DoxyParamCaption})}
+
+Make large enough for function. Resizes the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} until is large enough for a give size
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The size for which the object should be large enough \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a5c3a734c15a1ef7bbe63fa8e8962636b}\label{classRoutingKit_1_1BitVector_a5c3a734c15a1ef7bbe63fa8e8962636b}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator\&=@{operator\&=}}
+\index{operator\&=@{operator\&=}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator\&=()}{operator\&=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}\& Routing\+Kit\+::\+Bit\+Vector\+::operator\&= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{ }\end{DoxyParamCaption})}
+
+Override of = \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a1857ddfddea756e1df4b523cab815b64}\label{classRoutingKit_1_1BitVector_a1857ddfddea756e1df4b523cab815b64}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator=@{operator=}}
+\index{operator=@{operator=}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}\& Routing\+Kit\+::\+Bit\+Vector\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}}]{ }\end{DoxyParamCaption})}
+
+Override of =
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be copied into new object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a716d49077672bcfa1c6164f2bca59bce}\label{classRoutingKit_1_1BitVector_a716d49077672bcfa1c6164f2bca59bce}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator$^\wedge$=@{operator$^\wedge$=}}
+\index{operator$^\wedge$=@{operator$^\wedge$=}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator$^\wedge$=()}{operator^=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}\& Routing\+Kit\+::\+Bit\+Vector\+::operator$^\wedge$= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{ }\end{DoxyParamCaption})}
+
+Override of $^\wedge$= \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a21be7604cbc73a3af7be8deb604fe60b}\label{classRoutingKit_1_1BitVector_a21be7604cbc73a3af7be8deb604fe60b}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator\texttt{"|}=@{operator\texttt{"|}=}}
+\index{operator\texttt{"|}=@{operator\texttt{"|}=}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator\texttt{"|}=()}{operator|=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}}\& Routing\+Kit\+::\+Bit\+Vector\+::operator$\vert$= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{ }\end{DoxyParamCaption})}
+
+Override of $\vert$= \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a959ef691591549b6db402c571f5b1fd3}\label{classRoutingKit_1_1BitVector_a959ef691591549b6db402c571f5b1fd3}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator$\sim$@{operator$\sim$}}
+\index{operator$\sim$@{operator$\sim$}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator$\sim$()}{operator~()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} Routing\+Kit\+::\+Bit\+Vector\+::operator$\sim$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Override of $\sim$ \mbox{\Hypertarget{classRoutingKit_1_1BitVector_ae6d56da1bc48c7eec5f95e18cceded2a}\label{classRoutingKit_1_1BitVector_ae6d56da1bc48c7eec5f95e18cceded2a}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!population\_count@{population\_count}}
+\index{population\_count@{population\_count}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{population\_count()}{population\_count()}}
+{\footnotesize\ttfamily uint64\+\_\+t Routing\+Kit\+::\+Bit\+Vector\+::population\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Counts the population \mbox{\Hypertarget{classRoutingKit_1_1BitVector_ae57bb86da04cb266ddcb883f884ba9c0}\label{classRoutingKit_1_1BitVector_ae57bb86da04cb266ddcb883f884ba9c0}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!reset\_all\_padding\_bits@{reset\_all\_padding\_bits}}
+\index{reset\_all\_padding\_bits@{reset\_all\_padding\_bits}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{reset\_all\_padding\_bits()}{reset\_all\_padding\_bits()}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Bit\+Vector\+::reset\+\_\+all\+\_\+padding\+\_\+bits (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Resets the paddign bits for a \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object \mbox{\Hypertarget{classRoutingKit_1_1BitVector_a365f26ecd24dd8b1468ce09a9ede9015}\label{classRoutingKit_1_1BitVector_a365f26ecd24dd8b1468ce09a9ede9015}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!resize@{resize}}
+\index{resize@{resize}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Bit\+Vector\+::resize (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size,  }\item[{bool}]{init\+\_\+value = {\ttfamily false} }\end{DoxyParamCaption})}
+
+Resize function
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+size} & New size of the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object \\
+\hline
+{\em value} & The new value of the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} function \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_aafb443d81bce1e9a7ec68cc3c21dc669}\label{classRoutingKit_1_1BitVector_aafb443d81bce1e9a7ec68cc3c21dc669}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!resize@{resize}}
+\index{resize@{resize}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Bit\+Vector\+::resize (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size,  }\item[{\mbox{\hyperlink{structRoutingKit_1_1BitVector_1_1Uninitialized}{Uninitialized}}}]{ }\end{DoxyParamCaption})}
+
+Resize function
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+size} & New size of the \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a0e63b74a0fa7bb2f08fc36c252a1fe87}\label{classRoutingKit_1_1BitVector_a0e63b74a0fa7bb2f08fc36c252a1fe87}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!swap@{swap}}
+\index{swap@{swap}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily void Routing\+Kit\+::\+Bit\+Vector\+::swap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{ }\end{DoxyParamCaption})}
+
+Swap function
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be swaped with object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a3515ee53661c3fc87c5d1435f20d8734}\label{classRoutingKit_1_1BitVector_a3515ee53661c3fc87c5d1435f20d8734}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!uint512\_count@{uint512\_count}}
+\index{uint512\_count@{uint512\_count}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{uint512\_count()}{uint512\_count()}}
+{\footnotesize\ttfamily uint64\+\_\+t Routing\+Kit\+::\+Bit\+Vector\+::uint512\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the uint count 
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_a650c9024f9181df681de22010a131406}\label{classRoutingKit_1_1BitVector_a650c9024f9181df681de22010a131406}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator$<$}{operator<}}
+{\footnotesize\ttfamily bool operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{l,  }\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Override of $<$
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be compared as lhs \\
+\hline
+{\em r} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be compared as rhs \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoutingKit_1_1BitVector_ac917953e3cac4e1a18d5a32d38a37299}\label{classRoutingKit_1_1BitVector_ac917953e3cac4e1a18d5a32d38a37299}} 
+\index{RoutingKit::BitVector@{RoutingKit::BitVector}!operator==@{operator==}}
+\index{operator==@{operator==}!RoutingKit::BitVector@{RoutingKit::BitVector}}
+\doxysubsubsection{\texorpdfstring{operator==}{operator==}}
+{\footnotesize\ttfamily bool operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{l,  }\item[{const \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} \&}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Override of ==
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be compared as lhs \\
+\hline
+{\em r} & \mbox{\hyperlink{classRoutingKit_1_1BitVector}{Bit\+Vector}} object to be compared as rhs \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/routingkit/bit\+\_\+vector.\+h\end{DoxyCompactItemize}

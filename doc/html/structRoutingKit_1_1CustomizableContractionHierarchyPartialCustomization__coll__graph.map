@@ -1,0 +1,8 @@
+<map id="RoutingKit::CustomizableContractionHierarchyPartialCustomization" name="RoutingKit::CustomizableContractionHierarchyPartialCustomization">
+<area shape="rect" id="node1" title=" " alt="" coords="157,347,451,388"/>
+<area shape="rect" id="node2" href="$structRoutingKit_1_1CustomizableContractionHierarchy.html" title=" " alt="" coords="103,243,289,284"/>
+<area shape="rect" id="node3" href="$classRoutingKit_1_1BitVector.html" title=" " alt="" coords="5,109,163,136"/>
+<area shape="rect" id="node4" href="$structRoutingKit_1_1BitVector_1_1Uninitialized.html" title=" " alt="" coords="5,5,163,47"/>
+<area shape="rect" id="node5" href="$classRoutingKit_1_1LocalIDMapper.html" title=" " alt="" coords="211,109,405,136"/>
+<area shape="rect" id="node6" href="$classRoutingKit_1_1IDSetMinQueue.html" title=" " alt="" coords="314,250,513,277"/>
+</map>
