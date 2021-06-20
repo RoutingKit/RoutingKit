@@ -1,11 +1,12 @@
 # This makefile was automatically generated. Run ./generate_make_file to regenerate the file.
 CC=g++
 AR=ar
-CFLAGS=-Wall -DNDEBUG -march=native -ffast-math -std=c++11 -O3 -fPIC -Iinclude
-LDFLAGS=
+CFLAGS=-Wall -DNDEBUG -march=native -ffast-math -std=c++11 -O3 -fPIC -Iinclude --coverage
+LDFLAGS=--coverage
 OMP_CFLAGS=-fopenmp
 OMP_LDFLAGS=-fopenmp
 
+.PHONY: all
 all: bin/test_osm_simple bin/test_customizable_contraction_hierarchy_customization bin/test_customizable_contraction_hierarchy_perfect_customization bin/compute_contraction_hierarchy bin/encode_vector bin/test_contraction_hierarchy_path_query bin/osm_extract bin/compare_vector bin/test_inverse_vector bin/show_path bin/test_strongly_connected_component bin/convert_road_dimacs_coordinates bin/test_protobuf bin/test_customizable_contraction_hierarchy_pinned_query bin/generate_random_node_list bin/test_customizable_contraction_hierarchy_reset bin/generate_dijkstra_rank_test_queries bin/test_tag_map bin/export_road_dimacs_graph bin/test_contraction_hierarchy_extra_weight bin/test_nearest_neighbor bin/compute_nested_dissection_order bin/test_permutation bin/generate_test_queries bin/randomly_permute_nodes bin/graph_to_svg bin/decode_vector bin/test_sort bin/convert_road_dimacs_graph bin/test_customizable_contraction_hierarchy bin/test_id_mapper bin/test_contraction_hierarchy_pinned_query bin/run_dijkstra bin/test_dijkstra bin/generate_constant_vector bin/generate_random_source_times bin/examine_ch bin/compute_geographic_distance_weights bin/graph_to_dot bin/test_bit_vector bin/run_contraction_hierarchy_query bin/test_customizable_contraction_hierarchy_path_query bin/test_id_set_queue bin/test_nested_dissection bin/test_geo_dist bin/test_basic_features bin/test_buffered_asynchronous_reader lib/libroutingkit.a lib/libroutingkit.so
 
 build/timer.o: include/routingkit/timer.h src/timer.cpp generate_make_file
@@ -472,3 +473,14 @@ lib/libroutingkit.so: build/bit_select.o build/bit_vector.o build/buffered_async
 	@mkdir -p lib
 	$(CC) -shared $(LDFLAGS) build/bit_select.o build/bit_vector.o build/buffered_asynchronous_reader.o build/contraction_hierarchy.o build/customizable_contraction_hierarchy.o build/file_data_source.o build/geo_position_to_node.o build/graph_util.o build/id_mapper.o build/nested_dissection.o build/osm_decoder.o build/osm_graph_builder.o build/osm_profile.o build/osm_simple.o build/protobuf.o build/strongly_connected_component.o build/timer.o build/vector_io.o $(OMP_LDFLAGS) -lm -lz -pthread -o lib/libroutingkit.so
 
+.PHONY: clean
+clean:
+	rm -rf bin/
+	rm -rf build/
+	find -name "*.gcno" | xargs rm -f
+	find -name "*.gcda" | xargs rm -f
+
+.PHONY: clean_cvr
+clean_cvr:
+	find -name "*.gcno" | xargs rm -f
+	find -name "*.gcda" | xargs rm -f
