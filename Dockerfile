@@ -1,2 +1,3 @@
 FROM ubuntu:18.04
-RUN sudo apt-get install zlib1g-dev
+RUN apt-get update
+RUN apt-get -qq -y install zlib1g-dev
