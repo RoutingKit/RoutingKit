@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="geo_dist" xd:componentRef="geo_dist" xd:initiationInterval="267" xd:clockPeriod="10.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:arg xd:name="lat_a" xd:originalName="lat_a" xd:direction="in" xd:interfaceRef="s_axi_geo_dist_if" xd:busTypeRef="axilite" xd:offset="0x10" xd:handshakeRef="ap_none" xd:dataWidth="20"/>
+  <xd:arg xd:name="lon_a" xd:originalName="lon_a" xd:direction="in" xd:interfaceRef="s_axi_geo_dist_if" xd:busTypeRef="axilite" xd:offset="0x18" xd:handshakeRef="ap_none" xd:dataWidth="20"/>
+  <xd:arg xd:name="lat_b" xd:originalName="lat_b" xd:direction="in" xd:interfaceRef="s_axi_geo_dist_if" xd:busTypeRef="axilite" xd:offset="0x20" xd:handshakeRef="ap_none" xd:dataWidth="20"/>
+  <xd:arg xd:name="lon_b" xd:originalName="lon_b" xd:direction="in" xd:interfaceRef="s_axi_geo_dist_if" xd:busTypeRef="axilite" xd:offset="0x28" xd:handshakeRef="ap_none" xd:dataWidth="20"/>
+  <xd:arg xd:name="*(result)" xd:originalName="result" xd:direction="out" xd:interfaceRef="s_axi_geo_dist_if" xd:busTypeRef="axilite" xd:offset="0x30" xd:handshakeRef="ap_vld" xd:statusOffset="0x34" xd:dataWidth="20"/>
+  <xd:latencyEstimates xd:best-case="106" xd:worst-case="266" xd:average-case="135"/>
+  <xd:resourceEstimates xd:LUT="17198" xd:FF="11204" xd:BRAM="20" xd:DSP="15"/>
+</xd:acceleratorMap>
