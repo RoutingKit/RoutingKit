@@ -459,64 +459,7 @@ void BitVector::make_large_enough_for(uint64_t x, bool init_value){
 			n <<= 1;
 		}
 		assert(n > x);
-		//resize(n, init_value);
-
-	if(data_ == nullptr){
-		*this = BitVector(n, init_value);
-	}else{
-		assert(are_all_padding_bits_zero(*this));
-		if(n < size_) {
-			resize(n, uninitialized);
-		} else if(get_uint8_count(n) == get_uint8_count(size_)){
-			if(init_value == false){
-				size_ = n;
-			} else {
-				((v8_uint64_t*)data_)[size_/512] |= get_padding_mask(n) & ~get_padding_mask(size_);
-				size_ = n;
-			}
-		} else {
-			BitVector o(n);
-
-			v8_uint64_t
-				*i = (v8_uint64_t*)data_,
-				*j = (v8_uint64_t*)o.data_;
-
-			while(i < (v8_uint64_t*)data_ + get_v8_uint64_count(size_)){
-				*j = *i;
-				++i;
-				++j;
-			}
-
-			if(init_value){
-				*(j-1) |= ~get_padding_mask(size_);
-
-				v8_uint64_t all_one = {0};
-				all_one = ~all_one;
-
-				while(j < (v8_uint64_t*)o.data_ + get_v8_uint64_count(o.size_)){
-					*j = all_one;
-					++j;
-				}
-
-				*(j-1) &= get_padding_mask(o.size_);
-				assert(are_all_padding_bits_zero(o));
-			}else{
-				v8_uint64_t all_zero = {0};
-
-				while(j < (v8_uint64_t*)o.data_ + get_v8_uint64_count(o.size_)){
-					*j = all_zero;
-					++j;
-				}
-				assert(are_all_padding_bits_zero(o));
-			}
-
-			assert(are_all_padding_bits_zero(*this));	
-			swap(o);
-		}
-		assert(are_all_padding_bits_zero(*this));
-	}
-
-
+		resize(n, init_value);
 	}
 	assert(are_all_padding_bits_zero(*this));
 	assert(size_ > x);
