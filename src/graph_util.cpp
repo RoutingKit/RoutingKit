@@ -62,7 +62,7 @@ std::vector<unsigned>convert_node_path_to_arc_path(const std::vector<unsigned>&f
 		}
 		path.pop_back();
 	}
-	return std::move(path);
+	return path;
 }
 
 
@@ -73,7 +73,7 @@ std::vector<unsigned>convert_arc_path_to_node_path(unsigned source, const std::v
 			path[i] = head[path[i-1]];
 		path[0] = source;
 	}
-	return std::move(path);
+	return path;
 }
 
 

@@ -22,7 +22,7 @@ string replace_all_substrings(string subject, const string& search, const string
          subject.replace(pos, search.length(), replace);
          pos += replace.length();
     }
-    return std::move(subject);
+    return subject;
 }
 
 void convert_string_data(const string&input_vector_file){
