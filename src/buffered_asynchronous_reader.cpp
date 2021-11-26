@@ -82,7 +82,7 @@ BufferedAsynchronousReader::BufferedAsynchronousReader(
 	Impl*ptr = impl.get();
 
 	impl->worker = std::thread(
-		[this, ptr,byte_source,block_size]{
+		[ptr,byte_source,block_size]{
 			std::unique_lock<std::mutex>guard(ptr->lock);
 			try{
 				for(;;){

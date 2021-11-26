@@ -12,7 +12,7 @@
 
 namespace RoutingKit{
 
-struct ContractionHierarchy;
+class ContractionHierarchy;
 
 struct CustomizableContractionHierarchy{
 	CustomizableContractionHierarchy(){}
