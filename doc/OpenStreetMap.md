@@ -1,4 +1,4 @@
-RoutingKit includes an OpenStreetMap (OSM) data importer. The importer reads PBF files and is optimized for speed and memory consumption. OSM contains the map data. How this data should interpreted is left to the user and depends on the application. For example, the extracted routing graph is significantly different, if one wants to route pedestrians or cars. Pedestrians can use stairs while cars cannot. Cars can drive 130 km/h on the freeway, while pedestrians and not even allowed on the freeway.
+RoutingKit includes an OpenStreetMap (OSM) data importer. The importer reads PBF files and is optimized for speed and memory consumption. OSM contains the map data. How this data should interpreted is left to the user and depends on the application. For example, the extracted routing graph is significantly different, if one wants to route pedestrians or cars. Pedestrians can use stairs while cars cannot. Cars can drive 130 km/h on the freeway, while pedestrians and not even allowed on the freeway. 
 
 The meta information attached to OSM objects is encoded in a key-value-form. For example, a stair is encoded using "highway=steps". RoutingKit separates the OSM data decoding from the interpretation of the data. The decoding step figures out that there is a tag "highway=steps". The interpretation step determines that "highway=steps" means that no cars can pass.
 
@@ -10,9 +10,9 @@ OSM contains many nodes. A lot of these encode for example the contours of build
 * Modelling nodes
 * Routing nodes
 
-The set of routing nodes is a subset of the modelling nodes which are a subset of the OSM nodes. Routing nodes are the nodes in the extracted routing graph. Modelling nodes are used to represent the geometry of a road. In OSM, a way does not have a geometry attribute as is the case for many other map datasets. Instead, the curvature of a road is encoded using many nodes of degree two. These nodes are not relevant for routing as no routing decision takes place at them. There are therefore not part of the routing graph. They are referred to as modelling nodes.
+The set of routing nodes is a subset of the modelling nodes which are a subset of the OSM nodes. Routing nodes are the nodes in the extracted routing graph. Modelling nodes are used to represent the geometry of a road. In OSM, a way does not have a geometry attribute as is the case for many other map datasets. Instead, the curvature of a road is encoded using many nodes of degree two. These nodes are not relevant for routing as no routing decision takes place at them. There are therefore not part of the routing graph. They are referred to as modelling nodes. 
 
-Modelling nodes are considered when computing the distance of an arc. Currently, they are just discarded afterwards. The long term goal is to compress their geographic positions into an arc attribute. There is a boolean parameter that turns all modelling nodes into routing nodes to work around this current limitatio
+Modelling nodes are considered when computing the distance of an arc. Currently, they are just discarded afterwards. The long term goal is to compress their geographic positions into an arc attribute. There is a boolean parameter that turns all modelling nodes into routing nodes to work around this current limitation.
 
 Routing nodes have consecutive integer IDs. The first node has ID 0. Their relative order corresponds to the OSM node order. RoutingKit stores OSM IDs using 64 bits but assumes that the number of modelling and routing nodes fits into a 32 bit integer.
 
@@ -43,6 +43,7 @@ All functions take up to three parameters. The parameters are:
 * The final fourth parameter `file_is_ordered_even_though_file_header_says_that_it_is_unordered` is a boolean to work around a bug in PBF data from some sources. The PBF file can be sorted or not. Sorted PBF can be read significantly faster. In theory, PBFs have a header in which they indicate, whether they are sorted. Unfortunately, some data sources provide sorted files without setting the flag. By passing `true` this header check is ignored and the file is always assumed to be sorted. By default this parameter is `false`.
 
 The two last parameters might disappear in future RoutingKit releases.
+
 The car routing function returns a struct with the following members:
 
 ```cpp
