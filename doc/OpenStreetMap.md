@@ -43,7 +43,7 @@ All functions take up to three parameters. The parameters are:
 * The final fourth parameter `file_is_ordered_even_though_file_header_says_that_it_is_unordered` is a boolean to work around a bug in PBF data from some sources. The PBF file can be sorted or not. Sorted PBF can be read significantly faster. In theory, PBFs have a header in which they indicate, whether they are sorted. Unfortunately, some data sources provide sorted files without setting the flag. By passing `true` this header check is ignored and the file is always assumed to be sorted. By default this parameter is `false`.
 
 The two last parameters might disappear in future RoutingKit releases.
-
+ 
 The car routing function returns a struct with the following members:
 
 ```cpp
