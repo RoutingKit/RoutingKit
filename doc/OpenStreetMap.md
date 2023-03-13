@@ -6,20 +6,20 @@ In many situations, one does not care about the exact interpretation and wants t
 
 OSM contains many nodes. A lot of these encode for example the contours of buildings. These are not relevant for routing. RoutingKit therefore does not export every node. It discerns between three types of nodes:
 
-- OSM nodes
-- Modelling nodes
-- Routing nodes
+* OSM nodes
+* Modelling nodes
+* Routing nodes
 
 The set of routing nodes is a subset of the modelling nodes which are a subset of the OSM nodes. Routing nodes are the nodes in the extracted routing graph. Modelling nodes are used to represent the geometry of a road. In OSM, a way does not have a geometry attribute as is the case for many other map datasets. Instead, the curvature of a road is encoded using many nodes of degree two. These nodes are not relevant for routing as no routing decision takes place at them. There are therefore not part of the routing graph. They are referred to as modelling nodes.
 
-Modelling nodes are considered when computing the distance of an arc. Currently, they are just discarded afterwards. The long term goal is to compress their geographic positions into an arc attribute. There is a boolean parameter that turns all modelling nodes into routing nodes to work around this current limitation.
+Modelling nodes are considered when computing the distance of an arc. Currently, they are just discarded afterwards. The long term goal is to compress their geographic positions into an arc attribute. There is a boolean parameter that turns all modelling nodes into routing nodes to work around this current limitatio
 
 Routing nodes have consecutive integer IDs. The first node has ID 0. Their relative order corresponds to the OSM node order. RoutingKit stores OSM IDs using 64 bits but assumes that the number of modelling and routing nodes fits into a 32 bit integer.
 
 There are further two types of way IDs:
 
-- OSM ways
-- Routing ways
+* OSM ways
+* Routing ways
 
 An OSM way ID is the ID exactly as it appears in OSM. Only ways that are used for routing are routing ways. They are assigned consecutive IDs that are called routing way ID.
 
@@ -37,13 +37,12 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(cons
 
 All functions take up to three parameters. The parameters are:
 
-- `pbf_file` is string that contains the path to the PBF file.
-- `log_message` is a callback that is invoked with logging messages. If it is null, no logging messages are generated. This is marginally faster than discarding logging messages using a do-nothing callback.
-- `all_modelling_nodes_are_routing_nodes` is a boolean that determines whether all modelling nodes should be a routing node.
-- The final fourth parameter `file_is_ordered_even_though_file_header_says_that_it_is_unordered` is a boolean to work around a bug in PBF data from some sources. The PBF file can be sorted or not. Sorted PBF can be read significantly faster. In theory, PBFs have a header in which they indicate, whether they are sorted. Unfortunately, some data sources provide sorted files without setting the flag. By passing `true` this header check is ignored and the file is always assumed to be sorted. By default this parameter is `false`.
+* `pbf_file` is string that contains the path to the PBF file.
+* `log_message` is a callback that is invoked with logging messages. If it is null, no logging messages are generated. This is marginally faster than discarding logging messages using a do-nothing callback.
+* `all_modelling_nodes_are_routing_nodes` is a boolean that determines whether all modelling nodes should be a routing node.
+* The final fourth parameter `file_is_ordered_even_though_file_header_says_that_it_is_unordered` is a boolean to work around a bug in PBF data from some sources. The PBF file can be sorted or not. Sorted PBF can be read significantly faster. In theory, PBFs have a header in which they indicate, whether they are sorted. Unfortunately, some data sources provide sorted files without setting the flag. By passing `true` this header check is ignored and the file is always assumed to be sorted. By default this parameter is `false`.
 
 The two last parameters might disappear in future RoutingKit releases.
-
 The car routing function returns a struct with the following members:
 
 ```cpp
@@ -62,7 +61,7 @@ struct SimpleOSMCarRoutingGraph{
 };
 ```
 
-The vectors `first_out` and `head` form a graph in the format described in [SupportFunctions]. There are two edge weights provided, namely `travel_time` which is in milliseconds and `geo_distance` which is in meter. The geographical positions of every node are given by `latitude` and `longitude`. Both are in degree, i.e., every latitude is between -90 and +90 and every longitude between -180 and +180.
+The vectors `first_out` and `head` form a graph in the format described in [SupportFunctions]. There are two edge weights provided, namely `travel_time` which is in milliseconds and `geo_distance` which is in meter. The geographical positions of every node are given by `latitude` and `longitude`. Both are in degree, i.e., every latitude is between -90 and +90 and every longitude between -180 and +180. 
 
 Turn restrictions are given by `forbidden_turn_from_arc` and `forbidden_turn_to_arc`. A turn restriction is for example a no-right-turn-sign. An arc path is invalid, if it contains the two arcs `forbidden_turn_from_arc[i]` and `forbidden_turn_to_arc[i]` consecutively in this order for any `i`. The vectors are first sorted by from arc ID and then by to arc ID. It is guaranteed that there are no duplicates.
 
@@ -83,7 +82,7 @@ struct SimpleOSMPedestrianRoutingGraph{
 };
 ```
 
-Their meaning is exactly the same as for the car routing graph.
+Their meaning is exactly the same as for the car routing graph. 
 
 The bicycle routing function returns the following struct:
 
@@ -103,7 +102,7 @@ struct SimpleOSMBicycleRoutingGraph{
 
 It is very similar to the pedestrian graph, except that there additionally exists an arc value `arc_comfort_level`.
 
-A high comfort means that the way is nice, i.e., for example a road specifically designed for bicycles. A low comfort level means, that while one is technically allowed to cycle, one wants to avoid these roads. For example, a large road with a lot of cars and no bicycle lane has a low comfort. The minimum comfort can be accessed by calling the global `get_min_bicycle_comfort_level()` function. Analogously, the maximum comfort is given by `get_max_bicycle_comfort_level()`.
+A high comfort means that the way is nice, i.e., for example a road specifically designed for bicycles. A low comfort level means, that while one is technically allowed to cycle, one wants to avoid these roads. For example, a large road with a lot of cars and no bicycle lane has a low comfort. The minimum comfort can be accessed by calling the global `get_min_bicycle_comfort_level()` function. Analogously, the maximum comfort is given by `get_max_bicycle_comfort_level()`. 
 
 The comfort levels do not have a useful scale. A level of 4 only means that it is better than a 2. One should not infer that it is "twice" as good.
 
@@ -130,7 +129,7 @@ void ordered_read_osm_pbf(
 );
 ```
 
-The first function scans a PBF file and calls a callback for every element found in the PBF file. You can pass null as callback, if you do not require the elements of a certain category. Passing null is better than a do-nothing function as the decoder is intelligent enough to not decode elements of a certain type if the corresponding callback is null. `log_message` and `file_is_ordered_even_though_file_header_says_that_it_is_unordered` have the same meaning as for the simplified interfaces.
+The first function scans a PBF file and calls a callback for every element found in the PBF file. You can pass null as callback, if you do not require the elements of a certain category. Passing null is better than a do-nothing function as the decoder is intelligent enough to not decode elements of a certain type if the corresponding callback is null. `log_message` and `file_is_ordered_even_though_file_header_says_that_it_is_unordered` have the same meaning as for the simplified interfaces. 
 
 The unordered function variant invokes the callbacks in the the order as they appear in the file. It performs one scan over the data.
 
@@ -151,7 +150,7 @@ public:
     const char*key;
     const char*value;
   };
-
+  
   const_random_access_entry_iterator begin() const;
   const_random_access_entry_iterator end() const;
 };
@@ -188,7 +187,7 @@ struct OSMRelationMember{
 };
 ```
 
-Every member can either be a node, a way, or another relation. This is indicated by the `type` attribute. The `id` attribute is the OSM ID of the corresponding object. `role` is a string that describes the OSM role of the object in this relation.
+Every member can either be a node, a way, or another relation. This is indicated by the `type` attribute. The `id` attribute is the OSM ID of the corresponding object. `role` is a string that describes the OSM role of the object in this relation. 
 
 # Graph Decoding Interface
 
@@ -249,16 +248,16 @@ OSMRoutingGraph load_osm_routing_graph_from_pbf(
   const OSMRoutingIDMapping&mapping,
   std::function<
     OSMWayDirectionCategory(
-      uint64_t osm_way_id,
-      unsigned routing_way_id,
+      uint64_t osm_way_id, 
+      unsigned routing_way_id, 
       const TagMap&way_tags
     )
   >oneway_classifier,
   std::function<
     void(
-      uint64_t osm_relation_id,
-      const std::vector<OSMRelationMember>&member_list,
-      const TagMap&tags,
+      uint64_t osm_relation_id, 
+      const std::vector<OSMRelationMember>&member_list, 
+      const TagMap&tags, 
       std::function<void(OSMTurnRestriction)>on_new_turn_restriction
     )
   >turn_restriction_classifier,
