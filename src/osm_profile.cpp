@@ -172,6 +172,17 @@ bool is_osm_way_used_by_pedestrians(uint64_t osm_way_id, const TagMap&tags, std:
 }
 
 bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::function<void(const std::string&)>log_message){
+	const char* area_highway = tags["area:highway"];
+	if(area_highway!=nullptr)
+		return false;
+
+	const char* area = tags["area"];
+	if(area!=nullptr){
+		if(str_eq(area,"yes")){
+			return false;
+		}
+	}
+	
 	const char* junction = tags["junction"];
 	if(junction != nullptr)
 		return true;
@@ -201,18 +212,6 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 		if(!(str_eq(access, "yes") || str_eq(access, "permissive") || str_eq(access, "delivery")|| str_eq(access, "designated") || str_eq(access, "destination")))
 			return false;
 	}
-
-	const char* area_highway = tags["area:highway"];
-	if(area_highway!=nullptr)
-		return false;
-
-	const char* area = tags["area"];
-	if(area!=nullptr){
-		if(str_eq(area,"yes")){
-			return false;
-		}
-	}
-
 
 	if(
 		str_eq(highway, "motorway") ||
