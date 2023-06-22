@@ -202,6 +202,18 @@ bool is_osm_way_used_by_cars(uint64_t osm_way_id, const TagMap&tags, std::functi
 			return false;
 	}
 
+	const char* area_highway = tags["area:highway"];
+	if(area_highway!=nullptr)
+		return false;
+
+	const char* area = tags["area"];
+	if(area!=nullptr){
+		if(str_eq(area,"yes")){
+			return false;
+		}
+	}
+
+
 	if(
 		str_eq(highway, "motorway") ||
 		str_eq(highway, "trunk") ||
