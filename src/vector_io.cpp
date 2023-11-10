@@ -56,7 +56,7 @@ BitVector load_bit_vector(const std::string&file_name){
 	if(((size+511)/512) * 64 + 8 != file_size)
 		throw std::runtime_error("File \""+file_name+"\" can not be a bit vector of the requested size because the size in the header and the file size do not correspond.");
 	BitVector vec(size);
-	in.read(reinterpret_cast<char*>(vec.data()), ((size+511)/512));
+	in.read(reinterpret_cast<char*>(vec.data()), (((size+511)/512) * 64));
 	return vec; // NVRO
 }
 
