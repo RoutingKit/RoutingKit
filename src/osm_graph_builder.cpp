@@ -11,7 +11,7 @@
 #include <routingkit/osm_decoder.h>
 
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <stdio.h>
 #include <memory>
