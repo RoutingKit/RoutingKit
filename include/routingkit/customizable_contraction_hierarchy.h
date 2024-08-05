@@ -46,7 +46,6 @@ struct CustomizableContractionHierarchy{
 	std::vector<unsigned>down_to_up;
 	
 	std::vector<unsigned>input_arc_to_cch_arc;
-	BitVector is_input_arc_upward;
 
 	BitVector does_cch_arc_have_input_arc;
 	LocalIDMapper does_cch_arc_have_input_arc_mapper;
