@@ -6,8 +6,8 @@ compiler_name = "g++"
 archiver_name = "ar"
 
 # "-DROUTING_KIT_NO_GCC_EXTENSIONS", "-DROUTING_KIT_NO_POSIX", "-DROUTING_KIT_NO_ALIGNED_ALLOC"
-#compiler_options = ["-Wall", "-O0", "-ggdb","-march=native", "-ffast-math", "-std=c++11", "-D_GLIBCXX_DEBUG"]
-compiler_options = ["-Wall", "-DNDEBUG", "-march=native", "-ffast-math", "-std=c++11", "-O3"]
+#compiler_options = ["-Wall", "-O0", "-ggdb","-march=native", "-ffast-math", "-std=c++17", "-D_GLIBCXX_DEBUG"]
+compiler_options = ["-Wall", "-DNDEBUG", "-march=native", "-ffast-math", "-std=c++17", "-O3"]
 linker_options = []
 
 build_static_library = True
