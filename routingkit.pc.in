@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: @PACKAGE_NAME@
+Description: Advanced route planning library
+Version: @ROUTINGKIT_VERSION@
+Requires:
+Libs: -L${libdir} -lroutingkit
+Cflags: -I${includedir}
