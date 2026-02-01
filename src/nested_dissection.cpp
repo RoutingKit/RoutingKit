@@ -807,12 +807,13 @@ SeparatorDecomposition compute_separator_decomposition(
 				assert_fragment_is_valid(part);
 
 
-				if(log_message && part.node_count() > 1000){
+				const unsigned part_node_count = part.node_count(); // Capture before move
+				if(log_message && part_node_count > 1000){
 					timer = -get_micro_time();
 					log_message("Start computing remaining separator decomposition using recursion");
 				}
-				auto sub_decomp = compute_separator_decomposition(part, compute_separator);
-				if(log_message && part.node_count() > 1000){
+				auto sub_decomp = compute_separator_decomposition(std::move(part), compute_separator);
+				if(log_message && part_node_count > 1000){
 					timer += get_micro_time();
 					log_message("Finished recursion, needed "+std::to_string(timer)+"musec");
 				}
@@ -845,7 +846,7 @@ std::vector<unsigned>compute_nested_node_dissection_order(
 	GraphFragment fragment, const std::function<BitVector(const GraphFragment&)>&compute_separator,
 	const std::function<void(const std::string&)>&log_message
 ){
-	return compute_separator_decomposition(fragment, compute_separator, log_message).order;
+	return compute_separator_decomposition(std::move(fragment), compute_separator, log_message).order;
 }
 
 std::vector<unsigned>compute_nested_node_dissection_order_using_inertial_flow(
@@ -875,7 +876,7 @@ std::vector<unsigned>compute_nested_node_dissection_order_using_inertial_flow(
 		return derive_separator_from_cut(fragment, compute_cut(fragment));
 	};
 
-	return compute_nested_node_dissection_order(g, compute_separator, log_message);
+	return compute_nested_node_dissection_order(std::move(g), compute_separator, log_message);
 }
 
 } // RoutingKit
