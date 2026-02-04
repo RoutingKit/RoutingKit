@@ -12,11 +12,11 @@ OSM contains many nodes. A lot of these encode for example the contours of build
 
 The set of routing nodes is a subset of the modelling nodes which are a subset of the OSM nodes. Routing nodes are the nodes in the extracted routing graph. Modelling nodes are used to represent the geometry of a road. In OSM, a way does not have a geometry attribute as is the case for many other map datasets. Instead, the curvature of a road is encoded using many nodes of degree two. These nodes are not relevant for routing as no routing decision takes place at them. There are therefore not part of the routing graph. They are referred to as modelling nodes. 
 
-Modelling nodes are considered when computing the distance of an arc. Currently, they are just discard afterwards. The long term goal is to compress their geographic positions into an arc attribute. There is a boolean parameter that turns all modelling nodes into routing nodes to work around this current limitation.
+Modelling nodes are considered when computing the distance of an arc. Currently, they are just discarded afterwards. The long term goal is to compress their geographic positions into an arc attribute. There is a boolean parameter that turns all modelling nodes into routing nodes to work around this current limitation.
 
 Routing nodes have consecutive integer IDs. The first node has ID 0. Their relative order corresponds to the OSM node order. RoutingKit stores OSM IDs using 64 bits but assumes that the number of modelling and routing nodes fits into a 32 bit integer.
 
-There are further two type of way IDs:
+There are further two types of way IDs:
 
 * OSM ways
 * Routing ways
@@ -210,7 +210,7 @@ OSMRoutingIDMapping load_osm_id_mapping_from_pbf(
 );
 ```
 
-The function reads a PBF and classifies the objects. The classification is returned. There is a bit for every OSM object. If this bit is true, the corresponding object has this property. A routing way is a way that is part of the routing graph. A modelling node lies on one way. A routing node lies on two ways. The `is_way_used_for_routing` callback determines whether a OSM way should be part of the routing node. The `is_routing_node` callback can be used to make nodes routing nodes even though they do not lie on multiple ways. This can be useful to make sure that for example bus stops are part of the routing graph. The `is_routing_node` callback can be null. This is interpreted as a callback that always returns false.
+The function reads a PBF and classifies the objects. The classification is returned. There is a bit for every OSM object. If this bit is true, the corresponding object has this property. A routing way is a way that is part of the routing graph. A modelling node lies on one way. A routing node lies on two ways. The `is_way_used_for_routing` callback determines whether a OSM way should be part of the routing graph. The `is_routing_node` callback can be used to make nodes routing nodes even though they do not lie on multiple ways. This can be useful to make sure that for example bus stops are part of the routing graph. The `is_routing_node` callback can be null. This is interpreted as a callback that always returns false.
 
 You can use `OSMRoutingIDMapping` to map IDs from and to the corresponding OSM IDs. Use `IDMapper` to achieve this as follows:
 
@@ -318,7 +318,7 @@ struct OSMTurnRestriction{
 };
 ```
 
-All IDs in `OSMTurnRestriction` are OSM IDs and not local routing IDs. A restriction can be mandatory or prohibitive. A mandatory turn means that for this combination of `from_way` and `via_node` one may not switch onto another way than the `to_way`. If there are two mandatory turns with the same `from_way` and `via_node` but different `to_way`, `from_way` is a dead-end. A prohibitive turn means that it is not allowed to turn from `from_way` to `to_way`.
+All IDs in `OSMTurnRestriction` are OSM IDs and not local routing IDs. A restriction can be mandatory or prohibitive. A mandatory turn means that for this combination of `from_way` and `via_node` one may not switch onto another way than the `to_way`. If there are two mandatory turn restrictions with the same `from_way` and `via_node` but different `to_way`, `from_way` is a dead-end. A prohibitive turn means that it is not allowed to turn from `from_way` to `to_way`.
 
 You may set `via_node` to `(uint64_t)-1`. In this case, RoutingKit will infer the `via_node`, if the corresponding ways only cross exactly once. Otherwise, the restriction is ignored. `osm_relation_id` is only used to log warnings. You can set it to any value, if you do not care about correct log messages.
 
