@@ -654,6 +654,113 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 //		forall_lower_triangles_of_arc(*this, a, TriangleVerifier(*this));
 }
 
+DirectedCustomizableContractionHierarchy::DirectedCustomizableContractionHierarchy(
+	const std::vector<unsigned>& arg_order,
+	const std::vector<unsigned>& input_tail,
+	const std::vector<unsigned>& input_head,
+	std::function<void(const std::string&)>log_message
+) {
+	CustomizableContractionHierarchy cch(arg_order, input_tail, input_head, log_message, false);
+	//can we just std::move this...?
+	order = cch.order;
+	rank = cch.rank;
+	elimination_tree_parent = cch.elimination_tree_parent;
+
+	if(log_message){
+		log_message("Building directed CCH");
+	}
+
+	long long timer = 0;
+
+	if(log_message){
+		timer -= get_micro_time();
+		log_message("Start computing directed infinity arcs");
+	}
+	std::vector<unsigned> zeros(input_tail.size(), 0);
+	CustomizableContractionHierarchyMetric zeroMetric(cch, zeros);
+	zeroMetric.customize();
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished computing directed infinity arcs, needed "+std::to_string(timer)+"musec");
+	}
+
+	/*
+	 * Filter up arcs / split in forward and backward
+	 */
+	if(log_message){
+		timer -= get_micro_time();
+		log_message("Start directing cch up arc");
+	}
+	std::vector<std::vector<unsigned>> inv_input_arc_to_cch_arc(cch.cch_arc_count());
+	for (unsigned j = 0; j < cch.input_arc_count(); j++) {
+		inv_input_arc_to_cch_arc[cch.input_arc_to_cch_arc[j]].push_back(j);
+	}
+	input_arc_to_cch_arc.assign(cch.input_arc_count(), invalid_id);
+	is_forward.resize(cch.input_arc_count(), BitVector::uninitialized);
+	is_forward.reset_all();
+
+	forward_first_out.push_back(0);
+	backward_first_out.push_back(0);
+	std::vector<std::vector<unsigned>> forward_in_edges(cch.node_count());
+	std::vector<std::vector<unsigned>> backward_in_edges(cch.node_count());
+	for (unsigned i = 0; i < cch.node_count(); i++) {
+		for (unsigned j = cch.up_first_out[i]; j < cch.up_first_out[i + 1]; j++) {
+			if (zeroMetric.forward[j] == 0) {
+				for (unsigned k : inv_input_arc_to_cch_arc[j]) {
+					is_forward.set(k, true);
+					input_arc_to_cch_arc[k] = forward_head.size();
+				}
+				forward_in_edges[cch.up_head[j]].push_back(forward_head.size());
+				forward_head.push_back(cch.up_head[j]);
+				forward_tail.push_back(cch.up_tail[j]);
+			}
+			if (zeroMetric.backward[j] == 0) {
+				for (unsigned k : inv_input_arc_to_cch_arc[j]) {
+					is_forward.set(k, false);
+					input_arc_to_cch_arc[k] = backward_head.size();
+				}
+				backward_in_edges[cch.up_head[j]].push_back(backward_head.size());
+				backward_head.push_back(cch.up_head[j]);
+				backward_tail.push_back(cch.up_tail[j]);
+			}
+		}
+		forward_first_out.push_back(forward_head.size());
+		backward_first_out.push_back(backward_head.size());
+	}
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished directing cch up arcs, needed "+std::to_string(timer)+"musec");
+	}
+
+	/*
+	 * find incoming edges
+	 */
+	if(log_message){
+		timer -= get_micro_time();
+		log_message("Start directing cch down arc");
+	}
+	forward_first_in.push_back(0);
+	forward_id.reserve(forward_head.size());
+	for (unsigned i = 0; i < cch.node_count(); i++) {
+		for (unsigned j : forward_in_edges[i]) {
+			forward_id.push_back(j);
+		}
+		forward_first_in.push_back(forward_id.size());
+	}
+	backward_first_in.push_back(0);
+	backward_id.reserve(backward_head.size());
+	for (unsigned i = 0; i < cch.node_count(); i++) {
+		for (unsigned j : backward_in_edges[i]) {
+			backward_id.push_back(j);
+		}
+		backward_first_in.push_back(backward_id.size());
+	}
+	if(log_message){
+		timer += get_micro_time();
+		log_message("Finished directing cch down arcs, needed "+std::to_string(timer)+"musec");
+	}
+}
+
 namespace{
 
 	void extract_initial_metric_of_cch_arc(const CustomizableContractionHierarchy&cch, CustomizableContractionHierarchyMetric&metric, unsigned cch_arc){
@@ -736,8 +843,16 @@ CustomizableContractionHierarchyMetric::CustomizableContractionHierarchyMetric(c
 	forward(cch.cch_arc_count()), backward(cch.cch_arc_count()), cch(&cch), input_weight(&input_weight[0]){
 }
 
+DirectedCustomizableContractionHierarchyMetric::DirectedCustomizableContractionHierarchyMetric(const DirectedCustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight):
+	forward(cch.cch_forward_arc_count()), backward(cch.cch_backward_arc_count()), cch(&cch), input_weight(&input_weight[0]){
+}
+
 CustomizableContractionHierarchyMetric::CustomizableContractionHierarchyMetric(const CustomizableContractionHierarchy&cch, const unsigned*input_weight):
 	forward(cch.cch_arc_count()), backward(cch.cch_arc_count()), cch(&cch), input_weight(input_weight){
+}
+
+DirectedCustomizableContractionHierarchyMetric::DirectedCustomizableContractionHierarchyMetric(const DirectedCustomizableContractionHierarchy&cch, const unsigned*input_weight):
+	forward(cch.cch_forward_arc_count()), backward(cch.cch_backward_arc_count()), cch(&cch), input_weight(input_weight){
 }
 
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const CustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight){
@@ -746,7 +861,20 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 	return *this;
 }
 
+DirectedCustomizableContractionHierarchyMetric& DirectedCustomizableContractionHierarchyMetric::reset(const DirectedCustomizableContractionHierarchy&cch, const std::vector<unsigned>&input_weight){
+	assert(input_weight.size() == cch.input_arc_count() && "Input weight vector has the wrong size");
+	reset(cch, &input_weight[0]);
+	return *this;
+}
+
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const std::vector<unsigned>&input_weight){
+	assert(cch && "Need to be attached to a CCH");
+	assert(input_weight.size() == cch->input_arc_count() && "Input weight vector has the wrong size");
+	reset(&input_weight[0]);
+	return *this;
+}
+
+DirectedCustomizableContractionHierarchyMetric& DirectedCustomizableContractionHierarchyMetric::reset(const std::vector<unsigned>&input_weight){
 	assert(cch && "Need to be attached to a CCH");
 	assert(input_weight.size() == cch->input_arc_count() && "Input weight vector has the wrong size");
 	reset(&input_weight[0]);
@@ -764,7 +892,25 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 	return *this;
 }
 
+DirectedCustomizableContractionHierarchyMetric& DirectedCustomizableContractionHierarchyMetric::reset(const DirectedCustomizableContractionHierarchy&cch_, const unsigned*input_weight_){
+	assert(input_weight_ != nullptr && "Input weight pointer must not be null");
+	if(cch_.cch_forward_arc_count() != forward.size() ||
+	   cch_.cch_backward_arc_count() != backward.size()){
+		*this = DirectedCustomizableContractionHierarchyMetric(cch_, input_weight_);
+	}else{
+		cch = &cch_;
+		input_weight = input_weight_;
+	}
+	return *this;
+}
+
 CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::reset(const unsigned*input_weight_){
+	assert(input_weight_ != nullptr && "Input weight pointer must not be null");
+	input_weight = input_weight_;
+	return *this;
+}
+
+DirectedCustomizableContractionHierarchyMetric& DirectedCustomizableContractionHierarchyMetric::reset(const unsigned*input_weight_){
 	assert(input_weight_ != nullptr && "Input weight pointer must not be null");
 	input_weight = input_weight_;
 	return *this;
@@ -801,6 +947,81 @@ CustomizableContractionHierarchyMetric& CustomizableContractionHierarchyMetric::
 	for(unsigned a=0; a<cch->cch_arc_count(); ++a)
 		forall_upper_triangles_of_arc(*cch, a, LowerTriangleInequalityVerifier(*this));
 	#endif
+	return *this;
+}
+
+DirectedCustomizableContractionHierarchyMetric& DirectedCustomizableContractionHierarchyMetric::customize(){
+	assert(input_weight != nullptr && "Metric must be connected to a weight vector");
+
+	std::fill(forward.begin(), forward.end(), inf_weight);
+	std::fill(backward.begin(), backward.end(), inf_weight);
+
+	for (unsigned j = 0; j < cch->input_arc_count(); j++) {
+		if (cch->input_arc_to_cch_arc[j] != invalid_id) {
+			if (cch->is_forward.is_set(j)) {
+				forward[cch->input_arc_to_cch_arc[j]] = std:: min(forward[cch->input_arc_to_cch_arc[j]], input_weight[j]);
+			} else {
+				backward[cch->input_arc_to_cch_arc[j]] = std:: min(backward[cch->input_arc_to_cch_arc[j]], input_weight[j]);
+			}
+		}
+	}
+
+	std::vector<unsigned> arc_id_cache(cch->node_count());
+	auto handleVertex = [&arc_id_cache](unsigned x, 
+							const std::vector<unsigned>& first_out,
+							const std::vector<unsigned>& head,
+							const std::vector<unsigned>& tail,
+							const std::vector<unsigned>& reversed_first_out,
+							const std::vector<unsigned>& reversed_head,
+							const std::vector<unsigned>& reversed_tail,
+							const std::vector<unsigned>& first_in,
+							const std::vector<unsigned>& in_id,
+							std::vector<unsigned>& weight,
+							std::vector<unsigned>& reversed_weight){
+
+		const unsigned xz_up_end = first_out[x+1];
+		for(unsigned xz_up = first_out[x]; xz_up < xz_up_end; ++xz_up){
+			arc_id_cache[head[xz_up]] = xz_up;
+		}
+
+		const unsigned xy_down_end = first_in[x+1];
+		for(unsigned xy_down_id = first_in[x]; xy_down_id < xy_down_end; ++xy_down_id){
+			const unsigned xy_down = in_id[xy_down_id];
+			const unsigned y = reversed_tail[xy_down];
+			const unsigned yz_up_end_reversed = first_out[y];
+			for (unsigned yz_up_reversed = first_out[y+1]; yz_up_reversed > yz_up_end_reversed; --yz_up_reversed) {
+				const unsigned yz_up = yz_up_reversed-1;
+				const unsigned z = head[yz_up];
+				if (z <= x) break;//break? are these arcs sorted?
+				const unsigned xz_up = arc_id_cache[z];
+				min_to(weight[xz_up], reversed_weight[xy_down] + weight[yz_up]);
+			}
+		}
+	};
+	for(unsigned x = 0; x < cch->node_count(); ++x){
+		handleVertex(x, 
+					 cch->forward_first_out, 
+					 cch->forward_head, 
+					 cch->forward_tail,
+					 cch->backward_first_out, 
+					 cch->backward_head, 
+					 cch->backward_tail,
+					 cch->backward_first_in,
+					 cch->backward_id,
+					 forward,
+					 backward);
+		handleVertex(x, 
+					 cch->backward_first_out, 
+					 cch->backward_head, 
+					 cch->backward_tail,
+					 cch->forward_first_out, 
+					 cch->forward_head, 
+					 cch->forward_tail,
+					 cch->forward_first_in,
+					 cch->forward_id,
+					 backward,
+					 forward);
+	}
 	return *this;
 }
 
@@ -1104,6 +1325,18 @@ CustomizableContractionHierarchyQuery::CustomizableContractionHierarchyQuery(con
 	metric(&metric),
 	state(query_state_initialized){}
 
+DirectedCustomizableContractionHierarchyQuery::DirectedCustomizableContractionHierarchyQuery(const DirectedCustomizableContractionHierarchyMetric&metric):
+	forward_tentative_distance(metric.cch->node_count(), inf_weight),
+	backward_tentative_distance(metric.cch->node_count(), inf_weight),
+	forward_predecessor_node(metric.cch->node_count()),
+	backward_predecessor_node(metric.cch->node_count()),
+	in_forward_search_space(metric.cch->node_count(), false),
+	in_backward_search_space(metric.cch->node_count(), false),
+	shortest_path_meeting_node(invalid_id),
+	cch(metric.cch),
+	metric(&metric),
+	state(query_state_initialized){}
+
 namespace{
 	void internal_add_source(
 		unsigned external_s, unsigned dist_to_s,
@@ -1162,7 +1395,39 @@ CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::ad
 	return *this;
 }
 
+DirectedCustomizableContractionHierarchyQuery& DirectedCustomizableContractionHierarchyQuery::add_source(unsigned external_s, unsigned dist_to_s){
+	assert(external_s < cch->node_count());
+	assert(state == query_state_initialized || state == query_state_target_pinned);
+	internal_add_source(
+		external_s, dist_to_s,
+		cch->rank,
+		cch->elimination_tree_parent,
+		forward_tentative_distance,
+		forward_predecessor_node,
+		in_forward_search_space,
+		source_node,
+		source_elimination_tree_end
+	);
+	return *this;
+}
+
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::add_target(unsigned external_t, unsigned dist_to_t){
+	assert(external_t < cch->node_count());
+	assert(state == query_state_initialized || state == query_state_source_pinned);
+	internal_add_source(
+		external_t, dist_to_t,
+		cch->rank,
+		cch->elimination_tree_parent,
+		backward_tentative_distance,
+		backward_predecessor_node,
+		in_backward_search_space,
+		target_node,
+		target_elimination_tree_end
+	);
+	return *this;
+}
+
+DirectedCustomizableContractionHierarchyQuery& DirectedCustomizableContractionHierarchyQuery::add_target(unsigned external_t, unsigned dist_to_t){
 	assert(external_t < cch->node_count());
 	assert(state == query_state_initialized || state == query_state_source_pinned);
 	internal_add_source(
@@ -1278,7 +1543,63 @@ CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::ru
 	return *this;
 }
 
+DirectedCustomizableContractionHierarchyQuery& DirectedCustomizableContractionHierarchyQuery::run(){
+	assert(state == query_state_initialized);
+
+	for(unsigned i = source_node.size()-1; i!=(unsigned)-1; --i){
+		forall_ancestors(
+			cch->elimination_tree_parent,
+			source_node[i], source_elimination_tree_end[i],
+			[&](unsigned x){
+
+				relax_outgoing_arcs(
+					cch->forward_first_out, cch->forward_head, metric->forward,
+					forward_tentative_distance, [&](unsigned a, unsigned b){forward_predecessor_node[a] = b;},
+					x
+				);
+				return true;
+			}
+		);
+	}
+
+	shortest_path_meeting_node = invalid_id;
+	unsigned shortest_path_length = inf_weight;
+
+	for(unsigned i = target_node.size()-1; i!=(unsigned)-1; --i){
+		forall_ancestors(
+			cch->elimination_tree_parent,
+			target_node[i], target_elimination_tree_end[i],
+			[&](unsigned x){
+				relax_outgoing_arcs(
+					cch->backward_first_out, cch->backward_head, metric->backward,
+					backward_tentative_distance, [&](unsigned a, unsigned b){backward_predecessor_node[a] = b;},
+					x
+				);
+				if(in_forward_search_space[x]){
+					unsigned l = forward_tentative_distance[x] + backward_tentative_distance[x];
+					if(l < shortest_path_length){
+						shortest_path_length = l;
+						shortest_path_meeting_node = x;
+					}
+				}
+				return true;
+			}
+		);
+	}
+
+	state = query_state_run;
+	return *this;
+}
+
 unsigned CustomizableContractionHierarchyQuery::get_distance(){
+	assert(state == query_state_run);
+	if(shortest_path_meeting_node == invalid_id)
+		return inf_weight;
+	else
+		return forward_tentative_distance[shortest_path_meeting_node] + backward_tentative_distance[shortest_path_meeting_node];
+}
+
+unsigned DirectedCustomizableContractionHierarchyQuery::get_distance(){
 	assert(state == query_state_run);
 	if(shortest_path_meeting_node == invalid_id)
 		return inf_weight;
@@ -1299,7 +1620,33 @@ unsigned CustomizableContractionHierarchyQuery::get_used_source(){
 	}
 }
 
+unsigned DirectedCustomizableContractionHierarchyQuery::get_used_source(){
+	assert(state == query_state_run);
+	if(shortest_path_meeting_node == invalid_id) {
+		return invalid_id;
+	} else {
+		unsigned x = shortest_path_meeting_node;
+		while(forward_predecessor_node[x] != invalid_id){
+			x = forward_predecessor_node[x];
+		}
+		return cch->order[x];
+	}
+}
+
 unsigned CustomizableContractionHierarchyQuery::get_used_target(){
+	assert(state == query_state_run);
+	if(shortest_path_meeting_node == invalid_id) {
+		return invalid_id;
+	} else {
+		unsigned x = shortest_path_meeting_node;
+		while(backward_predecessor_node[x] != invalid_id){
+			x = backward_predecessor_node[x];
+		}
+		return cch->order[x];
+	}
+}
+
+unsigned DirectedCustomizableContractionHierarchyQuery::get_used_target(){
 	assert(state == query_state_run);
 	if(shortest_path_meeting_node == invalid_id) {
 		return invalid_id;
@@ -1903,12 +2250,35 @@ CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::re
 	return *this;
 }
 
+DirectedCustomizableContractionHierarchyQuery& DirectedCustomizableContractionHierarchyQuery::reset(){
+	if(state == query_state_target_pinned || state == query_state_target_run){
+		reset_target_distances(cch->elimination_tree_parent, target_node, target_elimination_tree_end, forward_tentative_distance);
+	}else if(state == query_state_source_pinned || state == query_state_source_run){
+		reset_target_distances(cch->elimination_tree_parent, source_node, source_elimination_tree_end, backward_tentative_distance);
+	}
+	reset_source_list(cch->elimination_tree_parent, source_node, source_elimination_tree_end, in_forward_search_space, forward_tentative_distance);
+	reset_source_list(cch->elimination_tree_parent, target_node, target_elimination_tree_end, in_backward_search_space, backward_tentative_distance);
+	state = query_state_initialized;
+	return *this;
+}
+
 CustomizableContractionHierarchyQuery& CustomizableContractionHierarchyQuery::reset(const CustomizableContractionHierarchyMetric&metric){
 	if(this->cch == metric.cch) {
 		this->metric = &metric;
 		reset();
 	} else {
 		*this = CustomizableContractionHierarchyQuery(metric);
+	}
+	state = query_state_initialized;
+	return *this;
+}
+
+DirectedCustomizableContractionHierarchyQuery& DirectedCustomizableContractionHierarchyQuery::reset(const DirectedCustomizableContractionHierarchyMetric&metric){
+	if(this->cch == metric.cch) {
+		this->metric = &metric;
+		reset();
+	} else {
+		*this = DirectedCustomizableContractionHierarchyQuery(metric);
 	}
 	state = query_state_initialized;
 	return *this;
