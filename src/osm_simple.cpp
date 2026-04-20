@@ -12,7 +12,8 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message,
 	bool all_modelling_nodes_are_routing_nodes,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered,
+	OSMRoadGeometry geometry_to_be_extracted
 ){
 	auto mapping = load_osm_id_mapping_from_pbf(
 		pbf_file,
@@ -37,7 +38,9 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 		[&](uint64_t osm_relation_id, const std::vector<OSMRelationMember>&member_list, const TagMap&tags, std::function<void(OSMTurnRestriction)>on_new_restriction){
 			return decode_osm_car_turn_restrictions(osm_relation_id, member_list, tags, on_new_restriction, log_message);
 		},
-		log_message
+		log_message,
+		false,
+		geometry_to_be_extracted
 	);
 
 	mapping = OSMRoutingIDMapping(); // release memory
@@ -48,6 +51,9 @@ SimpleOSMCarRoutingGraph simple_load_osm_car_routing_graph_from_pbf(
 	ret.geo_distance = std::move(routing_graph.geo_distance);
 	ret.latitude = std::move(routing_graph.latitude);
 	ret.longitude = std::move(routing_graph.longitude);
+	ret.first_modelling_node = std::move(routing_graph.first_modelling_node);
+	ret.modelling_node_latitude = std::move(routing_graph.modelling_node_latitude);
+	ret.modelling_node_longitude = std::move(routing_graph.modelling_node_longitude);
 
 	ret.travel_time = ret.geo_distance;
 	for(unsigned a=0; a<ret.travel_time.size(); ++a){
@@ -67,7 +73,8 @@ SimpleOSMPedestrianRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pb
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message,
 	bool all_modelling_nodes_are_routing_nodes,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered,
+	OSMRoadGeometry geometry_to_be_extracted
 ){
 	auto mapping = load_osm_id_mapping_from_pbf(
 		pbf_file,
@@ -86,7 +93,9 @@ SimpleOSMPedestrianRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pb
 			return OSMWayDirectionCategory::open_in_both;
 		},
 		nullptr,
-		log_message
+		log_message,
+		false,
+		geometry_to_be_extracted
 	);
 
 	mapping = OSMRoutingIDMapping(); // release memory
@@ -97,6 +106,9 @@ SimpleOSMPedestrianRoutingGraph simple_load_osm_pedestrian_routing_graph_from_pb
 	ret.geo_distance = std::move(routing_graph.geo_distance);
 	ret.latitude = std::move(routing_graph.latitude);
 	ret.longitude = std::move(routing_graph.longitude);
+	ret.first_modelling_node = std::move(routing_graph.first_modelling_node);
+	ret.modelling_node_latitude = std::move(routing_graph.modelling_node_latitude);
+	ret.modelling_node_longitude = std::move(routing_graph.modelling_node_longitude);
 
 	return ret;
 }
@@ -106,7 +118,8 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
 	const std::string&pbf_file,
 	const std::function<void(const std::string&)>&log_message,
 	bool all_modelling_nodes_are_routing_nodes,
-	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered
+	bool file_is_ordered_even_though_file_header_says_that_it_is_unordered,
+	OSMRoadGeometry geometry_to_be_extracted
 ){
 	auto mapping = load_osm_id_mapping_from_pbf(
 		pbf_file,
@@ -130,7 +143,9 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
 			return get_osm_bicycle_direction_category(osm_way_id, way_tags, log_message);
 		},
 		nullptr,
-		log_message
+		log_message,
+		false,
+		geometry_to_be_extracted
 	);
 
 	unsigned arc_count = routing_graph.head.size();
@@ -143,6 +158,9 @@ SimpleOSMBicycleRoutingGraph simple_load_osm_bicycle_routing_graph_from_pbf(
 	ret.geo_distance = std::move(routing_graph.geo_distance);
 	ret.latitude = std::move(routing_graph.latitude);
 	ret.longitude = std::move(routing_graph.longitude);
+	ret.first_modelling_node = std::move(routing_graph.first_modelling_node);
+	ret.modelling_node_latitude = std::move(routing_graph.modelling_node_latitude);
+	ret.modelling_node_longitude = std::move(routing_graph.modelling_node_longitude);
 
 	ret.arc_comfort_level.resize(arc_count);
 	for(unsigned a=0; a<arc_count; ++a)
