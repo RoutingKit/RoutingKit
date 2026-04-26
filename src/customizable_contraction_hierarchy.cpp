@@ -329,12 +329,11 @@ CustomizableContractionHierarchy::CustomizableContractionHierarchy(
 		timer = -get_micro_time();
 	}
 
+	BitVector is_input_arc_upward(input_arc_count, false);
 	if(cch_arc_count == 0){
 		input_arc_to_cch_arc.resize(input_arc_count, invalid_id);
-		is_input_arc_upward.resize(input_arc_count, false);
 	}else{
 		input_arc_to_cch_arc.resize(input_arc_count);
-		is_input_arc_upward.resize(input_arc_count, false);
 
 		{
 			unsigned cch_up_arc = 0;
