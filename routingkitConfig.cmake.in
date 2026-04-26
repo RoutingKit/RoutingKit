@@ -1,0 +1,6 @@
+get_filename_component(routingkit_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+if(NOT TARGET routingkit::routingkit)
+    include("${routingkit_CMAKE_DIR}/routingkit-targets.cmake")
+endif()
